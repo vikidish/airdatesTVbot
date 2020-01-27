@@ -26,7 +26,7 @@ class Config:
     def __init__(self, root_path):
         self.root_path = root_path
 
-        if sys.platform == "darwin":
+        if sys.platform == "darwin" or _is_docker():
             env_file = f"{self.root_path}/.dev.env"
         else:
             env_file = f"{self.root_path}/.env"
@@ -43,7 +43,7 @@ class Config:
         self.script_name = os.path.basename(sys.argv[0])
         self.log_path = f"{self.data_dir_path}/{MAIN_LOG_FILENAME}"
 
-        if sys.platform == "darwin":
+        if sys.platform == "darwin" or _is_docker():
             self.log_dir_path = f"{self.data_dir_path}/log"
         else:
             self.log_dir_path = LOG_DIR
@@ -115,6 +115,12 @@ class Config:
         dictConfig(LOGGING_CONFIG)
 
 
+def _is_docker():
+    proc_path = '/proc/self/cgroup'
+    return (
+        os.path.exists('/.dockerenv') or
+        os.path.isfile(proc_path) and any('docker' in line for line in open(proc_path))
+    )
 
 path = rootpath.detect()
 # print(path)
