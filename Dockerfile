@@ -1,6 +1,5 @@
 FROM python:3.7.6-slim-buster
 ENV PYTHONUNBUFFERED 1
-RUN adduser pyuser
 
 WORKDIR /usr/src/airdatesTVbot
 

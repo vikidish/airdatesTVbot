@@ -13,7 +13,7 @@ crontab to send daily digest - run every hour:
 
 `5 * * * * python3 dailysendtask.py`
 
-###Installing with Docker
+### Installing with Docker
 Build from the main directory:  
 
 `docker build -t airdatestvbot:1 .
@@ -28,4 +28,4 @@ Run the container:
 
 For daily sends can use the following command in host crontab/other task schedule:  
 
-`docker run -d -it --name airdatestvbot_dailysend --env-file .env -v {/path/to/datadir}:/usr/src/airdatesTVbot/data airdatestvbot:1 python3 dailysendtask.py`
+`docker run -d --rm -it --name airdatestvbot_dailysend --env-file .env -v {/path/to/datadir}:/usr/src/airdatesTVbot/data airdatestvbot:1 python3 dailysendtask.py`
