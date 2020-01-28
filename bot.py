@@ -29,13 +29,14 @@ def main():
     # thread safe and multiprocess safe, can be a single instance
     user_storage_hlp = BotUserStorageHelper(config.db_path, config.cache_path)
 
-    # return
     @bot.message_handler(commands=['start'])
     def send_welcome(message):
 
         try:
 
-            user_text = f"Greetings {message.from_user.username}!\n\n"
+            username = message.from_user.username
+
+            user_text = f"Greetings {username}!\n\n"
             reply_text = user_text + "Welcome to airdatesTVbot. This bot will send you your favorite shows based on information provided by airdates.tv website.\n\n" \
                          "To enjoy all the features of the bot you might want to register on airdates.tv and provide your airdates nickname to the bot. Registering on airdates.tv wll allow you to monitor your favorite shows both on the website and in the bot.\n\n" \
                          "To start the registration please use command /reg\n" \
@@ -45,6 +46,10 @@ def main():
                         " Near your shows you will see the checkmark " + EMOJIS['user_show']
 
             bot.send_message(message.chat.id, reply_text, parse_mode='HTML')
+
+            bot_user = BotUser(message.from_user.id, storage_hlp=user_storage_hlp)
+            bot_user.save_tg_user()
+
             print(message)
 
         except Exception as ex:
@@ -251,26 +256,19 @@ def main():
 
         try:
             user_only = True
-            all_text = ''
-            day_text = 'Today'
             day_param = 'today'
             if '_all' in message.text:
                 user_only = False
-                all_text = ' ALL'
-
             if 'yday' in message.text:
-                day_text = 'Yesterday'
                 day_param = 'yday'
             elif 'tmrw' in message.text:
-                day_text = 'Tomorrow'
                 day_param = 'tmrw'
 
             bot_user = BotUser(message.from_user.id, storage_hlp=user_storage_hlp)
             shows = tv.get_shows(day_param, bot_user, user_only)
 
-            user_text = f'{bot_user.airdates_user} ' if bot_user.airdates_user else ''
-            reply_text = '{}{}\'s ({}){} TV Shows:\n\n'.format(user_text, day_text, format_date(shows['date']), all_text) \
-                         + format_shows_text(tv, shows['episodes'])
+            header_text = format_show_text_header(day_param, bot_user.airdates_user, shows['date'], not user_only)
+            reply_text = header_text + format_shows_text(tv, shows['episodes'])
 
             bot.send_message(message.chat.id, reply_text + format_footer(bot_user.airdates_user), parse_mode='HTML')
 
@@ -367,6 +365,85 @@ def main():
             traceback.print_exc()
 
 
+
+    @bot.callback_query_handler(func=lambda call: call.data == 'calendar-next-month')
+    def next_month(call):
+
+        try:
+            chat_id = call.message.chat.id
+            saved_date = current_shown_dates.get(chat_id, None)
+            if saved_date is not None:
+                year, month = saved_date
+                month += 1
+                if month > 12:
+                    month = 1
+                    year += 1
+                date = (year, month)
+                current_shown_dates[chat_id] = date
+                markup = create_calendar(year, month)
+                bot.edit_message_text("Please, choose a date", call.from_user.id, call.message.message_id, reply_markup=markup)
+                bot.answer_callback_query(call.id, text="")
+            else:
+                # Do something to inform of the error
+                pass
+
+        except Exception as ex:
+            config.logger.error('Cannot send message: ' + str(ex))
+            traceback.print_exc()
+
+
+    @bot.callback_query_handler(func=lambda call: call.data == 'calendar-previous-month')
+    def previous_month(call):
+
+        try:
+            chat_id = call.message.chat.id
+            saved_date = current_shown_dates.get(chat_id, None)
+            if saved_date is not None:
+                year, month = saved_date
+                month -= 1
+                if month < 1:
+                    month = 12
+                    year -= 1
+                date = (year, month)
+                current_shown_dates[chat_id] = date
+                markup = create_calendar(year, month)
+                bot.edit_message_text("Please, choose a date", call.from_user.id, call.message.message_id, reply_markup=markup)
+                bot.answer_callback_query(call.id, text="")
+            else:
+                # Do something to inform of the error
+                pass
+
+        except Exception as ex:
+            config.logger.error('Cannot send message: ' + str(ex))
+            traceback.print_exc()
+
+
+    @bot.callback_query_handler(func=lambda call: call.data == 'calendar-this-month')
+    def this_month(call):
+
+        try:
+            chat_id = call.message.chat.id
+
+            now = datetime.now()  # Current date
+            date = (now.year, now.month)
+            saved_date = current_shown_dates.get(chat_id, None)
+            if saved_date is not None:
+                if not date == saved_date:
+
+                    current_shown_dates[chat_id] = date  # Saving the current date in a dict
+                    markup = create_calendar(now.year, now.month)
+                    bot.edit_message_text("Please, choose a date", call.from_user.id, call.message.message_id, reply_markup=markup)
+                    bot.answer_callback_query(call.id, text="")
+
+            else:
+                # Do something to inform of the error
+                pass
+
+        except Exception as ex:
+            config.logger.error('Cannot send message: ' + str(ex))
+            traceback.print_exc()
+
+
     @bot.callback_query_handler(func=lambda call: call.data[0:13] == 'calendar-day-')
     def get_day(call):
 
@@ -408,86 +485,9 @@ def main():
             traceback.print_exc()
 
 
-    @bot.callback_query_handler(func=lambda call: call.data == 'next-month')
-    def next_month(call):
 
-        try:
-            chat_id = call.message.chat.id
-            saved_date = current_shown_dates.get(chat_id, None)
-            if saved_date is not None:
-                year, month = saved_date
-                month += 1
-                if month > 12:
-                    month = 1
-                    year += 1
-                date = (year, month)
-                current_shown_dates[chat_id] = date
-                markup = create_calendar(year, month)
-                bot.edit_message_text("Please, choose a date", call.from_user.id, call.message.message_id, reply_markup=markup)
-                bot.answer_callback_query(call.id, text="")
-            else:
-                # Do something to inform of the error
-                pass
-
-        except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
-            traceback.print_exc()
-
-
-    @bot.callback_query_handler(func=lambda call: call.data == 'previous-month')
-    def previous_month(call):
-
-        try:
-            chat_id = call.message.chat.id
-            saved_date = current_shown_dates.get(chat_id, None)
-            if saved_date is not None:
-                year, month = saved_date
-                month -= 1
-                if month < 1:
-                    month = 12
-                    year -= 1
-                date = (year, month)
-                current_shown_dates[chat_id] = date
-                markup = create_calendar(year, month)
-                bot.edit_message_text("Please, choose a date", call.from_user.id, call.message.message_id, reply_markup=markup)
-                bot.answer_callback_query(call.id, text="")
-            else:
-                # Do something to inform of the error
-                pass
-
-        except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
-            traceback.print_exc()
-
-
-    @bot.callback_query_handler(func=lambda call: call.data == 'this-month')
-    def next_month(call):
-
-        try:
-            chat_id = call.message.chat.id
-
-            now = datetime.now()  # Current date
-            date = (now.year, now.month)
-            saved_date = current_shown_dates.get(chat_id, None)
-            if saved_date is not None:
-                if not date == saved_date:
-
-                    current_shown_dates[chat_id] = date  # Saving the current date in a dict
-                    markup = create_calendar(now.year, now.month)
-                    bot.edit_message_text("Please, choose a date", call.from_user.id, call.message.message_id, reply_markup=markup)
-                    bot.answer_callback_query(call.id, text="")
-
-            else:
-                # Do something to inform of the error
-                pass
-
-        except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
-            traceback.print_exc()
-
-
-    @bot.callback_query_handler(func=lambda call: call.data == 'ignore')
-    def ignore(call):
+    @bot.callback_query_handler(func=lambda call: call.data == 'calendar-ignore')
+    def ignore_calendar(call):
 
         try:
             bot.answer_callback_query(call.id, text="")

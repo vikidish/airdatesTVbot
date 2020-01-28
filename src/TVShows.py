@@ -140,7 +140,7 @@ class TVShows:
 
 
 
-def manage_cache(func):
+def _manage_cache(func):
     def wrapper(self, *args, **kwargs):
 
         ret = func(self, *args, **kwargs)
@@ -168,7 +168,7 @@ class AirdatesHelper:
 
         return self._cache
 
-    @manage_cache
+    @_manage_cache
     def get_airdates_data(self):
         shows_data = None
         engines_data = None
@@ -181,12 +181,12 @@ class AirdatesHelper:
             shows_data_html = self._download_airdates_data()
             shows_data, engines_data = self._parse_airdates_data(shows_data_html)
 
-            self.cache.set(CACHE_KEY_AIRDATES, shows_data, expire=60 * 60 * 24)
+            self.cache.set(CACHE_KEY_AIRDATES, shows_data, expire=60 * 60 * 6)
             self.cache.set(CACHE_KEY_ENGINES, engines_data, expire=60 * 60 * 24 * 30)
 
         return shows_data, engines_data
 
-    @manage_cache
+    @_manage_cache
     def get_airdates_user_data(self, airdates_user):
         """
         same as function above
@@ -212,7 +212,7 @@ class AirdatesHelper:
 
         return user_data
 
-    @manage_cache
+    @_manage_cache
     def clear_user_data(self, airdates_user):
         if not airdates_user:
             return None
@@ -345,6 +345,25 @@ def format_episode_details(episode, engines):
         show_text += f'-- <a href="{engine_show_url}">{engine["name"]}</a>\n'
 
     return show_text
+
+
+def format_show_text_header(day_param, airdates_user, date, all=False):
+
+    user_text = f'{airdates_user} ' if airdates_user else ''
+    all_text = ' ALL' if all else ''
+
+    day_text = day_param
+    if day_param == 'today':
+        day_text = 'Today'
+
+    elif day_param == 'yday':
+        day_text = 'Yesterday'
+
+    elif day_param == 'tmrw':
+        day_text = 'Tomorrow'
+
+    header_text = '{}{}\'s ({}){} TV Shows:\n\n'.format(user_text, day_text, format_date(date), all_text)
+    return header_text
 
 
 def format_show_text_main(show, show_date=False):

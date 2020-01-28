@@ -2,6 +2,8 @@ from config import *
 
 import telebot
 
+import json
+
 from src.TVShows import *
 from src.BotUser import *
 
@@ -22,6 +24,7 @@ def send_daily_shows():
         tg_user_id = user['tg_user_id']
         airdates_user = user['airdates_user']
         last_sent = user['last_sent']
+        daily_types = json.loads(user['daily_types'])
 
         if last_sent:
             last_sent_dt = datetime.strptime(last_sent, '%Y-%m-%d %H:%M:%S.%f')
@@ -35,13 +38,16 @@ def send_daily_shows():
 
             try:
                 bot_user = BotUser(tg_user_id, airdates_user)
-                shows = tv.get_shows('today', bot_user, user_only)
 
-                user_text = f'{bot_user.airdates_user} ' if bot_user else ''
-                reply_text = '{}Today\'s ({}) TV Shows:\n\n'.format(user_text, format_date(shows['date'])) \
-                                 + format_shows_text(tv, shows['episodes'])
+                for daily_type in daily_types:
 
-                bot.send_message(tg_user_id, reply_text + format_footer(bot_user.airdates_user), parse_mode='HTML')
+                    shows = tv.get_shows(daily_type, bot_user, user_only)
+
+                    header_text = format_show_text_header(daily_type, bot_user.airdates_user, shows['date'], not user_only)
+                    reply_text = header_text + format_shows_text(tv, shows['episodes'])
+
+                    bot.send_message(tg_user_id, reply_text + format_footer(bot_user.airdates_user), parse_mode='HTML')
+
                 config.logger.info(f'sending daily for user {tg_user_id}')
 
                 botdbsql.update_last_sent(tg_user_id, now)

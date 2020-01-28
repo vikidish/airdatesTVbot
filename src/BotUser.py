@@ -7,26 +7,33 @@ class BotUser:
         self._tg_user_id = tg_user_id
         self.storage_hlp = storage_hlp
 
-        self.airdates_user = airdates_user
-        if not self.airdates_user and self.storage_hlp:
-            user = self.storage_hlp.get_user_by_tg_user_id(self.tg_user_id)
-            if user:
-                # print(user)
-                self.airdates_user = user['airdates_user']
+        self.airdates_user = None
+        self.is_admin = False
 
+        db_user = None
+        if self.storage_hlp:
+            db_user = self.storage_hlp.get_user_by_tg_user_id(self.tg_user_id)
 
+        if airdates_user:
+            self.airdates_user = airdates_user
+        elif db_user:
+            self.airdates_user = db_user['airdates_user']
 
-    @property
-    def airdates_user(self):
-        return self._airdates_user
-
-    @airdates_user.setter
-    def airdates_user(self, airdates_user):
-        self._airdates_user = airdates_user
+        if db_user:
+            self.is_admin = bool(db_user['is_admin'])
 
     @property
     def tg_user_id(self):
         return self._tg_user_id
+
+    @tg_user_id.setter
+    def tg_user_id(self, tg_user_id):
+        if not tg_user_id or tg_user_id == '':
+            raise ValueError('valid telegram user id must be provided')
+        self._tg_user_id = tg_user_id
+
+    def save_tg_user(self):
+        self.storage_hlp.save_tg_user(self.tg_user_id)
 
     def register_airdates_user(self, airdates_user, daily_enabled=None):
         self.airdates_user = airdates_user
@@ -51,7 +58,7 @@ class BotUser:
         return self.storage_hlp.reset_cache_refresh_counter(self.tg_user_id)
 
 
-def manage_connection(func):
+def _manage_connection(func):
     def wrapper(self, *args, **kwargs):
 
         conn = sqlite3.connect(self.db_path, isolation_level=None)
@@ -65,7 +72,7 @@ def manage_connection(func):
     return wrapper
 
 
-def manage_cache(func):
+def _manage_cache(func):
     def wrapper(self, *args, **kwargs):
 
         ret = func(self, *args, **kwargs)
@@ -89,7 +96,7 @@ class BotUserStorageHelper:
 
         return self._cache
 
-    @manage_connection
+    @_manage_connection
     def update_airdates_user(self, conn, tg_user_id, airdates_user, daily_enabled=None):
         cur = conn.cursor()
         if daily_enabled is not None:
@@ -107,7 +114,16 @@ class BotUserStorageHelper:
             '''
             cur.execute(stmt, (tg_user_id, airdates_user))
 
-    @manage_connection
+    @_manage_connection
+    def save_tg_user(self, conn, tg_user_id):
+        cur = conn.cursor()
+
+        stmt = f'''
+        INSERT OR IGNORE INTO Users (tg_user_id) VALUES (?) 
+        '''
+        cur.execute(stmt, (tg_user_id, ))
+
+    @_manage_connection
     def update_daily_enabled(self, conn, tg_user_id, daily_enabled):
         cur = conn.cursor()
         stmt = f'''
@@ -116,7 +132,7 @@ class BotUserStorageHelper:
             '''
         cur.execute(stmt, (tg_user_id, daily_enabled))
 
-    @manage_connection
+    @_manage_connection
     def update_daily_hour(self, conn, tg_user_id, daily_hour):
         cur = conn.cursor()
         stmt = f'''
@@ -125,22 +141,23 @@ class BotUserStorageHelper:
             '''
         cur.execute(stmt, (tg_user_id, daily_hour))
 
-    @manage_connection
+    @_manage_connection
     def get_user_by_tg_user_id(self, conn, tg_user_id):
         cur = conn.cursor()
         stmt = f'''
-        SELECT airdates_user, daily_enabled, last_sent FROM Users WHERE tg_user_id = ?
+        SELECT airdates_user, daily_enabled, last_sent, is_admin FROM Users WHERE tg_user_id = ?
         '''
         cur.execute(stmt, (tg_user_id, ))
         rows = cur.fetchall()
         user = (rows[0:1] + [None])[0]
         return dict(user) if user else None
 
-    @manage_connection
+    @_manage_connection
     def get_daily_send_by_hour(self, conn, hour):
         cur = conn.cursor()
         stmt = f'''
-        SELECT tg_user_id, airdates_user, last_sent as "last_sent [timestamp]" FROM Users WHERE daily_enabled = ? and daily_hour = ?
+        SELECT tg_user_id, airdates_user, last_sent as "last_sent [timestamp]", daily_types FROM Users 
+        WHERE daily_enabled = ? and daily_hour = ? 
         '''
         cur.execute(stmt, (1, hour))
         rows = cur.fetchall()
@@ -148,7 +165,7 @@ class BotUserStorageHelper:
         users = [dict(row) for row in rows]
         return users
 
-    @manage_connection
+    @_manage_connection
     def update_last_sent(self, conn, tg_user_id, last_sent):
         cur = conn.cursor()
         stmt = f'''
@@ -156,14 +173,14 @@ class BotUserStorageHelper:
         '''
         cur.execute(stmt, (last_sent, tg_user_id))
 
-    @manage_cache
+    @_manage_cache
     def get_cache_refresh_counter(self, tg_user_id):
         cache_key = f'refresh_count_{tg_user_id}'
         result = self.cache.get(cache_key, default=0, expire_time=True)
         value, expire = result
         return value
 
-    @manage_cache
+    @_manage_cache
     def update_cache_refresh_counter(self, tg_user_id):
         cache_key = f'refresh_count_{tg_user_id}'
         try:
@@ -176,7 +193,7 @@ class BotUserStorageHelper:
 
         return new_count
 
-    @manage_cache
+    @_manage_cache
     def reset_cache_refresh_counter(self, tg_user_id):
         cache_key = f'refresh_count_{tg_user_id}'
         self.cache.delete(cache_key)
