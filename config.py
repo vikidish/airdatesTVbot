@@ -7,10 +7,14 @@ import sys
 import os
 from pathlib import Path
 import rootpath
+import builtins
+
+import sqlite3
 
 DATA_DIR_PATH = "/data"
 DB_FILENAME = "airdatesTVbotdb.sqlite"
 MAIN_LOG_FILENAME = "mainlog.log"
+DB_SCHEMA_VERSION = 1
 
 CACHE_DIR = "cache"
 
@@ -26,16 +30,24 @@ class Config:
     def __init__(self, root_path):
         self.root_path = root_path
 
-        if sys.platform == "darwin" or _is_docker():
+        if sys.platform == "darwin" or is_docker():
             env_file = f"{self.root_path}/.dev.env"
         else:
             env_file = f"{self.root_path}/.env"
 
         load_dotenv(dotenv_path=env_file)
 
-
         self.data_dir_path = f"{root_path}{DATA_DIR_PATH}"
         self.db_path = f"{self.data_dir_path}/{DB_FILENAME}"
+
+        if 'SKIP_DB_CHECK' in vars(builtins):
+            print('skip check db')
+            pass
+        else:
+            curr_db_schema_version = self.get_db_schema_version()
+            if curr_db_schema_version != DB_SCHEMA_VERSION:
+                sys.exit('DB Schema needs to be updated')
+
         self.cache_path = f"{self.data_dir_path}/{CACHE_DIR}"
 
         self.telegram_token = os.getenv("TELEGRAM_TOKEN")
@@ -43,7 +55,7 @@ class Config:
         self.script_name = os.path.basename(sys.argv[0])
         self.log_path = f"{self.data_dir_path}/{MAIN_LOG_FILENAME}"
 
-        if sys.platform == "darwin" or _is_docker():
+        if sys.platform == "darwin" or is_docker():
             self.log_dir_path = f"{self.data_dir_path}/log"
         else:
             self.log_dir_path = LOG_DIR
@@ -60,6 +72,18 @@ class Config:
         self._setup_loggers(self.log_dir_path, name="airdatesTVbot")
         self.logger = logging.getLogger()
         logging.getLogger('requests').setLevel(logging.INFO)
+
+    def get_db_schema_version(self):
+
+        check_stmt = 'PRAGMA user_version;'
+
+        conn = sqlite3.connect(self.db_path, isolation_level=None,
+                                           detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+        conn.set_trace_callback(print)
+        cur = conn.cursor()
+        cur.execute(check_stmt)
+        res = cur.fetchall()
+        return res[0][0]
 
 
 
@@ -115,7 +139,7 @@ class Config:
         dictConfig(LOGGING_CONFIG)
 
 
-def _is_docker():
+def is_docker():
     proc_path = '/proc/self/cgroup'
     return (
         os.path.exists('/.dockerenv') or

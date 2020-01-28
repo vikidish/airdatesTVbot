@@ -12,6 +12,6 @@ COPY . .
 RUN chown -R pyuser:pyuser .
 USER pyuser
 
-RUN python3 first_setup.py
+RUN python3 app_setup.py
 
 CMD ["python3", "bot.py"]

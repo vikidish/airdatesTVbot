@@ -5,9 +5,9 @@ Display your shows from airdates.tv, get daily updates, search shows by name/dat
 python >=3.7.6  
 requires >=sqlite 3.24.0 (upsert support), so won't work on CentOS 7 without compiling newer sqlite version
 
-On 1st run:  
+On 1st run and if DB migration needed (can be run every release):  
 
-`python3 first_setup.py`  
+`python3 app_setup.py`  
 
 crontab to send daily digest - run every hour:  
 
@@ -16,8 +16,8 @@ crontab to send daily digest - run every hour:
 ### Installing with Docker
 Build from the main directory:  
 
-`docker build -t airdatestvbot:1 .
-`
+`docker build -t airdatestvbot:1 .`  
+
 Run the container:  
 
 `docker run -d -it --name airdatestvbot --env-file .env -v {/path/to/datadir}:/usr/src/airdatesTVbot/data airdatestvbot:1`  
