@@ -119,6 +119,37 @@ class TVShows:
 
         return shows
 
+    def get_new_shows(self, interval='week', new_type='series'):
+
+        show_days = []
+        today = datetime.now().date()
+        start_day = today - timedelta(days=today.weekday())
+
+        if interval == 'prev':
+            start_day = today - timedelta(days= (today.weekday() + 7) )
+        elif interval == 'next':
+            start_day = today - timedelta(days= (today.weekday() - 7) )
+
+        for i in range(7):
+            show_day = start_day + timedelta(days=i)
+            show_days.append(show_day.strftime("%Y%m%d"))
+
+        show_filter = 'series_prem'
+        if new_type == 'season':
+            show_filter = 'season_prem'
+
+        shows = []
+        for show_day in show_days:
+            show_data = self.airdates_data.get(show_day, None)
+            episodes = []
+            if show_data:
+                episodes = [{**ep, 'episode_date': show_day} for ep in show_data['episodes'] if ep.get(show_filter, 0) == 1]
+
+            shows.append({'date': show_day, 'episodes': episodes})
+
+        return shows
+
+
     def find_episode_by_episode_id(self, episode_id):
         show_id = episode_id.split('_', 1)[0]
 
@@ -134,6 +165,7 @@ class TVShows:
         for day_key, day in self.airdates_data.items():
             shows += [{**ep, 'episode_date': day_key} for ep in day['episodes'] if text.lower() in ep['episode_name'].lower()]
 
+        # print(shows)
         return shows
 
 
@@ -403,11 +435,26 @@ def format_show_text_main(show, show_date=False):
     return show_text
 
 
-def format_shows_text(tv: TVShows, episodes, show_date=False):
+def format_shows_text(episodes, show_date=False):
     shows_episodes = group_episodes_by_show(episodes)
     shows_text = [format_show_text_main(i, show_date) for i in shows_episodes]
 
-    return "\n".join(shows_text)
+    return "\n".join(shows_text) + '\n'
+
+def format_shows_days_text(show_days):
+    shows_days_text = ''
+
+    for show_day in show_days:
+
+        if show_day['episodes']:
+            shows_days_text += f'<i>--------  {format_date(show_day["date"])}  --------</i>\n\n'
+            shows_episodes = group_episodes_by_show(show_day['episodes'])
+            shows_text = [format_show_text_main(i) for i in shows_episodes]
+
+            shows_days_text += "\n".join(shows_text)
+            shows_days_text += '\n'
+
+    return shows_days_text
 
 
 def format_date(day_str):
@@ -425,11 +472,11 @@ def save_to_file(filename, data_binary):
         print('not found')
 
 
-def format_footer(username):
+def format_footer(username=None):
     if username:
-        return f"\n--------------------------------\nVisit {AIRDATES_URL}/u/{username} for more shows"
+        return f"--------------------------------\nVisit {AIRDATES_URL}/u/{username} for more shows"
     else:
-        return f"\n--------------------------------\nVisit {AIRDATES_URL} for more shows"
+        return f"--------------------------------\nVisit {AIRDATES_URL} for more shows"
 
 
 def group_episodes_by_show(episodes):
@@ -439,7 +486,6 @@ def group_episodes_by_show(episodes):
         show_name = " ".join(ep['episode_name'].split()[:-1])
         if not (show_id in shows):
             shows[show_id] = {'name': show_name, 'episodes': []}
-            # shows[show_id] = {'name': ep['show_source'], 'episodes': []}
 
         if ep.get('series_prem', None):
             shows[show_id]['series_prem'] = 1

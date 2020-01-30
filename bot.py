@@ -333,9 +333,37 @@ def main():
             shows = tv.get_shows(day_param, bot_user, user_only)
 
             header_text = format_show_text_header(day_param, bot_user.airdates_user, shows['date'], not user_only)
-            reply_text = header_text + format_shows_text(tv, shows['episodes'])
+            reply_text = header_text + format_shows_text(shows['episodes'])
 
             bot.send_message(message.chat.id, reply_text + format_footer(bot_user.airdates_user), parse_mode='HTML')
+
+        except Exception as ex:
+            config.logger.error('Cannot send message: ' + str(ex))
+            traceback.print_exc()
+
+    @bot.message_handler(commands=['new', 'return', 'new_prev', 'return_prev', 'new_next', 'return_next'])
+    def send_new_shows(message):
+
+        try:
+
+            new_type = 'series'
+            new_text = 'Show Premiers'
+            if 'return' in message.text:
+                new_type = 'season'
+                new_text = 'Returning Shows'
+
+            interval = 'week'
+            if 'prev' in message.text:
+                interval = 'prev'
+            elif 'next' in message.text:
+                interval = 'next'
+
+            shows = tv.get_new_shows(interval, new_type)
+
+            header_text = f'Here are the {new_text} this week:\n\n'
+            reply_text = header_text + format_shows_days_text(shows)
+
+            bot.send_message(message.chat.id, reply_text + format_footer(), parse_mode='HTML')
 
         except Exception as ex:
             config.logger.error('Cannot send message: ' + str(ex))
@@ -510,7 +538,7 @@ def main():
 
 
     @bot.callback_query_handler(func=lambda call: call.data[0:13] == 'calendar-day-')
-    def get_day(call):
+    def send_shows_day(call):
 
         chat_id = call.message.chat.id
 
@@ -533,7 +561,7 @@ def main():
 
                 user_text = f'{bot_user.airdates_user}' if bot_user else ''
                 reply_text = '{}\'s ({}){} TV Shows:\n\n'.format(user_text, format_date(shows['date']), all_text) \
-                             + format_shows_text(tv, shows['episodes'])
+                             + format_shows_text(shows['episodes'])
 
                 # current_command[chat_id] = None
                 bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
@@ -579,7 +607,7 @@ def main():
 
                 if episodes:
                     reply_text = f"We found the following TV Shows for '{message.text}':\n\n" \
-                                 + format_shows_text(tv, episodes, True)
+                                 + format_shows_text(episodes, True)
                 else:
                     reply_text = f"No shows with '{message.text}' in name"
                 # reply_text = '&#x1F61C;'

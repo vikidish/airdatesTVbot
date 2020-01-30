@@ -44,7 +44,7 @@ def send_daily_shows():
                     shows = tv.get_shows(daily_type, bot_user, user_only)
 
                     header_text = format_show_text_header(daily_type, bot_user.airdates_user, shows['date'], not user_only)
-                    reply_text = header_text + format_shows_text(tv, shows['episodes'])
+                    reply_text = header_text + format_shows_text(shows['episodes'])
 
                     bot.send_message(tg_user_id, reply_text + format_footer(bot_user.airdates_user), parse_mode='HTML')
 
