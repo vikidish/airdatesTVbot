@@ -1,4 +1,5 @@
 import sqlite3
+import json
 from diskcache import Cache
 
 class BotUser:
@@ -9,6 +10,8 @@ class BotUser:
 
         self.airdates_user = None
         self.is_admin = False
+        self.daily_enabled = False
+        self.daily_types = []
 
         db_user = None
         if self.storage_hlp:
@@ -21,6 +24,8 @@ class BotUser:
 
         if db_user:
             self.is_admin = bool(db_user['is_admin'])
+            self.daily_enabled = bool(db_user['daily_enabled'])
+            self.daily_types = json.loads(db_user['daily_types'])
 
     @property
     def tg_user_id(self):
@@ -43,10 +48,15 @@ class BotUser:
             self.storage_hlp.update_airdates_user(self.tg_user_id, airdates_user, daily_enabled)
 
     def update_daily_enabled(self, daily_enabled):
+        self.daily_enabled = daily_enabled
         self.storage_hlp.update_daily_enabled(self.tg_user_id, int(daily_enabled))
 
     def update_daily_hour(self, hour):
         self.storage_hlp.update_daily_hour(self.tg_user_id, hour)
+
+    def update_daily_types(self, daily_types):
+        self.daily_types = daily_types
+        self.storage_hlp.update_daily_types(self.tg_user_id, json.dumps(daily_types))
 
     def get_refresh_count(self):
         return self.storage_hlp.get_cache_refresh_counter(self.tg_user_id)
@@ -142,10 +152,21 @@ class BotUserStorageHelper:
         cur.execute(stmt, (tg_user_id, daily_hour))
 
     @_manage_connection
+    def update_daily_types(self, conn, tg_user_id, daily_types):
+        cur = conn.cursor()
+        stmt = f'''
+            INSERT INTO Users (tg_user_id, daily_types) VALUES (?, ?) 
+                ON CONFLICT (tg_user_id) DO UPDATE SET daily_types=excluded.daily_types;
+            '''
+        cur.execute(stmt, (tg_user_id, daily_types))
+
+    @_manage_connection
     def get_user_by_tg_user_id(self, conn, tg_user_id):
         cur = conn.cursor()
         stmt = f'''
-        SELECT airdates_user, daily_enabled, last_sent, is_admin FROM Users WHERE tg_user_id = ?
+        SELECT airdates_user, daily_enabled, last_sent, is_admin, daily_enabled, daily_types 
+        FROM Users 
+        WHERE tg_user_id = ?
         '''
         cur.execute(stmt, (tg_user_id, ))
         rows = cur.fetchall()
@@ -156,7 +177,8 @@ class BotUserStorageHelper:
     def get_daily_send_by_hour(self, conn, hour):
         cur = conn.cursor()
         stmt = f'''
-        SELECT tg_user_id, airdates_user, last_sent as "last_sent [timestamp]", daily_types FROM Users 
+        SELECT tg_user_id, airdates_user, last_sent as "last_sent [timestamp]", daily_types 
+        FROM Users 
         WHERE daily_enabled = ? and daily_hour = ? 
         '''
         cur.execute(stmt, (1, hour))

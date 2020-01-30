@@ -352,18 +352,24 @@ def format_show_text_header(day_param, airdates_user, date, all=False):
     user_text = f'{airdates_user} ' if airdates_user else ''
     all_text = ' ALL' if all else ''
 
-    day_text = day_param
-    if day_param == 'today':
-        day_text = 'Today'
-
-    elif day_param == 'yday':
-        day_text = 'Yesterday'
-
-    elif day_param == 'tmrw':
-        day_text = 'Tomorrow'
+    day_text = get_day_text_by_type(day_param)
 
     header_text = '{}{}\'s ({}){} TV Shows:\n\n'.format(user_text, day_text, format_date(date), all_text)
     return header_text
+
+
+def get_day_text_by_type(type):
+    day_text = ''
+    if type == 'today':
+        day_text = 'Today'
+
+    elif type == 'yday':
+        day_text = 'Yesterday'
+
+    elif type == 'tmrw':
+        day_text = 'Tomorrow'
+
+    return day_text
 
 
 def format_show_text_main(show, show_date=False):

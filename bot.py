@@ -239,6 +239,71 @@ def main():
             traceback.print_exc()
 
 
+    def format_daily_type_keyboard(bot_user: BotUser):
+
+        keyboard = telebot.types.InlineKeyboardMarkup()
+
+        daily_types = ['yday', 'today', 'tmrw']
+        daily_types_row = []
+        for daily_type in daily_types:
+            btn_emoji = '✅' if daily_type in bot_user.daily_types else '❌'
+            daily_type_action = 'uncheck' if daily_type in bot_user.daily_types else 'check'
+            btn_text = f'{btn_emoji} ' + get_day_text_by_type(daily_type)
+
+            daily_types_btn = telebot.types.InlineKeyboardButton(btn_text, callback_data=f'setdailytype-{daily_type}-{daily_type_action}')
+            daily_types_row.append(daily_types_btn)
+
+        keyboard.row(*daily_types_row)
+        return keyboard
+
+
+    @bot.message_handler(commands=['setdailytype'])
+    def set_daily_type(message):
+
+        try:
+            bot_user = BotUser(message.from_user.id, storage_hlp=user_storage_hlp)
+
+            if not bot_user.daily_enabled:
+                bot.send_message(message.chat.id, "To choose your preferred types of updates please enable your daily updates first - /setdaily")
+                return
+
+            keyboard = format_daily_type_keyboard(bot_user)
+            bot.send_message(message.chat.id, "Please, choose your preferred types of updates you would like to receive every day:", reply_markup=keyboard)
+
+        except Exception as ex:
+            config.logger.error('Cannot send message: ' + str(ex))
+            traceback.print_exc()
+
+
+    @bot.callback_query_handler(func=lambda call: call.data is not None and call.data.startswith('setdailytype-'))
+    def set_daily_hour_answer(call):
+
+        try:
+            daily_type = call.data.split('-')[1]
+            daily_type_action = call.data.split('-')[2]
+
+            bot_user = BotUser(call.from_user.id, storage_hlp=user_storage_hlp)
+
+            user_daily_types = bot_user.daily_types
+            if daily_type in user_daily_types:
+                if daily_type_action == 'uncheck':
+                    user_daily_types.remove(daily_type)
+            else:
+                if daily_type_action == 'check':
+                    user_daily_types.append(daily_type)
+
+            bot_user.update_daily_types(user_daily_types)
+
+            keyboard = format_daily_type_keyboard(bot_user)
+
+            bot.edit_message_text("Please, choose your preferred types of updates you would like to receive every day:", call.from_user.id, call.message.message_id, reply_markup=keyboard)
+            bot.answer_callback_query(call.id, text="")
+
+        except Exception as ex:
+            config.logger.error('Cannot send message: ' + str(ex))
+            traceback.print_exc()
+
+
     @bot.message_handler(commands=['setairdatesuser'])
     def set_airdates_user(message):
 
