@@ -119,7 +119,7 @@ class TVShows:
 
         return shows
 
-    def get_new_shows(self, interval='week', new_type='series'):
+    def get_new_shows(self, interval='week', new_type='series', bot_user: BotUser = None):
 
         show_days = []
         today = datetime.now().date()
@@ -144,6 +144,13 @@ class TVShows:
             episodes = []
             if show_data:
                 episodes = [{**ep, 'episode_date': show_day} for ep in show_data['episodes'] if ep.get(show_filter, 0) == 1]
+
+            if bot_user.airdates_user:
+                airdates_user_data = self.airdates_hlp.get_airdates_user_data(bot_user.airdates_user)
+                if episodes:
+                    for ep in episodes:
+                        if ep['show_id'] in airdates_user_data:
+                            ep['is_user_show'] = 1
 
             shows.append({'date': show_day, 'episodes': episodes})
 

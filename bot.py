@@ -358,7 +358,8 @@ def main():
             elif 'next' in message.text:
                 interval = 'next'
 
-            shows = tv.get_new_shows(interval, new_type)
+            bot_user = BotUser(message.from_user.id, storage_hlp=user_storage_hlp)
+            shows = tv.get_new_shows(interval, new_type, bot_user)
 
             header_text = f'Here are the {new_text} this week:\n\n'
             reply_text = header_text + format_shows_days_text(shows)
