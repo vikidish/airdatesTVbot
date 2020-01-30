@@ -600,7 +600,7 @@ def main():
             if len(message.text.strip()) < 3:
                 reply_text = f"'{message.text}' is too short, please provide at least 3 letters"
 
-            elif message.text.strip() in ['the']:
+            elif message.text.strip() in ['the', 'ing', 'ion', 'tion', 'ers']:
                 reply_text = f"'{message.text}' is too common, please refine the search"
 
             else:
