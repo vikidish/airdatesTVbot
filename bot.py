@@ -24,7 +24,7 @@ def main():
     bot = telebot.TeleBot(config.telegram_token)
 
     tv = TVShows(AirdatesHelper(config.data_dir_path, config.cache_path, True, False, True))
-    engines = tv.get_engines()
+    engines = tv.engines_data
 
     # thread safe and multiprocess safe, can be a single instance
     user_storage_hlp = BotUserStorageHelper(config.db_path, config.cache_path)

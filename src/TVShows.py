@@ -49,21 +49,19 @@ class TVShows:
 
     def __init__(self, airdates_hlp: 'AirdatesHelper'):
         self.airdates_hlp = airdates_hlp
-        self.airdates_data, self.engines_data = self.airdates_hlp.get_airdates_data()
+        self.airdates_data, self._engines_data = self.airdates_hlp.get_airdates_data()
 
     def refresh_user_data(self, bot_user: BotUser):
-        # self.airdates_data, self.engines_data = self.airdates_hlp.get_airdates_data()
+        print('is admin', bot_user.is_admin)
+        if bot_user.is_admin:
+            self.airdates_hlp.clear_airdates_data()
+            self.airdates_data, self._engines_data = self.airdates_hlp.get_airdates_data()
         if bot_user.airdates_user:
-            # self.airdates_hlp.get_airdates_user_data(bot_user.airdates_user)
             self.airdates_hlp.clear_user_data(bot_user.airdates_user)
 
-
-
-    def get_engines(self):
-        return self.engines_data
-
-    def get_all_shows(self):
-        return self.airdates_data
+    @property
+    def engines_data(self):
+        return self._engines_data
 
     def get_shows_day(self, day_str, bot_user: BotUser):
         """
@@ -220,6 +218,11 @@ class AirdatesHelper:
         cache_key = f"{CACHE_KEY_PREFIX_USER}{airdates_user}"
         self.cache.delete(cache_key)
 
+    @_manage_cache
+    def clear_airdates_data(self):
+
+        self.cache.delete(CACHE_KEY_AIRDATES)
+        self.cache.delete(CACHE_KEY_ENGINES)
 
     def _download_airdates_data(self):
         filename = self.data_path + '/airdates.html'

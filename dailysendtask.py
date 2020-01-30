@@ -10,7 +10,7 @@ from src.BotUser import *
 bot = telebot.TeleBot(config.telegram_token)
 
 tv = TVShows(AirdatesHelper(config.data_dir_path, config.cache_path, True, False, True))
-engines = tv.get_engines()
+engines = tv.engines_data
 
 
 def send_daily_shows():

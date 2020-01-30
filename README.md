@@ -1,4 +1,4 @@
-# airdates TV bot
+# airdates TV bot - https://t.me/airdatesTVbot
 
 Display your shows from airdates.tv, get daily updates, search shows by name/date
 
