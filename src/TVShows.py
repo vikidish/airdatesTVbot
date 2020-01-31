@@ -382,7 +382,9 @@ def format_episode_details(episode, engines):
     show_text += '\n\n'
 
     for engine in engines:
-        engine_show_url = engine['href'].replace('MONKEY', requests.utils.quote(episode['episode_name']), 1)
+        show_name = " ".join(episode['episode_name'].split()[:-1])
+        engine_show_url = engine['href'].replace('MONKEY_N', requests.utils.quote(show_name), 1)
+        engine_show_url = engine_show_url.replace('MONKEY', requests.utils.quote(episode['episode_name']), 1)
         engine_show_url = engine_show_url.replace('{WIKI_TITLE}', requests.utils.quote(episode['show_source']), 1)
         show_text += f'-- <a href="{engine_show_url}">{engine["name"]}</a>\n'
 
