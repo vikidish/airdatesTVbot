@@ -399,11 +399,9 @@ def main():
 
             if bot_user.airdates_user:
                 refresh_count = bot_user.get_refresh_count()
-                # print(f"count={refresh_count}")
                 if refresh_count < USER_REFRESH_DAILY_LIMIT:
                     tv.refresh_user_data(bot_user)
                     new_count = bot_user.update_refresh_count()
-                    # print(f"new count={new_count}")
 
                     if USER_REFRESH_DAILY_LIMIT-new_count > 0:
                         more_text = f"you have {USER_REFRESH_DAILY_LIMIT-new_count} more refresh(es) today"
@@ -462,7 +460,6 @@ def main():
 
         try:
                 year_month = call.data.split('-')[-1]
-                print(year_month)
                 date_obj = datetime.strptime(year_month, '%Y%m')
                 markup = create_calendar(date_obj.year, date_obj.month)
                 bot.edit_message_text("Please, choose a date", call.from_user.id, call.message.message_id, reply_markup=markup)
@@ -485,7 +482,6 @@ def main():
             all_text = ' ALL'
 
         try:
-            chat_id = call.message.chat.id
             day_str = call.data[13:]
 
             bot_user = BotUser(call.from_user.id, storage_hlp=user_storage_hlp)
@@ -495,10 +491,8 @@ def main():
             reply_text = '{}\'s ({}){} TV Shows:\n\n'.format(user_text, format_date(shows['date']), all_text) \
                          + format_shows_text(shows['episodes'])
 
-            # current_command[chat_id] = None
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
                           text=reply_text + format_footer(bot_user.airdates_user), parse_mode='HTML')
-            # bot.send_message(chat_id, reply_text + format_footer(bot_user.airdates_user), parse_mode='HTML')
             bot.answer_callback_query(call.id, text="")
 
 
@@ -539,7 +533,6 @@ def main():
                                  + format_shows_text(episodes, True)
                 else:
                     reply_text = f"No shows with '{message.text}' in name"
-                # reply_text = '&#x1F61C;'
 
             bot.send_message(message.chat.id, reply_text + format_footer(bot_user.airdates_user), parse_mode='HTML')
 

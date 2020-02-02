@@ -38,7 +38,7 @@ def create_calendar(year, month, today_mark=True):
                     if (now.year, now.month, now.day) == (year, month, day):
                         day_mark = True
 
-                day_str = f'* {str(day)} *' if day_mark else str(day)
+                day_str = f'🔆{str(day)}' if day_mark else str(day)
 
                 row.append(types.InlineKeyboardButton(day_str, callback_data="calendar-day-" + date_obj.strftime('%Y%m%d')))
         markup.row(*row)
