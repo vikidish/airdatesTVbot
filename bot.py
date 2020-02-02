@@ -18,7 +18,6 @@ from src.BotUser import *
 def main():
 
     # raise RuntimeError()
-    current_shown_dates = {}
     current_command = {}
 
     bot = telebot.TeleBot(config.telegram_token)
@@ -449,7 +448,6 @@ def main():
             now = datetime.now()
             chat_id = message.chat.id
             date = (now.year, now.month)
-            current_shown_dates[chat_id] = date  # Saving the current date in a dict
             current_command[chat_id] = message.text
             markup = create_calendar(now.year, now.month)
             bot.send_message(message.chat.id, "Please, choose a date", reply_markup=markup)
@@ -459,79 +457,16 @@ def main():
             traceback.print_exc()
 
 
-
-    @bot.callback_query_handler(func=lambda call: call.data == 'calendar-next-month')
-    def next_month(call):
-
-        try:
-            chat_id = call.message.chat.id
-            saved_date = current_shown_dates.get(chat_id, None)
-            if saved_date is not None:
-                year, month = saved_date
-                month += 1
-                if month > 12:
-                    month = 1
-                    year += 1
-                date = (year, month)
-                current_shown_dates[chat_id] = date
-                markup = create_calendar(year, month)
-                bot.edit_message_text("Please, choose a date", call.from_user.id, call.message.message_id, reply_markup=markup)
-                bot.answer_callback_query(call.id, text="")
-            else:
-                # Do something to inform of the error
-                pass
-
-        except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
-            traceback.print_exc()
-
-
-    @bot.callback_query_handler(func=lambda call: call.data == 'calendar-previous-month')
+    @bot.callback_query_handler(func=lambda call: call.data[0:15] == 'calendar-month-')
     def previous_month(call):
 
         try:
-            chat_id = call.message.chat.id
-            saved_date = current_shown_dates.get(chat_id, None)
-            if saved_date is not None:
-                year, month = saved_date
-                month -= 1
-                if month < 1:
-                    month = 12
-                    year -= 1
-                date = (year, month)
-                current_shown_dates[chat_id] = date
-                markup = create_calendar(year, month)
+                year_month = call.data.split('-')[-1]
+                print(year_month)
+                date_obj = datetime.strptime(year_month, '%Y%m')
+                markup = create_calendar(date_obj.year, date_obj.month)
                 bot.edit_message_text("Please, choose a date", call.from_user.id, call.message.message_id, reply_markup=markup)
                 bot.answer_callback_query(call.id, text="")
-            else:
-                # Do something to inform of the error
-                pass
-
-        except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
-            traceback.print_exc()
-
-
-    @bot.callback_query_handler(func=lambda call: call.data == 'calendar-this-month')
-    def this_month(call):
-
-        try:
-            chat_id = call.message.chat.id
-
-            now = datetime.now()  # Current date
-            date = (now.year, now.month)
-            saved_date = current_shown_dates.get(chat_id, None)
-            if saved_date is not None:
-                if not date == saved_date:
-
-                    current_shown_dates[chat_id] = date  # Saving the current date in a dict
-                    markup = create_calendar(now.year, now.month)
-                    bot.edit_message_text("Please, choose a date", call.from_user.id, call.message.message_id, reply_markup=markup)
-                    bot.answer_callback_query(call.id, text="")
-
-            else:
-                # Do something to inform of the error
-                pass
 
         except Exception as ex:
             config.logger.error('Cannot send message: ' + str(ex))
@@ -551,28 +486,21 @@ def main():
 
         try:
             chat_id = call.message.chat.id
-            saved_date = current_shown_dates.get(chat_id, None)
-            if saved_date is not None:
-                day = call.data[13:]
-                selected_date = datetime(int(saved_date[0]), int(saved_date[1]), int(day), 0, 0, 0)
-                day_str = selected_date.strftime("%Y%m%d")
+            day_str = call.data[13:]
 
-                bot_user = BotUser(call.from_user.id, storage_hlp=user_storage_hlp)
-                shows = tv.get_shows(day_str, bot_user, user_only)
+            bot_user = BotUser(call.from_user.id, storage_hlp=user_storage_hlp)
+            shows = tv.get_shows(day_str, bot_user, user_only)
 
-                user_text = f'{bot_user.airdates_user}' if bot_user else ''
-                reply_text = '{}\'s ({}){} TV Shows:\n\n'.format(user_text, format_date(shows['date']), all_text) \
-                             + format_shows_text(shows['episodes'])
+            user_text = f'{bot_user.airdates_user}' if bot_user else ''
+            reply_text = '{}\'s ({}){} TV Shows:\n\n'.format(user_text, format_date(shows['date']), all_text) \
+                         + format_shows_text(shows['episodes'])
 
-                # current_command[chat_id] = None
-                bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                              text=reply_text + format_footer(bot_user.airdates_user), parse_mode='HTML')
-                # bot.send_message(chat_id, reply_text + format_footer(bot_user.airdates_user), parse_mode='HTML')
-                bot.answer_callback_query(call.id, text="")
+            # current_command[chat_id] = None
+            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+                          text=reply_text + format_footer(bot_user.airdates_user), parse_mode='HTML')
+            # bot.send_message(chat_id, reply_text + format_footer(bot_user.airdates_user), parse_mode='HTML')
+            bot.answer_callback_query(call.id, text="")
 
-            else:
-                # Do something to inform of the error
-                pass
 
         except Exception as ex:
             config.logger.error('Cannot send message: ' + str(ex))
