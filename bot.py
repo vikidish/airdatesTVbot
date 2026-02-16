@@ -22,16 +22,27 @@ def main():
 
     bot = telebot.TeleBot(config.telegram_token, threaded=True)
 
-    tv = TVShows(AirdatesHelper(config.data_dir_path, config.cache_path, True, False, True))
+    tv = TVShows(AirdatesHelper(
+        config.data_dir_path, config.cache_path,
+        from_cache=True, local_data=False, download_if_notfound=True,
+        shows_ttl=config.cache_shows_ttl,
+        user_ttl=config.cache_user_ttl,
+        engines_ttl=config.cache_engines_ttl
+    ))
     engines = tv.engines_data
 
     # thread safe and multiprocess safe, can be a single instance
-    user_storage_hlp = BotUserStorageHelper(config.db_path, config.cache_path)
+    user_storage_hlp = BotUserStorageHelper(
+        config.db_path, config.cache_path,
+        refresh_ttl=config.cache_refresh_ttl
+    )
 
     # Graceful shutdown handler
     def shutdown_handler(signum, frame):
         config.logger.info(f"Received signal {signum}, shutting down...")
         bot.stop_polling()
+        tv.airdates_hlp.close()
+        user_storage_hlp.close()
         sys.exit(0)
 
     signal.signal(signal.SIGINT, shutdown_handler)

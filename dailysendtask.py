@@ -13,13 +13,22 @@ from src.BotUser import BotUser, BotUserStorageHelper
 
 bot = telebot.TeleBot(config.telegram_token)
 
-tv = TVShows(AirdatesHelper(config.data_dir_path, config.cache_path, True, False, True))
+tv = TVShows(AirdatesHelper(
+    config.data_dir_path, config.cache_path,
+    from_cache=True, local_data=False, download_if_notfound=True,
+    shows_ttl=config.cache_shows_ttl,
+    user_ttl=config.cache_user_ttl,
+    engines_ttl=config.cache_engines_ttl
+))
 engines = tv.engines_data
 
 
 def send_daily_shows():
     now = datetime.utcnow()
-    botdbsql = BotUserStorageHelper(config.db_path, config.cache_path)
+    botdbsql = BotUserStorageHelper(
+        config.db_path, config.cache_path,
+        refresh_ttl=config.cache_refresh_ttl
+    )
     users = botdbsql.get_daily_send_by_hour(now.hour)
 
     config.logger.info(f'Running daily send for {len(users)} users at hour {now.hour}')
@@ -61,6 +70,10 @@ def send_daily_shows():
                     config.logger.warning(f'User {tg_user_id} has blocked the bot or account is deactivated')
             except Exception as ex:
                 config.logger.error(f'Cannot send message to {tg_user_id}: {ex}')
+
+    # Cleanup
+    botdbsql.close()
+    tv.airdates_hlp.close()
 
 
 if __name__ == "__main__":

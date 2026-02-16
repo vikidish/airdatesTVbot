@@ -15,6 +15,12 @@ DB_SCHEMA_VERSION = 1
 
 CACHE_DIR = "cache"
 
+# Cache TTL defaults (in seconds)
+CACHE_SHOWS_TTL_DEFAULT = 60 * 60 * 6        # 6 hours
+CACHE_USER_TTL_DEFAULT = 60 * 60 * 24        # 24 hours
+CACHE_ENGINES_TTL_DEFAULT = 60 * 60 * 24 * 30  # 30 days
+CACHE_REFRESH_TTL_DEFAULT = 60 * 60 * 24     # 24 hours
+
 LOG_DIR = '/var/log/airdatesTVbot'
 LOG_FORMAT = "%(asctime)s {app} [%(thread)d] %(levelname)-5s %(name)s - %(message)s. [file=%(filename)s:%(lineno)d]"
 LOG_LEVEL = "INFO"
@@ -63,6 +69,12 @@ class Config:
 
         self.telegram_token = os.getenv("TELEGRAM_TOKEN")
 
+        # Cache TTLs (configurable via environment)
+        self.cache_shows_ttl = int(os.getenv("CACHE_SHOWS_TTL", CACHE_SHOWS_TTL_DEFAULT))
+        self.cache_user_ttl = int(os.getenv("CACHE_USER_TTL", CACHE_USER_TTL_DEFAULT))
+        self.cache_engines_ttl = int(os.getenv("CACHE_ENGINES_TTL", CACHE_ENGINES_TTL_DEFAULT))
+        self.cache_refresh_ttl = int(os.getenv("CACHE_REFRESH_TTL", CACHE_REFRESH_TTL_DEFAULT))
+
         self.script_name = os.path.basename(sys.argv[0])
         self.log_path = f"{self.data_dir_path}/{MAIN_LOG_FILENAME}"
 
@@ -75,6 +87,18 @@ class Config:
         self._setup_loggers(self.log_dir_path, name="airdatesTVbot")
         self.logger = logging.getLogger()
         logging.getLogger('requests').setLevel(logging.INFO)
+
+    def check_db_health(self) -> bool:
+        """Verify database connectivity and basic operations."""
+        try:
+            conn = sqlite3.connect(self.db_path, timeout=5.0)
+            cur = conn.cursor()
+            cur.execute("SELECT 1")
+            cur.execute("SELECT COUNT(*) FROM Users")
+            conn.close()
+            return True
+        except sqlite3.Error:
+            return False
 
     def get_db_schema_version(self):
         check_stmt = 'PRAGMA user_version;'

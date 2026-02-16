@@ -175,14 +175,6 @@ class TVShows:
         return shows
 
 
-def _manage_cache(func):
-    """Decorator to manage cache lifecycle."""
-    def wrapper(self, *args, **kwargs):
-        try:
-            return func(self, *args, **kwargs)
-        finally:
-            self.cache.close()
-    return wrapper
 
 
 class AirdatesHelper:
@@ -194,13 +186,19 @@ class AirdatesHelper:
         cache_path: str,
         from_cache: bool = True,
         local_data: bool = False,
-        download_if_notfound: bool = False
+        download_if_notfound: bool = False,
+        shows_ttl: int = 21600,
+        user_ttl: int = 86400,
+        engines_ttl: int = 2592000
     ) -> None:
         self.data_path = data_path
         self.cache_path = cache_path
         self.from_cache = from_cache
         self.local_data = local_data
         self.download_if_notfound = download_if_notfound
+        self.shows_ttl = shows_ttl
+        self.user_ttl = user_ttl
+        self.engines_ttl = engines_ttl
         self._cache: Cache | None = None
 
     @property
@@ -209,7 +207,12 @@ class AirdatesHelper:
             self._cache = Cache(self.cache_path)
         return self._cache
 
-    @_manage_cache
+    def close(self) -> None:
+        """Close the cache connection."""
+        if self._cache:
+            self._cache.close()
+            self._cache = None
+
     def get_airdates_data(self) -> tuple[dict[str, Any], list[dict[str, str]]]:
         """Get airdates data, from cache or fresh download."""
         shows_data = None
@@ -223,15 +226,14 @@ class AirdatesHelper:
             shows_data_html = self._download_airdates_data()
             if shows_data_html:
                 shows_data, engines_data = self._parse_airdates_data(shows_data_html)
-                self.cache.set(CACHE_KEY_AIRDATES, shows_data, expire=60 * 60 * 6)
-                self.cache.set(CACHE_KEY_ENGINES, engines_data, expire=60 * 60 * 24 * 30)
+                self.cache.set(CACHE_KEY_AIRDATES, shows_data, expire=self.shows_ttl)
+                self.cache.set(CACHE_KEY_ENGINES, engines_data, expire=self.engines_ttl)
             else:
                 shows_data = {}
                 engines_data = []
 
         return shows_data, engines_data
 
-    @_manage_cache
     def get_airdates_user_data(self, airdates_user: str) -> dict[str, Any] | None:
         """Get user's followed shows from airdates.tv."""
         if not airdates_user:
@@ -249,11 +251,10 @@ class AirdatesHelper:
                 user_data = json.loads(user_data_json)
                 # Convert from list to dict with 'id' as key
                 user_data = {str(x['id']): x for x in user_data}
-                self.cache.set(cache_key, user_data, expire=60 * 60 * 24)
+                self.cache.set(cache_key, user_data, expire=self.user_ttl)
 
         return user_data
 
-    @_manage_cache
     def clear_user_data(self, airdates_user: str) -> None:
         """Clear cached user data."""
         if not airdates_user:
@@ -261,7 +262,6 @@ class AirdatesHelper:
         cache_key = f"{CACHE_KEY_PREFIX_USER}{airdates_user}"
         self.cache.delete(cache_key)
 
-    @_manage_cache
     def clear_airdates_data(self) -> None:
         """Clear cached airdates data."""
         self.cache.delete(CACHE_KEY_AIRDATES)

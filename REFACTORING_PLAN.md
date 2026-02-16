@@ -110,23 +110,30 @@ This document outlines the 5-step incremental refactoring plan for modernizing t
 
 ---
 
-## Step 4: Database & Caching Modernization ⏳ PENDING
+## Step 4: Database & Caching Modernization ✅ COMPLETE
 
 **Goal**: Reliable, maintainable data layer
 
-### Planned Changes
-- [ ] Upgrade diskcache usage to 5.x patterns
-- [ ] Add proper connection pooling for SQLite
-- [ ] Consider adding Alembic for schema migrations
-- [ ] Add database health check function
-- [ ] Move cache configuration to environment variables
-- [ ] Add cache statistics logging
+### Changes Made
+- [x] Fixed cache lifecycle - removed inefficient `_manage_cache` decorator that closed cache after every operation
+- [x] Added `close()` methods to `BotUserStorageHelper` and `AirdatesHelper` for clean shutdown
+- [x] Added configurable cache TTLs via environment variables:
+  - `CACHE_SHOWS_TTL` (default 6 hours)
+  - `CACHE_USER_TTL` (default 24 hours)
+  - `CACHE_ENGINES_TTL` (default 30 days)
+  - `CACHE_REFRESH_TTL` (default 24 hours)
+- [x] Added `check_db_health()` function to Config class
+- [x] Added graceful cache cleanup on bot shutdown
+- [ ] ~~Add proper connection pooling for SQLite~~ (skipped - per-operation connections are fine for SQLite)
+- [ ] ~~Consider adding Alembic for schema migrations~~ (skipped - current migration approach adequate)
+- [ ] ~~Add cache statistics logging~~ (skipped - not essential)
 
-### Files to Change
+### Files Changed
+- `config.py`
 - `src/BotUser.py`
 - `src/TVShows.py`
-- `app_setup.py`
-- `config.py`
+- `bot.py`
+- `dailysendtask.py`
 
 ---
 
@@ -188,5 +195,5 @@ docker compose stop bot
 | 1 | ✅ Complete | Fix Critical Breakages |
 | 2 | ✅ Complete | pyTelegramBotAPI 4.x |
 | 3 | ✅ Complete | Code Structure & Quality |
-| 4 | ⏳ Pending | Database & Caching |
+| 4 | ✅ Complete | Database & Caching |
 | 5 | ⏳ Pending | Production Hardening |

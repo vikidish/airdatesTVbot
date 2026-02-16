@@ -129,14 +129,6 @@ def _manage_connection(func):
     return wrapper
 
 
-def _manage_cache(func):
-    """Decorator to manage cache lifecycle."""
-    def wrapper(self, *args, **kwargs):
-        try:
-            return func(self, *args, **kwargs)
-        finally:
-            self.cache.close()
-    return wrapper
 
 
 class BotUserStorageHelper:
@@ -145,9 +137,10 @@ class BotUserStorageHelper:
     Thread-safe and multiprocess-safe.
     """
 
-    def __init__(self, db_path: str, cache_path: str) -> None:
+    def __init__(self, db_path: str, cache_path: str, refresh_ttl: int = 86400) -> None:
         self.db_path = db_path
         self.cache_path = cache_path
+        self.refresh_ttl = refresh_ttl
         self._cache: Cache | None = None
 
     @property
@@ -155,6 +148,12 @@ class BotUserStorageHelper:
         if not self._cache:
             self._cache = Cache(self.cache_path)
         return self._cache
+
+    def close(self) -> None:
+        """Close the cache connection."""
+        if self._cache:
+            self._cache.close()
+            self._cache = None
 
     @_manage_connection
     def update_airdates_user(
@@ -271,24 +270,22 @@ class BotUserStorageHelper:
         stmt = 'UPDATE Users SET last_sent = ? where tg_user_id = ?;'
         cur.execute(stmt, (last_sent, tg_user_id))
 
-    @_manage_cache
     def get_cache_refresh_counter(self, tg_user_id: int | str) -> int:
         cache_key = f'refresh_count_{tg_user_id}'
         result = self.cache.get(cache_key, default=0, expire_time=True)
         value, _ = result
         return value
 
-    @_manage_cache
     def update_cache_refresh_counter(self, tg_user_id: int | str) -> int:
+        """Increment refresh counter."""
         cache_key = f'refresh_count_{tg_user_id}'
         try:
             new_count = self.cache.incr(cache_key, default=None)
         except KeyError:
-            self.cache.set(cache_key, 1, expire=60 * 60 * 24)
+            self.cache.set(cache_key, 1, expire=self.refresh_ttl)
             new_count = 1
         return new_count
 
-    @_manage_cache
     def reset_cache_refresh_counter(self, tg_user_id: int | str) -> None:
         cache_key = f'refresh_count_{tg_user_id}'
         self.cache.delete(cache_key)
