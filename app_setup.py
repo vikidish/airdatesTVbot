@@ -2,11 +2,12 @@ import sqlite3
 import pathlib
 import shutil
 import argparse
+import sys
 
 import builtins
 
 builtins.SKIP_DB_CHECK = 1
-from config import *
+from config import config, DB_SCHEMA_VERSION
 
 
 parser = argparse.ArgumentParser()

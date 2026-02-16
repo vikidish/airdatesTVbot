@@ -5,13 +5,10 @@ from dotenv import load_dotenv
 
 import sys
 import os
-from pathlib import Path
-import rootpath
 import builtins
 
 import sqlite3
 
-DATA_DIR_PATH = "/data"
 DB_FILENAME = "airdatesTVbotdb.sqlite"
 MAIN_LOG_FILENAME = "mainlog.log"
 DB_SCHEMA_VERSION = 1
@@ -25,71 +22,71 @@ LOG_LEVEL = "INFO"
 USER_REFRESH_DAILY_LIMIT = 5
 
 
+def is_docker():
+    """Detect if running inside Docker container."""
+    return (
+        os.path.exists('/.dockerenv') or
+        os.environ.get('DOCKER_CONTAINER', False)
+    )
+
+
 class Config:
 
-    def __init__(self, root_path):
-        self.root_path = root_path
+    def __init__(self):
+        # Determine root path (directory containing this file)
+        self.root_path = os.path.dirname(os.path.abspath(__file__))
 
-        if sys.platform == "darwin" or is_docker():
-            env_file = f"{self.root_path}/.dev.env"
-        else:
-            env_file = f"{self.root_path}/.env"
-
-        load_dotenv(dotenv_path=env_file)
-
-        self.data_dir_path = f"{root_path}{DATA_DIR_PATH}"
-        self.db_path = f"{self.data_dir_path}/{DB_FILENAME}"
-
-        if 'SKIP_DB_CHECK' in vars(builtins):
-            print('skip check db')
+        # Load environment variables
+        if is_docker():
+            # In Docker, .env is passed via --env-file
             pass
+        elif sys.platform == "darwin":
+            load_dotenv(dotenv_path=f"{self.root_path}/.dev.env")
         else:
-            curr_db_schema_version = self.get_db_schema_version()
-            if curr_db_schema_version != DB_SCHEMA_VERSION:
-                sys.exit('DB Schema needs to be updated')
+            load_dotenv(dotenv_path=f"{self.root_path}/.env")
 
+        # Data directory: use /data in Docker, otherwise ./data relative to project
+        if is_docker():
+            self.data_dir_path = "/data"
+        else:
+            self.data_dir_path = f"{self.root_path}/data"
+
+        self.db_path = f"{self.data_dir_path}/{DB_FILENAME}"
         self.cache_path = f"{self.data_dir_path}/{CACHE_DIR}"
+
+        # Check DB schema version (skip during setup)
+        if 'SKIP_DB_CHECK' not in vars(builtins):
+            if os.path.exists(self.db_path):
+                curr_db_schema_version = self.get_db_schema_version()
+                if curr_db_schema_version != DB_SCHEMA_VERSION:
+                    sys.exit('DB Schema needs to be updated')
 
         self.telegram_token = os.getenv("TELEGRAM_TOKEN")
 
         self.script_name = os.path.basename(sys.argv[0])
         self.log_path = f"{self.data_dir_path}/{MAIN_LOG_FILENAME}"
 
-        if sys.platform == "darwin" or is_docker():
+        # Log directory
+        if is_docker() or sys.platform == "darwin":
             self.log_dir_path = f"{self.data_dir_path}/log"
         else:
             self.log_dir_path = LOG_DIR
 
-        # logging.root.handlers = []
-        # noinspection PyArgumentList
-        # logging.basicConfig(level=logging.INFO,
-        #                     format="%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s",
-        #                     handlers=[
-        #                         logging.FileHandler(self.log_path),
-        #                         logging.StreamHandler(sys.stdout)
-        #                     ])
-        #
         self._setup_loggers(self.log_dir_path, name="airdatesTVbot")
         self.logger = logging.getLogger()
         logging.getLogger('requests').setLevel(logging.INFO)
 
     def get_db_schema_version(self):
-
         check_stmt = 'PRAGMA user_version;'
-
         conn = sqlite3.connect(self.db_path, isolation_level=None,
-                                           detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
-        conn.set_trace_callback(print)
+                               detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
         cur = conn.cursor()
         cur.execute(check_stmt)
         res = cur.fetchall()
+        conn.close()
         return res[0][0]
 
-
-
-
     def _setup_loggers(self, log_dir_path, name, level=LOG_LEVEL, fmt=LOG_FORMAT):
-
         formatted = fmt.format(app=name)
 
         if not os.path.exists(log_dir_path):
@@ -139,16 +136,4 @@ class Config:
         dictConfig(LOGGING_CONFIG)
 
 
-def is_docker():
-    proc_path = '/proc/self/cgroup'
-    return (
-        os.path.exists('/.dockerenv') or
-        os.path.isfile(proc_path) and any('docker' in line for line in open(proc_path))
-    )
-
-path = rootpath.detect()
-# print(path)
-if not path:
-    path = os.path.dirname(os.path.abspath(__file__))
-
-config = Config(path)
+config = Config()

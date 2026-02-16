@@ -1,26 +1,26 @@
-
-# import logging
-# logging.basicConfig(level=logging.DEBUG)
-
+import signal
+import sys
 import traceback
+import os
 from datetime import date, timedelta, datetime
-import time
-from src.tgcalendar.telegramcalendar import create_calendar
 
 import telebot
+from telebot.apihelper import ApiTelegramException
 
-from config import *
-from src.TVShows import *
-from src.BotUser import *
-
+from config import config, USER_REFRESH_DAILY_LIMIT
+from src.tgcalendar.telegramcalendar import create_calendar
+from src.TVShows import (
+    TVShows, AirdatesHelper, EMOJIS,
+    format_show_text_header, format_shows_text, format_shows_days_text,
+    format_episode_details, format_footer, format_date, get_day_text_by_type
+)
+from src.BotUser import BotUser, BotUserStorageHelper
 
 
 def main():
-
-    # raise RuntimeError()
     current_command = {}
 
-    bot = telebot.TeleBot(config.telegram_token)
+    bot = telebot.TeleBot(config.telegram_token, threaded=True)
 
     tv = TVShows(AirdatesHelper(config.data_dir_path, config.cache_path, True, False, True))
     engines = tv.engines_data
@@ -28,12 +28,19 @@ def main():
     # thread safe and multiprocess safe, can be a single instance
     user_storage_hlp = BotUserStorageHelper(config.db_path, config.cache_path)
 
+    # Graceful shutdown handler
+    def shutdown_handler(signum, frame):
+        config.logger.info(f"Received signal {signum}, shutting down...")
+        bot.stop_polling()
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, shutdown_handler)
+    signal.signal(signal.SIGTERM, shutdown_handler)
+
     @bot.message_handler(commands=['start'])
     def send_welcome(message):
-
         try:
-
-            username = message.from_user.username
+            username = message.from_user.username or "User"
 
             user_text = f"Greetings {username}!\n\n"
             reply_text = user_text + "Welcome to airdatesTVbot. This bot will send you your favorite shows based on information provided by airdates.tv website.\n\n" \
@@ -49,16 +56,17 @@ def main():
             bot_user = BotUser(message.from_user.id, storage_hlp=user_storage_hlp)
             bot_user.save_tg_user()
 
-            print(message)
+            config.logger.info(f"New user started bot: {message.from_user.id}")
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
 
     @bot.message_handler(commands=['reg'])
     def register(message):
-
         try:
             bot.clear_step_handler_by_chat_id(chat_id=message.chat.id)
 
@@ -70,14 +78,15 @@ def main():
 
             bot.send_message(message.chat.id, "The registration will allow you to subscribe to daily updates and get personalized digests. Do you want to add your airdates user? Please, note that it'll override previosly registered one", reply_markup=keyboard)
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
 
     @bot.callback_query_handler(func=lambda call: call.data is not None and call.data.startswith('reg-airdates-user'))
     def get_reg_airdates_answer(call):
-
         try:
             if call.data == 'reg-airdates-user-yes':
                 # ask for the name, next step get it
@@ -90,8 +99,10 @@ def main():
                                   text="Ok, let's proceed to the next step")
                 ask_daily_send(call.message)
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
 
@@ -105,13 +116,14 @@ def main():
             if is_step:
                 ask_daily_send(msg)
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
 
     def ask_daily_send(message):
-
         try:
             keyboard = telebot.types.InlineKeyboardMarkup()
             key_yes = telebot.types.InlineKeyboardButton(text='Yes', callback_data='reg-daily-yes')
@@ -122,13 +134,14 @@ def main():
 
             bot.send_message(message.chat.id, "Would you like to receive daily updates? The update time is set by default to 00:00 UTC, you will be later able to change it with /settime command", reply_markup=keyboard)
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
     @bot.callback_query_handler(func=lambda call: call.data is not None and call.data.startswith('reg-daily'))
     def get_reg_daily_answer(call):
-
         try:
             if call.data == 'reg-daily-yes':
                 daily_enabled = True
@@ -143,27 +156,29 @@ def main():
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text=text)
             bot.clear_step_handler_by_chat_id(chat_id=call.message.chat.id)
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
 
     @bot.callback_query_handler(func=lambda call: call.data is not None and call.data.startswith('reg-cancel'))
     def cancel_registration(call):
-
         try:
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                   text='''Registration is cancelled. You can start over any time by using the /reg command.''')
             bot.clear_step_handler_by_chat_id(chat_id=call.message.chat.id)
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
 
     @bot.message_handler(commands=['setdaily'])
     def set_daily(message):
-
         try:
             keyboard = telebot.types.InlineKeyboardMarkup()
             key_yes = telebot.types.InlineKeyboardButton(text='Yes', callback_data='setdaily-yes')
@@ -173,13 +188,14 @@ def main():
 
             bot.send_message(message.chat.id, "Would you like to receive the daily updates of your shows that are screened today (you will receive all the shows in case you're not registered)?", reply_markup=keyboard)
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
     @bot.callback_query_handler(func=lambda call: call.data is not None and call.data.startswith('setdaily-'))
     def set_daily_answer(call):
-
         try:
             if call.data == 'setdaily-yes':
                 bot_user = BotUser(call.from_user.id, storage_hlp=user_storage_hlp)
@@ -197,14 +213,15 @@ def main():
                 bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                   text="Ok, ok, no touching")
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
 
     @bot.message_handler(commands=['settime'])
     def set_daily_hour(message):
-
         try:
             keyboard = telebot.types.InlineKeyboardMarkup()
 
@@ -218,14 +235,15 @@ def main():
 
             bot.send_message(message.chat.id, "Please, choose your preferred hour (UTC time) for daily updates", reply_markup=keyboard)
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
 
     @bot.callback_query_handler(func=lambda call: call.data is not None and call.data.startswith('settime-'))
     def set_daily_hour_answer(call):
-
         try:
             hour = int(call.data.split('settime-')[1])
             bot_user = BotUser(call.from_user.id, storage_hlp=user_storage_hlp)
@@ -233,13 +251,14 @@ def main():
             bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
                               text=f'Your daily updates is set at {hour}:00 UTC time!')
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
 
     def format_daily_type_keyboard(bot_user: BotUser):
-
         keyboard = telebot.types.InlineKeyboardMarkup()
 
         daily_types = ['yday', 'today', 'tmrw']
@@ -258,7 +277,6 @@ def main():
 
     @bot.message_handler(commands=['setdailytype'])
     def set_daily_type(message):
-
         try:
             bot_user = BotUser(message.from_user.id, storage_hlp=user_storage_hlp)
 
@@ -269,14 +287,15 @@ def main():
             keyboard = format_daily_type_keyboard(bot_user)
             bot.send_message(message.chat.id, "Please, choose your preferred types of updates you would like to receive every day:", reply_markup=keyboard)
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
 
     @bot.callback_query_handler(func=lambda call: call.data is not None and call.data.startswith('setdailytype-'))
-    def set_daily_hour_answer(call):
-
+    def set_daily_type_answer(call):
         try:
             daily_type = call.data.split('-')[1]
             daily_type_action = call.data.split('-')[2]
@@ -298,26 +317,28 @@ def main():
             bot.edit_message_text("Please, choose your preferred types of updates you would like to receive every day:", call.from_user.id, call.message.message_id, reply_markup=keyboard)
             bot.answer_callback_query(call.id, text="")
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
 
     @bot.message_handler(commands=['setairdatesuser'])
     def set_airdates_user(message):
-
         try:
             bot.send_message(message.chat.id, "Please write you airdates username:")
             bot.register_next_step_handler(message, update_airdates_user, is_step=False)
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
 
     @bot.message_handler(commands=['today', 'today_all', 'yday', 'yday_all', 'tmrw', 'tmrw_all'])
     def send_shows(message):
-
         try:
             user_only = True
             day_param = 'today'
@@ -336,15 +357,15 @@ def main():
 
             bot.send_message(message.chat.id, reply_text + format_footer(bot_user.airdates_user), parse_mode='HTML')
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
     @bot.message_handler(commands=['new', 'return', 'new_prev', 'return_prev', 'new_next', 'return_next'])
     def send_new_shows(message):
-
         try:
-
             new_type = 'series'
             new_text = 'Show Premiers'
             if 'return' in message.text:
@@ -365,14 +386,15 @@ def main():
 
             bot.send_message(message.chat.id, reply_text + format_footer(), parse_mode='HTML')
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
 
     @bot.message_handler(func=lambda message: message.text is not None and message.text.startswith('/details'))
     def send_episode_details(message):
-
         try:
             bot_user = BotUser(message.from_user.id, storage_hlp=user_storage_hlp)
 
@@ -386,14 +408,16 @@ def main():
 
             bot.send_message(message.chat.id, reply_text + format_footer(bot_user.airdates_user), parse_mode='HTML')
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
-
 
 
     @bot.message_handler(commands=['refresh'])
     def refresh_data(message):
+        reply_text = 'Sorry, something went wrong'
         try:
             bot_user = BotUser(message.from_user.id, storage_hlp=user_storage_hlp)
 
@@ -415,64 +439,66 @@ def main():
             else:
                 reply_text = 'No airdates user found, nothing to refresh'
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Something went wrong: ' + str(ex))
+            config.logger.error(f'Something went wrong: {ex}')
             traceback.print_exc()
-            reply_text = 'Sorry, something went wrong'
 
         bot.send_message(message.chat.id, reply_text, parse_mode='HTML')
 
 
     @bot.message_handler(commands=['reset'])
     def reset_refresh_count(message):
+        reply_text = 'Sorry, something went wrong'
         try:
             bot_user = BotUser(message.from_user.id, storage_hlp=user_storage_hlp)
             bot_user.reset_refresh_count()
             reply_text = 'Done'
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Something went wrong: ' + str(ex))
+            config.logger.error(f'Something went wrong: {ex}')
             traceback.print_exc()
-            reply_text = 'Sorry, something went wrong'
 
         bot.send_message(message.chat.id, reply_text, parse_mode='HTML')
 
 
-
     @bot.message_handler(commands=['day', 'day_all'])
     def get_calendar(message):
-
         try:
             now = datetime.now()
             chat_id = message.chat.id
-            date = (now.year, now.month)
             current_command[chat_id] = message.text
             markup = create_calendar(now.year, now.month)
             bot.send_message(message.chat.id, "Please, choose a date", reply_markup=markup)
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
 
     @bot.callback_query_handler(func=lambda call: call.data[0:15] == 'calendar-month-')
     def previous_month(call):
-
         try:
-                year_month = call.data.split('-')[-1]
-                date_obj = datetime.strptime(year_month, '%Y%m')
-                markup = create_calendar(date_obj.year, date_obj.month)
-                bot.edit_message_text("Please, choose a date", call.from_user.id, call.message.message_id, reply_markup=markup)
-                bot.answer_callback_query(call.id, text="")
+            year_month = call.data.split('-')[-1]
+            date_obj = datetime.strptime(year_month, '%Y%m')
+            markup = create_calendar(date_obj.year, date_obj.month)
+            bot.edit_message_text("Please, choose a date", call.from_user.id, call.message.message_id, reply_markup=markup)
+            bot.answer_callback_query(call.id, text="")
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
 
     @bot.callback_query_handler(func=lambda call: call.data[0:13] == 'calendar-day-')
     def send_shows_day(call):
-
         chat_id = call.message.chat.id
 
         user_only = True
@@ -487,7 +513,7 @@ def main():
             bot_user = BotUser(call.from_user.id, storage_hlp=user_storage_hlp)
             shows = tv.get_shows(day_str, bot_user, user_only)
 
-            user_text = f'{bot_user.airdates_user}' if bot_user else ''
+            user_text = f'{bot_user.airdates_user}' if bot_user.airdates_user else ''
             reply_text = '{}\'s ({}){} TV Shows:\n\n'.format(user_text, format_date(shows['date']), all_text) \
                          + format_shows_text(shows['episodes'])
 
@@ -495,27 +521,27 @@ def main():
                           text=reply_text + format_footer(bot_user.airdates_user), parse_mode='HTML')
             bot.answer_callback_query(call.id, text="")
 
-
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
-
 
 
     @bot.callback_query_handler(func=lambda call: call.data == 'calendar-ignore')
     def ignore_calendar(call):
-
         try:
             bot.answer_callback_query(call.id, text="")
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
 
     # should be the last - default, catch all input
     @bot.message_handler(func=lambda m: True)
     def search_shows(message):
-
         try:
             bot_user = BotUser(message.from_user.id, storage_hlp=user_storage_hlp)
 
@@ -536,33 +562,35 @@ def main():
 
             bot.send_message(message.chat.id, reply_text + format_footer(bot_user.airdates_user), parse_mode='HTML')
 
+        except ApiTelegramException as api_ex:
+            config.logger.error(f'Telegram API error: {api_ex}')
         except Exception as ex:
-            config.logger.error('Cannot send message: ' + str(ex))
+            config.logger.error(f'Cannot send message: {ex}')
             traceback.print_exc()
 
-    try:
-        # Enable saving next step handlers to file "./.handlers-saves/step.save".
-        # Delay=2 means that after any change in next step handlers (e.g. calling register_next_step_handler())
-        # saving will happen after delay 2 seconds.
-        bot.enable_save_next_step_handlers(delay=2, filename=f'{config.data_dir_path}/.handlers-saves/step.save')
+    # Setup step handler persistence
+    handlers_dir = f'{config.data_dir_path}/.handlers-saves'
+    handlers_file = f'{handlers_dir}/step.save'
 
-        # Load next_step_handlers from save file (default "./.handlers-saves/step.save")
-        # WARNING It will work only if enable_save_next_step_handlers was called!
-        bot.load_next_step_handlers(filename=f'{config.data_dir_path}/.handlers-saves/step.save')
+    try:
+        # Ensure handlers directory exists
+        os.makedirs(handlers_dir, exist_ok=True)
+
+        # Enable saving next step handlers to file
+        bot.enable_save_next_step_handlers(delay=2, filename=handlers_file)
+
+        # Load next_step_handlers from save file if exists
+        if os.path.exists(handlers_file):
+            bot.load_next_step_handlers(filename=handlers_file)
 
     except Exception as ex:
-        config.logger.error('Cannot load next step handlers: ' + str(ex) + ' Traceback: ' + traceback.format_exc())
+        config.logger.error(f'Cannot load next step handlers: {ex}')
         traceback.print_exc()
 
+    # Start polling with recommended settings for pyTelegramBotAPI 4.x
+    config.logger.info("Starting bot polling...")
+    bot.infinity_polling(timeout=60, long_polling_timeout=30)
 
-    bot.polling(none_stop=True, interval=0)
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-

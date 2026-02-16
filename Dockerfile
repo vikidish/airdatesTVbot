@@ -1,17 +1,31 @@
-FROM python:3.7.6-slim-buster
-ENV PYTHONUNBUFFERED 1
+FROM python:3.11-slim-bookworm
 
-WORKDIR /usr/src/airdatesTVbot
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 
+WORKDIR /app
+
+# Install dependencies first (better layer caching)
 COPY requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
+# Copy application code
 COPY . .
 
-RUN chown -R pyuser:pyuser .
-USER pyuser
+# Create non-root user
+RUN useradd --create-home --shell /bin/bash appuser && \
+    mkdir -p /data && \
+    chown -R appuser:appuser /app /data
 
-RUN python3 app_setup.py
+USER appuser
 
+# Data directory (mount point for persistence)
+VOLUME ["/data"]
+
+# Entrypoint handles DB setup at runtime
+COPY --chown=appuser:appuser entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["python3", "bot.py"]

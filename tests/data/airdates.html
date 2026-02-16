@@ -1,0 +1,3874 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Air Dates</title>
+		<meta name="viewport" content="width=800, initial-scale=1">
+		<link rel="stylesheet" media="screen" href="/public-v2/stylesheets/main.css">
+				<link rel="shortcut icon" type="image/png" href="/public/images/favicon.png">
+		<script src="/public/javascripts/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/public/javascripts/device.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/public-v5/javascripts/db.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/public-v5/javascripts/main.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/public/javascripts/jqColorPicker.min.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/javascript">
+		
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-6042775-5']);
+		  _gaq.push(['_trackPageview']);
+		
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		
+		</script>
+	</head>
+	<body>
+		<div id="popup-placeholder"></div>
+		
+<script>
+engines = [
+	{ name: "Wikipedia", host: "en.wikipedia.org", href: "http://en.wikipedia.org/wiki/{WIKI_TITLE}" } ,
+	{ name: "Google", host: "www.google.com", href: "https://www.google.com/?#q=MONKEY" } ,
+	{ name: "Zooqle ", host: "zooqle.com", href: "https://zooqle.com/search?q=MONKEY+category:TV&s=dt&" } ,
+	{ name: "MagnetDL", host: "www.magnetdl.com", href: "https://www.magnetdl.com/search/?q=MONKEY&m=1&x=0&y=0" } ,
+	{ name: "rarbg", host: "rarbg.to", href: "https://rarbg.to/torrents.php?search=MONKEY&order=data&by=DESC&category=18;41;49" } ,
+	{ name: "Torrentz2.eu", host: "torrentz2.eu", href: "https://torrentz2.eu/searchA?f=MONKEY" } ,
+	{ name: "Piratebay", host: "thepiratebay.org", href: "https://thepiratebay.org/search/MONKEY/0/7/0" } ,
+	{ name: "Hubmovie", host: "hubmovie.cc", href: "http://hubmovie.cc/pages/search2/MONKEY" } ,
+	{ name: "Subscene", host: "subscene.com", href: "http://subscene.com/subtitles/release?q=MONKEY&r=true" } ,
+	{ name: "IMDB", host: "www.imdb.com", href: "http://www.imdb.com/search/title?title=MONKEY_N&title_type=tv_series,tv_episode,tv_special,mini_series" } ,
+	{ name: "1377x", host: "1337x.to", href: "https://1337x.to/sort-category-search/MONKEY/TV/time/desc/1/" } ,
+	{ name: "Alluc", host: "www.alluc.uno", href: "https://www.alluc.uno/?s=MONKEY" } ,
+	{ name: "Addic7ed", host: "www.addic7ed.com", href: "http://www.addic7ed.com/srch.php?search=MONKEY" } ,
+	{ name: "EZTV", host: "eztv.io", href: "https://eztv.io/search/MONKEY" } 
+ 
+]; 
+
+</script>
+<style id="search-styles">
+</style>
+
+
+<div id="menu">
+	<ul>
+			<li><a href="#today" id="linkToday"><span class="nu">&darr; </span>Today?</a> &emsp;</li> 
+	<li><a href="#forum"><span class="nu">&darr; </span>Forum</a> &emsp;</li>
+	<li><a href="/donate"><span class="nu">&rarr; </span>Donate</a> &emsp;</li>
+	<li><a href="/register" id="account-overview"><span class="nu">🐵 </span>Account</a></li>
+	</ul>
+</div>
+
+<h1><img alt="Laptop showing TV test pattern" src="/public/images/tv.gif"><br><span id="mainTitle">Original Air Dates Of TV Shows</span></h1>
+	<h2 id="tv-text">	<span title="Previous Month"><a id="archive-prev" onclick="archivePrev();return false;">&laquo;</a></span>
+	<span title="Go travel in time!"><a id="archive-current" onclick="archiveGoto();return false;" href="#">Go waste your time!</a></span>
+	<span title="Next Month"><a id="archive-next" onclick="archiveNext();return false;">&raquo;</a></span>
+	<a href="/" id="leaveArchive" onclick="archiveLeave();return false;">Leave archive</a>
+</h2>
+
+
+<div id="account-popup"></div>
+
+<div id="searchbar">
+	<div id="searchFieldContainer">
+		<input type="text" id="searchBecauseNoOneChecks" placeholder="Search TV Shows ..."  class="clearable">
+		<img src="/public/images/searching.gif" id="searchStatus" style="width:100%;height:1px;visibility:hidden;">
+	</div>
+	<div id="searchFieldPlaceholder"></div>
+	<div id="searchResults">
+	</div>
+			<!--<a href="https://www.airdates.tv/donate"><br> support airdates.tv</a>-->
+Did you lose all your colors on Sunday, Oct 14th? Sorry we had to make a technical change (https, hurray!) <a href="http://www.airdates.tv/legacy_cookies">Maybe this works for you</a>. 
+
+<br>
+
+	</div>
+<span id="colorPickerHolder"></span>
+<div id="engineTemplate" style="display:none">
+	<img class="icon" src="/public/images/w.gif"><a class="link" target="_blank">Wikipedia</a><br>
+</div>
+<div id="detailsTemplate" style="display:none;">
+	<div class="details">
+		<span class="engines"></span>
+		<div class="colors">
+			<span class="color none"></span>
+			<span class="color soft_a"></span>
+			<span class="color soft_b"></span>
+			<span class="color soft_c"></span>
+			<span class="color soft_d"></span>
+			<span class="color soft_e"></span>
+			<span class="picker"></span>
+		</div>
+	</div>
+</div>
+
+<div id="moreTemplate" style="display:none;">
+	<div class="more">&#9660;</div>
+</div>
+<div class="calendar calendarMode">
+<span id="nu-showing" style="display:none;"><a href="javascript:toggleNuOnly();"><span class="nu">&emsp; ☑ </span>New/Returning</a></span>
+<span id="nu-hidden"><a href="javascript:toggleNuOnly();"><span class="nu">&emsp; ☐ </span>New/Returning</a></span>
+
+<span title="Display only your selected shows" id="selected-only-showing" style="display:none;"><a href="javascript:toggleSelectedOnly();"><span class="nu">&emsp; ☑ </span>My shows</a></span>
+<span title="Display only your selected shows" id="selected-only-hidden"><a href="javascript:toggleSelectedOnly();"><span class="nu">&emsp; ☐ </span>My shows</a></span>
+
+<div class="days">
+		<div class="day past" data-date="20191223">
+		<div class="date">Mon, 23. Dec 2019</div>
+		<div class="entry" data-series-id="4246" data-series-source="A Christmas Carol (miniseries)">
+				<div class="title">A Christmas Carol S01E02</div>
+			</div>
+		<div class="entry" data-series-id="2960" data-series-source="List_of_Below_Deck_episodes">
+				<div class="title">Below Deck S07E12</div>
+			</div>
+		<div class="entry" data-series-id="2852" data-series-source="List_of_Gogglebox_episodes">
+				<div class="title">Gogglebox E00</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3914" data-series-source="Hughesy,_We_Have_a_Problem">
+				<div class="title">Hughesy We Have a Problem E31</div>
+			</div>
+		<div class="entry" data-series-id="3290" data-series-source="Just_Tattoo_of_Us">
+				<div class="title">Just Tattoo Us S05E06</div>
+			</div>
+		<div class="entry" data-series-id="2744" data-series-source="List_of_Love_&amp;_Hip_Hop:_Hollywood_episodes">
+				<div class="title">Love &amp; Hip Hop: Hollywood S06E21</div>
+			</div>
+		<div class="entry" data-series-id="4274" data-series-source="List_of_Love_&amp;_Hip_Hop:_New_York_episodes">
+				<div class="title">Love &amp; Hip Hop: New York S10E03</div>
+			</div>
+		<div class="entry" data-series-id="2095" data-series-source="List of Made in Chelsea episodes">
+				<div class="title">Made in Chelsea E229</div>
+			</div>
+		<div class="entry" data-series-id="3353" data-series-source="List_of_Still_Open_All_Hours_episodes">
+				<div class="title">Still Open All Hours S06E41</div>
+			</div>
+		<div class="entry" data-series-id="359" data-series-source="List of The Real Housewives of Orange County episodes">
+				<div class="title">The Real Housewives of Orange County S14E22</div>
+			</div>
+		<div class="entry" data-series-id="3685" data-series-source="The Reluctant Landlord">
+				<div class="title">The Reluctant Landlord Chrismas Special</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20191224">
+		<div class="date">Tue, 24. Dec 2019</div>
+		<div class="entry" data-series-id="4246" data-series-source="A Christmas Carol (miniseries)">
+				<div class="title">A Christmas Carol S01E03</div>
+			</div>
+		<div class="entry" data-series-id="3574" data-series-source="List_of_Black_Clover_episodes">
+				<div class="title">Black Clover S03E115</div>
+			</div>
+		<div class="entry" data-series-id="2448" data-series-source="List_of_Geordie_Shore_episodes">
+				<div class="title">Geordie Shore S20E09</div>
+			</div>
+		<div class="entry" data-series-id="2448" data-series-source="List_of_Geordie_Shore_episodes">
+				<div class="title">Geordie Shore S20E10</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3420" data-series-source="Lost_in_Space_(2018_TV_series)">
+				<div class="title">Lost in Space S02E01</div>
+			</div>
+		<div class="entry" data-series-id="3420" data-series-source="Lost_in_Space_(2018_TV_series)">
+				<div class="title">Lost in Space S02E02</div>
+			</div>
+		<div class="entry" data-series-id="3420" data-series-source="Lost_in_Space_(2018_TV_series)">
+				<div class="title">Lost in Space S02E03</div>
+			</div>
+		<div class="entry" data-series-id="3420" data-series-source="Lost_in_Space_(2018_TV_series)">
+				<div class="title">Lost in Space S02E04</div>
+			</div>
+		<div class="entry" data-series-id="3420" data-series-source="Lost_in_Space_(2018_TV_series)">
+				<div class="title">Lost in Space S02E05</div>
+			</div>
+		<div class="entry" data-series-id="3420" data-series-source="Lost_in_Space_(2018_TV_series)">
+				<div class="title">Lost in Space S02E06</div>
+			</div>
+		<div class="entry" data-series-id="3420" data-series-source="Lost_in_Space_(2018_TV_series)">
+				<div class="title">Lost in Space S02E07</div>
+			</div>
+		<div class="entry" data-series-id="3420" data-series-source="Lost_in_Space_(2018_TV_series)">
+				<div class="title">Lost in Space S02E08</div>
+			</div>
+		<div class="entry" data-series-id="3420" data-series-source="Lost_in_Space_(2018_TV_series)">
+				<div class="title">Lost in Space S02E09</div>
+			</div>
+		<div class="entry" data-series-id="3420" data-series-source="Lost_in_Space_(2018_TV_series)">
+				<div class="title">Lost in Space S02E10</div>
+			</div>
+		<div class="entry" data-series-id="260" data-series-source="List of Not Going Out episodes">
+				<div class="title">Not Going Out S10E09</div>
+			</div>
+		<div class="entry" data-series-id="540" data-series-source="List_of_QI_episodes">
+				<div class="title">QI S17E09</div>
+			</div>
+		<div class="entry" data-series-id="1883" data-series-source="List of SpongeBob SquarePants episodes">
+				<div class="title">SpongeBob SquarePants E00</div>
+			</div>
+		<div class="entry" data-series-id="4294" data-series-source="Terrace House: Tokyo 2019&ndash;2020">
+				<div class="title">Terrace House: Tokyo  S03E03</div>
+			</div>
+		<div class="entry" data-series-id="3444" data-series-source="Unikitty!">
+				<div class="title">Unikitty S02E30</div>
+			</div>
+		<div class="entry" data-series-id="3444" data-series-source="Unikitty!">
+				<div class="title">Unikitty S02E31</div>
+			</div>
+		<div class="entry" data-series-id="3444" data-series-source="Unikitty!">
+				<div class="title">Unikitty S02E32</div>
+			</div>
+		<div class="entry" data-series-id="3444" data-series-source="Unikitty!">
+				<div class="title">Unikitty S02E33</div>
+			</div>
+		<div class="entry" data-series-id="3444" data-series-source="Unikitty!">
+				<div class="title">Unikitty S02E34</div>
+			</div>
+		<div class="entry" data-series-id="3444" data-series-source="Unikitty!">
+				<div class="title">Unikitty S02E35</div>
+			</div>
+		<div class="entry" data-series-id="3444" data-series-source="Unikitty!">
+				<div class="title">Unikitty S02E36</div>
+			</div>
+		<div class="entry" data-series-id="3444" data-series-source="Unikitty!">
+				<div class="title">Unikitty S02E37</div>
+			</div>
+		<div class="entry" data-series-id="3444" data-series-source="Unikitty!">
+				<div class="title">Unikitty S02E38</div>
+			</div>
+		<div class="entry" data-series-id="3444" data-series-source="Unikitty!">
+				<div class="title">Unikitty S02E39</div>
+			</div>
+		<div class="entry" data-series-id="3444" data-series-source="Unikitty!">
+				<div class="title">Unikitty S02E40</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3444" data-series-source="Unikitty!">
+				<div class="title">Unikitty S03E01</div>
+			</div>
+		<div class="entry" data-series-id="3444" data-series-source="Unikitty!">
+				<div class="title">Unikitty S03E02</div>
+			</div>
+		<div class="entry" data-series-id="3444" data-series-source="Unikitty!">
+				<div class="title">Unikitty S03E03</div>
+			</div>
+		<div class="entry" data-series-id="3444" data-series-source="Unikitty!">
+				<div class="title">Unikitty S03E04</div>
+			</div>
+		<div class="entry" data-series-id="3444" data-series-source="Unikitty!">
+				<div class="title">Unikitty S03E05</div>
+			</div>
+		<div class="entry" data-series-id="2302" data-series-source="List of Vanderpump Rules episodes">
+				<div class="title">Vanderpump Rules How They Got Here 2019 </div>
+			</div>
+			</div>
+	<div class="day past" data-date="20191225">
+		<div class="date">Wed, 25. Dec 2019</div>
+		<div class="entry" data-series-id="2786" data-series-source="List_of_Call_the_Midwife_episodes">
+				<div class="title">Call The Midwife S09E70</div>
+			</div>
+		<div class="entry" data-series-id="1762" data-series-source="List of Gavin &amp; Stacey episodes">
+				<div class="title">Gavin &amp; Stacey E21</div>
+			</div>
+		<div class="entry" data-series-id="3621" data-series-source="Homicide Hunter">
+				<div class="title">Homicide Hunter S09E15</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="2882" data-series-source="Letterkenny (TV series)">
+				<div class="title">Letterkenny S08E01</div>
+			</div>
+		<div class="entry" data-series-id="2882" data-series-source="Letterkenny (TV series)">
+				<div class="title">Letterkenny S08E02</div>
+			</div>
+		<div class="entry" data-series-id="2882" data-series-source="Letterkenny (TV series)">
+				<div class="title">Letterkenny S08E03</div>
+			</div>
+		<div class="entry" data-series-id="2882" data-series-source="Letterkenny (TV series)">
+				<div class="title">Letterkenny S08E04</div>
+			</div>
+		<div class="entry" data-series-id="2882" data-series-source="Letterkenny (TV series)">
+				<div class="title">Letterkenny S08E05</div>
+			</div>
+		<div class="entry" data-series-id="2882" data-series-source="Letterkenny (TV series)">
+				<div class="title">Letterkenny S08E06</div>
+			</div>
+		<div class="entry" data-series-id="2882" data-series-source="Letterkenny (TV series)">
+				<div class="title">Letterkenny S08E07</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="1522" data-series-source="List of Mrs. Brown's Boys episodes">
+				<div class="title">Mrs. Brown's Boys E35</div>
+			</div>
+		<div class="entry" data-series-id="3851" data-series-source="List of One-Punch Man episodes">
+				<div class="title">One-Punch Man E03</div>
+			</div>
+		<div class="entry" data-series-id="4202" data-series-source="Radiant (TV series)">
+				<div class="title">Radiant S02E13</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4296" data-series-source="The Commons (TV series)">
+				<div class="title">The Commons  S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4296" data-series-source="The Commons (TV series)">
+				<div class="title">The Commons  S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4296" data-series-source="The Commons (TV series)">
+				<div class="title">The Commons  S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4296" data-series-source="The Commons (TV series)">
+				<div class="title">The Commons  S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4296" data-series-source="The Commons (TV series)">
+				<div class="title">The Commons  S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4296" data-series-source="The Commons (TV series)">
+				<div class="title">The Commons  S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4296" data-series-source="The Commons (TV series)">
+				<div class="title">The Commons  S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4296" data-series-source="The Commons (TV series)">
+				<div class="title">The Commons  S01E08</div>
+			</div>
+		<div class="entry" data-series-id="3542" data-series-source="List_of_The_Seven_Deadly_Sins_episodes">
+				<div class="title">The Seven Deadly Sins E64</div>
+			</div>
+		<div class="entry" data-series-id="2627" data-series-source="When_Calls_the_Heart_(TV_series)">
+				<div class="title">When Calls The Heart E61</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20191226">
+		<div class="date">Thu, 26. Dec 2019</div>
+		<div class="entry" data-series-id="4288" data-series-source="Beastars">
+				<div class="title">Beastars S01E12</div>
+			</div>
+		<div class="entry" data-series-id="3973" data-series-source="Christina on the Coast">
+				<div class="title">Christina on the Coast Looking Back on an Incredible Year</div>
+			</div>
+		<div class="entry" data-series-id="3790" data-series-source="Dr. Pimple Popper (TV series)">
+				<div class="title">Dr. Pimple Popper E03</div>
+			</div>
+		<div class="entry" data-series-id="4058" data-series-source="Ex on the Beach (American TV series)">
+				<div class="title">Ex on the Beach US E05</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4290" data-series-source="Fast_&amp;_Furious:_Spy_Racers">
+				<div class="title">Fast &amp; Furious: Spy Racers S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4290" data-series-source="Fast_&amp;_Furious:_Spy_Racers">
+				<div class="title">Fast &amp; Furious: Spy Racers S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4290" data-series-source="Fast_&amp;_Furious:_Spy_Racers">
+				<div class="title">Fast &amp; Furious: Spy Racers S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4290" data-series-source="Fast_&amp;_Furious:_Spy_Racers">
+				<div class="title">Fast &amp; Furious: Spy Racers S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4290" data-series-source="Fast_&amp;_Furious:_Spy_Racers">
+				<div class="title">Fast &amp; Furious: Spy Racers S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4290" data-series-source="Fast_&amp;_Furious:_Spy_Racers">
+				<div class="title">Fast &amp; Furious: Spy Racers S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4290" data-series-source="Fast_&amp;_Furious:_Spy_Racers">
+				<div class="title">Fast &amp; Furious: Spy Racers S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4290" data-series-source="Fast_&amp;_Furious:_Spy_Racers">
+				<div class="title">Fast &amp; Furious: Spy Racers S01E08</div>
+			</div>
+		<div class="entry" data-series-id="3342" data-series-source="MTV_Floribama_Shore">
+				<div class="title">Floribama Shore S03E08</div>
+			</div>
+		<div class="entry" data-series-id="4269" data-series-source="Growing Up Hip Hop">
+				<div class="title">Growing Up Hip Hop S05E04</div>
+			</div>
+		<div class="entry" data-series-id="4304" data-series-source="Occupied">
+				<div class="title">Occupied S03E05</div>
+			</div>
+		<div class="entry" data-series-id="3674" data-series-source="Tell Me a Story (TV series)">
+				<div class="title">Tell Me a Story S02E04</div>
+			</div>
+		<div class="entry" data-series-id="359" data-series-source="List of The Real Housewives of Orange County episodes">
+				<div class="title">The Real Housewives of Orange County S14E23</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3489" data-series-source="You_(TV_series)">
+				<div class="title">You S02E01</div>
+			</div>
+		<div class="entry" data-series-id="3489" data-series-source="You_(TV_series)">
+				<div class="title">You S02E02</div>
+			</div>
+		<div class="entry" data-series-id="3489" data-series-source="You_(TV_series)">
+				<div class="title">You S02E03</div>
+			</div>
+		<div class="entry" data-series-id="3489" data-series-source="You_(TV_series)">
+				<div class="title">You S02E04</div>
+			</div>
+		<div class="entry" data-series-id="3489" data-series-source="You_(TV_series)">
+				<div class="title">You S02E05</div>
+			</div>
+		<div class="entry" data-series-id="3489" data-series-source="You_(TV_series)">
+				<div class="title">You S02E06</div>
+			</div>
+		<div class="entry" data-series-id="3489" data-series-source="You_(TV_series)">
+				<div class="title">You S02E07</div>
+			</div>
+		<div class="entry" data-series-id="3489" data-series-source="You_(TV_series)">
+				<div class="title">You S02E08</div>
+			</div>
+		<div class="entry" data-series-id="3489" data-series-source="You_(TV_series)">
+				<div class="title">You S02E09</div>
+			</div>
+		<div class="entry" data-series-id="3489" data-series-source="You_(TV_series)">
+				<div class="title">You S02E10</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20191227">
+		<div class="date">Fri, 27. Dec 2019</div>
+		<div class="entry" data-series-id="4239" data-series-source="Encore! (TV series)">
+				<div class="title">Encore S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4065" data-series-source="List of Fire Force episodes">
+				<div class="title">Fire Force S01E23</div>
+			</div>
+		<div class="entry" data-series-id="4065" data-series-source="List of Fire Force episodes">
+				<div class="title">Fire Force S01E24</div>
+			</div>
+		<div class="entry" data-series-id="4112" data-series-source="Harley Quinn (TV series)">
+				<div class="title">Harley Quinn S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4211" data-series-source="Hero Project">
+				<div class="title">Hero Project S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4063" data-series-source="High School Musical: The Musical: The Series">
+				<div class="title">High School Musical: The Musical: The Series S01E08</div>
+			</div>
+		<div class="entry" data-series-id="3587" data-series-source="Into the Dark (TV series)">
+				<div class="title">Into the Dark S02E04</div>
+			</div>
+		<div class="entry" data-series-id="3313" data-series-source="List_of_Marriage_Boot_Camp_episodes">
+				<div class="title">Marriage Boot Camp S15E11</div>
+			</div>
+		<div class="entry" data-series-id="2148" data-series-source="Ridiculousness_(TV_series)">
+				<div class="title">Ridiculousness S15E38</div>
+			</div>
+		<div class="entry" data-series-id="4213" data-series-source="Servant (TV series)">
+				<div class="title">Servant S01E07</div>
+			</div>
+		<div class="entry" data-series-id="1883" data-series-source="List of SpongeBob SquarePants episodes">
+				<div class="title">SpongeBob SquarePants E00</div>
+			</div>
+		<div class="entry" data-series-id="1883" data-series-source="List of SpongeBob SquarePants episodes">
+				<div class="title">SpongeBob SquarePants E00</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4276" data-series-source="The Gift (Turkish TV series)">
+				<div class="title">The Gift S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4276" data-series-source="The Gift (Turkish TV series)">
+				<div class="title">The Gift S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4276" data-series-source="The Gift (Turkish TV series)">
+				<div class="title">The Gift S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4276" data-series-source="The Gift (Turkish TV series)">
+				<div class="title">The Gift S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4276" data-series-source="The Gift (Turkish TV series)">
+				<div class="title">The Gift S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4276" data-series-source="The Gift (Turkish TV series)">
+				<div class="title">The Gift S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4276" data-series-source="The Gift (Turkish TV series)">
+				<div class="title">The Gift S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4276" data-series-source="The Gift (Turkish TV series)">
+				<div class="title">The Gift S01E08</div>
+			</div>
+		<div class="entry" data-series-id="3975" data-series-source="The Mandalorian">
+				<div class="title">The Mandalorian S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4222" data-series-source="The World According to Jeff Goldblum">
+				<div class="title">The World According to Jeff Goldblum S01E08</div>
+			</div>
+		<div class="entry" data-series-id="2746" data-series-source="Truth Be Told (2019 TV series)">
+				<div class="title">Truth Be Told S01E06</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20191228">
+		<div class="date">Sat, 28. Dec 2019</div>
+		<div class="entry" data-series-id="3890" data-series-source="90 Day Fianc&eacute;">
+				<div class="title">90 Day Fiance S07E09</div>
+			</div>
+		<div class="entry" data-series-id="3148" data-series-source="List of Casualty episodes">
+				<div class="title">Casualty S34E17</div>
+			</div>
+		<div class="entry" data-series-id="3314" data-series-source="List_of_Food_Wars!_episodes">
+				<div class="title">Food Wars! S04E12</div>
+			</div>
+		<div class="entry" data-series-id="668" data-series-source="List of Maalaala Mo Kaya episodes">
+				<div class="title">Maalaala Mo Kaya S27E47</div>
+			</div>
+		<div class="entry" data-series-id="3465" data-series-source="List_of_My_Hero_Academia_episodes">
+				<div class="title">My Hero Academia S04E11</div>
+			</div>
+		<div class="entry" data-series-id="2556" data-series-source="List_of_Steven_Universe_episodes">
+				<div class="title">Steven Universe E09</div>
+			</div>
+		<div class="entry" data-series-id="2556" data-series-source="List_of_Steven_Universe_episodes">
+				<div class="title">Steven Universe E10</div>
+			</div>
+		<div class="entry" data-series-id="4237" data-series-source="List of Sword Art Online: Alicization episodes">
+				<div class="title">Sword Art Online: Alicization &ndash; War of Underworld  E85</div>
+			</div>
+		<div class="entry" data-series-id="3768" data-series-source="Transformers: Cyberverse">
+				<div class="title">Transformers Cyberverse S02E17</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20191229">
+		<div class="date">Sun, 29. Dec 2019</div>
+		<div class="entry" data-series-id="3212" data-series-source="List_of_Boruto:_Naruto_Next_Generations_episodes">
+				<div class="title">Boruto: Naruto Next Generations S01E138</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4247" data-series-source="Dare Me (TV series)">
+				<div class="title">Dare Me S01E01</div>
+			</div>
+		<div class="entry" data-series-id="3073" data-series-source="Married_to_Medicine">
+				<div class="title">Married to Medicine S07E16</div>
+			</div>
+		<div class="entry" data-series-id="3073" data-series-source="Married_to_Medicine">
+				<div class="title">Married to Medicine S07E17</div>
+			</div>
+		<div class="entry" data-series-id="4228" data-series-source="On the Case with Paula Zahn">
+				<div class="title">On the Case with Paula Zahn S19E11</div>
+			</div>
+		<div class="entry" data-series-id="2215" data-series-source="Ray_Donovan_(TV_series)">
+				<div class="title">Ray Donovan S07E07</div>
+			</div>
+		<div class="entry" data-series-id="2148" data-series-source="Ridiculousness_(TV_series)">
+				<div class="title">Ridiculousness S15E39</div>
+			</div>
+		<div class="entry" data-series-id="1245" data-series-source="List of Shameless (U.S. TV series) episodes">
+				<div class="title">Shameless US S10E08</div>
+			</div>
+		<div class="entry" data-series-id="3653" data-series-source="Star Wars Resistance">
+				<div class="title">Star Wars Resistance S02E13</div>
+			</div>
+		<div class="entry" data-series-id="4236" data-series-source="The L Word: Generation Q">
+				<div class="title">The L Word: Generation Q S01E04</div>
+			</div>
+		<div class="entry" data-series-id="785" data-series-source="List of The Real Housewives of Atlanta episodes">
+				<div class="title">The Real Housewives of Atlanta S12E09</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4302" data-series-source="The Trial of Christine Keeler">
+				<div class="title">The Trial of Christine Keeler S01E01</div>
+			</div>
+		<div class="entry" data-series-id="3978" data-series-source="The Weekly">
+				<div class="title">The Weekly S01E23</div>
+			</div>
+		<div class="entry" data-series-id="1847" data-series-source="List of Top Gear episodes">
+				<div class="title">Top Gear ?</div>
+			</div>
+		<div class="entry" data-series-id="4289" data-series-source="Work in Progress (TV series)">
+				<div class="title">Work in Progress S01E04</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20191230">
+		<div class="date">Mon, 30. Dec 2019</div>
+		<div class="entry season-premiere" data-series-id="3390" data-series-source="Alexa &amp; Katie">
+				<div class="title">Alexa &amp; Katie S03E01</div>
+			</div>
+		<div class="entry" data-series-id="3390" data-series-source="Alexa &amp; Katie">
+				<div class="title">Alexa &amp; Katie S03E02</div>
+			</div>
+		<div class="entry" data-series-id="3390" data-series-source="Alexa &amp; Katie">
+				<div class="title">Alexa &amp; Katie S03E03</div>
+			</div>
+		<div class="entry" data-series-id="3390" data-series-source="Alexa &amp; Katie">
+				<div class="title">Alexa &amp; Katie S03E04</div>
+			</div>
+		<div class="entry" data-series-id="3390" data-series-source="Alexa &amp; Katie">
+				<div class="title">Alexa &amp; Katie S03E05</div>
+			</div>
+		<div class="entry" data-series-id="3390" data-series-source="Alexa &amp; Katie">
+				<div class="title">Alexa &amp; Katie S03E06</div>
+			</div>
+		<div class="entry" data-series-id="3390" data-series-source="Alexa &amp; Katie">
+				<div class="title">Alexa &amp; Katie S03E07</div>
+			</div>
+		<div class="entry" data-series-id="3390" data-series-source="Alexa &amp; Katie">
+				<div class="title">Alexa &amp; Katie S03E08</div>
+			</div>
+		<div class="entry" data-series-id="2960" data-series-source="List_of_Below_Deck_episodes">
+				<div class="title">Below Deck S07E13</div>
+			</div>
+		<div class="entry" data-series-id="4274" data-series-source="List_of_Love_&amp;_Hip_Hop:_New_York_episodes">
+				<div class="title">Love &amp; Hip Hop: New York S10E04</div>
+			</div>
+		<div class="entry" data-series-id="2095" data-series-source="List of Made in Chelsea episodes">
+				<div class="title">Made in Chelsea E00</div>
+			</div>
+		<div class="entry" data-series-id="2095" data-series-source="List of Made in Chelsea episodes">
+				<div class="title">Made in Chelsea E230</div>
+			</div>
+		<div class="entry" data-series-id="4302" data-series-source="The Trial of Christine Keeler">
+				<div class="title">The Trial of Christine Keeler S01E02</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20191231">
+		<div class="date">Tue, 31. Dec 2019</div>
+		<div class="entry" data-series-id="1955" data-series-source="List of Holby City episodes">
+				<div class="title">Holby City S21E53</div>
+			</div>
+		<div class="entry" data-series-id="4294" data-series-source="Terrace House: Tokyo 2019&ndash;2020">
+				<div class="title">Terrace House: Tokyo  S03E04</div>
+			</div>
+		<div class="entry" data-series-id="89" data-series-source="List of The Graham Norton Show episodes">
+				<div class="title">The Graham Norton Show S26E13</div>
+			</div>
+		<div class="entry" data-series-id="2986" data-series-source="List_of_The_Last_Leg_episodes">
+				<div class="title">The Last Leg S18E10</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4303" data-series-source="The Neighbor (TV series)">
+				<div class="title">The Neighbor S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4303" data-series-source="The Neighbor (TV series)">
+				<div class="title">The Neighbor S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4303" data-series-source="The Neighbor (TV series)">
+				<div class="title">The Neighbor S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4303" data-series-source="The Neighbor (TV series)">
+				<div class="title">The Neighbor S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4303" data-series-source="The Neighbor (TV series)">
+				<div class="title">The Neighbor S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4303" data-series-source="The Neighbor (TV series)">
+				<div class="title">The Neighbor S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4303" data-series-source="The Neighbor (TV series)">
+				<div class="title">The Neighbor S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4303" data-series-source="The Neighbor (TV series)">
+				<div class="title">The Neighbor S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4303" data-series-source="The Neighbor (TV series)">
+				<div class="title">The Neighbor S01E09</div>
+			</div>
+		<div class="entry" data-series-id="4303" data-series-source="The Neighbor (TV series)">
+				<div class="title">The Neighbor S01E10</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200101">
+		<div class="date">Wed, 01. Jan</div>
+		<div class="entry" data-series-id="4054" data-series-source="Almost Family">
+				<div class="title">Almost Family S01E09</div>
+			</div>
+		<div class="entry" data-series-id="3648" data-series-source="Black Ink Crew: Chicago">
+				<div class="title">Black Ink Crew Chicago S06E05</div>
+			</div>
+		<div class="entry" data-series-id="3648" data-series-source="Black Ink Crew: Chicago">
+				<div class="title">Black Ink Crew Chicago S06E05</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="2455" data-series-source="List of Doctor Who episodes (2005&ndash;present)">
+				<div class="title">Doctor Who S12E01</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4262" data-series-source="Dracula (2020 TV series)">
+				<div class="title">Dracula S01E01</div>
+			</div>
+		<div class="entry" data-series-id="3621" data-series-source="Homicide Hunter">
+				<div class="title">Homicide Hunter S09E16</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4265" data-series-source="Messiah (American TV series)">
+				<div class="title">Messiah S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4265" data-series-source="Messiah (American TV series)">
+				<div class="title">Messiah S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4265" data-series-source="Messiah (American TV series)">
+				<div class="title">Messiah S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4265" data-series-source="Messiah (American TV series)">
+				<div class="title">Messiah S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4265" data-series-source="Messiah (American TV series)">
+				<div class="title">Messiah S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4265" data-series-source="Messiah (American TV series)">
+				<div class="title">Messiah S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4265" data-series-source="Messiah (American TV series)">
+				<div class="title">Messiah S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4265" data-series-source="Messiah (American TV series)">
+				<div class="title">Messiah S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4265" data-series-source="Messiah (American TV series)">
+				<div class="title">Messiah S01E09</div>
+			</div>
+		<div class="entry" data-series-id="4265" data-series-source="Messiah (American TV series)">
+				<div class="title">Messiah S01E10</div>
+			</div>
+		<div class="entry" data-series-id="1522" data-series-source="List of Mrs. Brown's Boys episodes">
+				<div class="title">Mrs. Brown's Boys E36</div>
+			</div>
+		<div class="entry" data-series-id="2456" data-series-source="List_of_The_Real_Housewives_of_New_Jersey_episodes">
+				<div class="title">Real Housewives Of New Jersey S10E08</div>
+			</div>
+		<div class="entry" data-series-id="3328" data-series-source="Sisters_(Australian_TV_series)">
+				<div class="title">Sisters AU E09</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4240" data-series-source="Spinning Out">
+				<div class="title">Spinning Out S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4240" data-series-source="Spinning Out">
+				<div class="title">Spinning Out S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4240" data-series-source="Spinning Out">
+				<div class="title">Spinning Out S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4240" data-series-source="Spinning Out">
+				<div class="title">Spinning Out S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4240" data-series-source="Spinning Out">
+				<div class="title">Spinning Out S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4240" data-series-source="Spinning Out">
+				<div class="title">Spinning Out S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4240" data-series-source="Spinning Out">
+				<div class="title">Spinning Out S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4240" data-series-source="Spinning Out">
+				<div class="title">Spinning Out S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4240" data-series-source="Spinning Out">
+				<div class="title">Spinning Out S01E09</div>
+			</div>
+		<div class="entry" data-series-id="4240" data-series-source="Spinning Out">
+				<div class="title">Spinning Out S01E10</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4281" data-series-source="The Circle (American TV series)">
+				<div class="title">The Circle S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4281" data-series-source="The Circle (American TV series)">
+				<div class="title">The Circle S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4281" data-series-source="The Circle (American TV series)">
+				<div class="title">The Circle S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4281" data-series-source="The Circle (American TV series)">
+				<div class="title">The Circle S01E04</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4250" data-series-source="The Gloaming (TV series)">
+				<div class="title">The Gloaming S01E01</div>
+			</div>
+		<div class="entry" data-series-id="3618" data-series-source="List of The Real Housewives of Dallas episodes">
+				<div class="title">The Real Housewives of Dallas S04E16</div>
+			</div>
+		<div class="entry" data-series-id="2153" data-series-source="List_of_Vikings_episodes">
+				<div class="title">Vikings S06E05</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200102">
+		<div class="date">Thu, 02. Jan</div>
+		<div class="entry season-premiere" data-series-id="3862" data-series-source="60 Days In">
+				<div class="title">60 Days In S06E01</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3973" data-series-source="Christina on the Coast">
+				<div class="title">Christina on the Coast S02E01</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4252" data-series-source="Deputy (TV series)">
+				<div class="title">Deputy S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4262" data-series-source="Dracula (2020 TV series)">
+				<div class="title">Dracula S01E02</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3790" data-series-source="Dr. Pimple Popper (TV series)">
+				<div class="title">Dr. Pimple Popper S04E01</div>
+			</div>
+		<div class="entry" data-series-id="4058" data-series-source="Ex on the Beach (American TV series)">
+				<div class="title">Ex on the Beach US E06</div>
+			</div>
+		<div class="entry" data-series-id="3342" data-series-source="MTV_Floribama_Shore">
+				<div class="title">Floribama Shore S03E09</div>
+			</div>
+		<div class="entry" data-series-id="4269" data-series-source="Growing Up Hip Hop">
+				<div class="title">Growing Up Hip Hop S05E05</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="4321" data-series-source="How the Universe Works ">
+				<div class="title">How the Universe Works  S08E01</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="2040" data-series-source="List of Last Man Standing episodes">
+				<div class="title">Last Man Standing S08E01</div>
+			</div>
+		<div class="entry" data-series-id="2040" data-series-source="List of Last Man Standing episodes">
+				<div class="title">Last Man Standing S08E02</div>
+			</div>
+		<div class="entry" data-series-id="4304" data-series-source="Occupied">
+				<div class="title">Occupied S03E06</div>
+			</div>
+		<div class="entry" data-series-id="3674" data-series-source="Tell Me a Story (TV series)">
+				<div class="title">Tell Me a Story S02E05</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200103">
+		<div class="date">Fri, 03. Jan</div>
+		<div class="entry" data-series-id="1839" data-series-source="List of Blue Bloods episodes">
+				<div class="title">Blue Bloods S10E11</div>
+			</div>
+		<div class="entry" data-series-id="871" data-series-source="List of Bubble Guppies episodes">
+				<div class="title">Bubble Guppies S05E05</div>
+			</div>
+		<div class="entry" data-series-id="4262" data-series-source="Dracula (2020 TV series)">
+				<div class="title">Dracula S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4239" data-series-source="Encore! (TV series)">
+				<div class="title">Encore S01E09</div>
+			</div>
+		<div class="entry" data-series-id="2852" data-series-source="List_of_Gogglebox_episodes">
+				<div class="title">Gogglebox S14E185</div>
+			</div>
+		<div class="entry" data-series-id="2496" data-series-source="List_of_Gold_Rush_episodes">
+				<div class="title">Gold Rush S10E12</div>
+			</div>
+		<div class="entry" data-series-id="4112" data-series-source="Harley Quinn (TV series)">
+				<div class="title">Harley Quinn S01E06</div>
+			</div>
+		<div class="entry" data-series-id="327" data-series-source="List of Hawaii Five-0 (2010 TV series) episodes">
+				<div class="title">Hawaii Five-0 S10E12</div>
+			</div>
+		<div class="entry" data-series-id="4211" data-series-source="Hero Project">
+				<div class="title">Hero Project S01E09</div>
+			</div>
+		<div class="entry" data-series-id="4063" data-series-source="High School Musical: The Musical: The Series">
+				<div class="title">High School Musical: The Musical: The Series S01E09</div>
+			</div>
+		<div class="entry" data-series-id="4272" data-series-source="Joe Pera Talks with You">
+				<div class="title">Joe Pera Talks with You S02E05</div>
+			</div>
+		<div class="entry" data-series-id="4272" data-series-source="Joe Pera Talks with You">
+				<div class="title">Joe Pera Talks with You S02E06</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3304" data-series-source="Kindred_Spirits_(TV_series)">
+				<div class="title">Kindred Spirits  S04E01</div>
+			</div>
+		<div class="entry" data-series-id="3567" data-series-source="Magnum P.I. (2018 TV series)">
+				<div class="title">Magnum P.I. S02E12</div>
+			</div>
+		<div class="entry" data-series-id="540" data-series-source="List_of_QI_episodes">
+				<div class="title">QI S17E10</div>
+			</div>
+		<div class="entry" data-series-id="4213" data-series-source="Servant (TV series)">
+				<div class="title">Servant S01E08</div>
+			</div>
+		<div class="entry" data-series-id="89" data-series-source="List of The Graham Norton Show episodes">
+				<div class="title">The Graham Norton Show S26E14</div>
+			</div>
+		<div class="entry" data-series-id="4222" data-series-source="The World According to Jeff Goldblum">
+				<div class="title">The World According to Jeff Goldblum S01E09</div>
+			</div>
+		<div class="entry" data-series-id="2746" data-series-source="Truth Be Told (2019 TV series)">
+				<div class="title">Truth Be Told S01E07</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200104">
+		<div class="date">Sat, 04. Jan</div>
+		<div class="entry" data-series-id="3335" data-series-source="Big Hero 6: The Series">
+				<div class="title">Big Hero 6: The Series S02E19</div>
+			</div>
+		<div class="entry" data-series-id="3701" data-series-source="List of Case Closed episodes (seasons 16&ndash;current)">
+				<div class="title">Case Closed S27E965</div>
+			</div>
+		<div class="entry" data-series-id="3148" data-series-source="List of Casualty episodes">
+				<div class="title">Casualty S34E18</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="4145" data-series-source="Explained (TV series)">
+				<div class="title">Explained E31</div>
+			</div>
+		<div class="entry" data-series-id="4145" data-series-source="Explained (TV series)">
+				<div class="title">Explained E32</div>
+			</div>
+		<div class="entry" data-series-id="4145" data-series-source="Explained (TV series)">
+				<div class="title">Explained E33</div>
+			</div>
+		<div class="entry" data-series-id="4145" data-series-source="Explained (TV series)">
+				<div class="title">Explained E34</div>
+			</div>
+		<div class="entry" data-series-id="4145" data-series-source="Explained (TV series)">
+				<div class="title">Explained E35</div>
+			</div>
+		<div class="entry" data-series-id="3465" data-series-source="List_of_My_Hero_Academia_episodes">
+				<div class="title">My Hero Academia S04E12</div>
+			</div>
+		<div class="entry" data-series-id="2612" data-series-source="Thunderbirds_Are_Go_(TV_series)">
+				<div class="title">Thunderbirds Are Go S03E19</div>
+			</div>
+		<div class="entry" data-series-id="3768" data-series-source="Transformers: Cyberverse">
+				<div class="title">Transformers Cyberverse S02E18</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200105">
+		<div class="date">Sun, 05. Jan</div>
+		<div class="entry" data-series-id="4008" data-series-source="Ball_in_the_Family#Episodes">
+				<div class="title">Ball in the Family S05E17</div>
+			</div>
+		<div class="entry" data-series-id="2786" data-series-source="List_of_Call_the_Midwife_episodes">
+				<div class="title">Call The Midwife S09E71</div>
+			</div>
+		<div class="entry" data-series-id="4247" data-series-source="Dare Me (TV series)">
+				<div class="title">Dare Me S01E02</div>
+			</div>
+		<div class="entry" data-series-id="2455" data-series-source="List of Doctor Who episodes (2005&ndash;present)">
+				<div class="title">Doctor Who S12E02</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4287" data-series-source="Endlings">
+				<div class="title">Endlings S01E01</div>
+			</div>
+		<div class="entry" data-series-id="1173" data-series-source="List of Family Guy episodes">
+				<div class="title">Family Guy S18E10</div>
+			</div>
+		<div class="entry" data-series-id="1610" data-series-source="List of Gegege no Kitaro episodes">
+				<div class="title">Gegege no Kitaro E87</div>
+			</div>
+		<div class="entry" data-series-id="3593" data-series-source="God Friended Me">
+				<div class="title">God Friended Me S02E11</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4312" data-series-source="ID - Invaded">
+				<div class="title">ID - Invaded S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4312" data-series-source="ID - Invaded">
+				<div class="title">ID - Invaded S01E02</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="668" data-series-source="List of Maalaala Mo Kaya episodes">
+				<div class="title">Maalaala Mo Kaya S28E01</div>
+			</div>
+		<div class="entry" data-series-id="3073" data-series-source="Married_to_Medicine">
+				<div class="title">Married to Medicine S07E18</div>
+			</div>
+		<div class="entry" data-series-id="2854" data-series-source="Naked_and_Afraid">
+				<div class="title">Naked And Afraid S11E02</div>
+			</div>
+		<div class="entry" data-series-id="2854" data-series-source="Naked_and_Afraid">
+				<div class="title">Naked And Afraid S11E03</div>
+			</div>
+		<div class="entry" data-series-id="1149" data-series-source="List of NCIS: Los Angeles episodes">
+				<div class="title">NCIS: Los Angeles S11E12</div>
+			</div>
+		<div class="entry" data-series-id="3011" data-series-source="List_of_One_Piece_episodes_(seasons_15&ndash;current)">
+				<div class="title">One Piece S20E916</div>
+			</div>
+		<div class="entry" data-series-id="4228" data-series-source="On the Case with Paula Zahn">
+				<div class="title">On the Case with Paula Zahn S19E12</div>
+			</div>
+		<div class="entry" data-series-id="2421" data-series-source="List_of_Power_episodes">
+				<div class="title">Power S06E11</div>
+			</div>
+		<div class="entry" data-series-id="2215" data-series-source="Ray_Donovan_(TV_series)">
+				<div class="title">Ray Donovan S07E08</div>
+			</div>
+		<div class="entry" data-series-id="1245" data-series-source="List of Shameless (U.S. TV series) episodes">
+				<div class="title">Shameless US S10E09</div>
+			</div>
+		<div class="entry" data-series-id="1853" data-series-source="List of Shark Tank (TV series) episodes">
+				<div class="title">Shark Tank S11E10</div>
+			</div>
+		<div class="entry" data-series-id="3653" data-series-source="Star Wars Resistance">
+				<div class="title">Star Wars Resistance S02E14</div>
+			</div>
+		<div class="entry" data-series-id="4236" data-series-source="The L Word: Generation Q">
+				<div class="title">The L Word: Generation Q S01E05</div>
+			</div>
+		<div class="entry" data-series-id="785" data-series-source="List of The Real Housewives of Atlanta episodes">
+				<div class="title">The Real Housewives of Atlanta S12E10</div>
+			</div>
+		<div class="entry" data-series-id="1468" data-series-source="List of The Simpsons episodes">
+				<div class="title">The Simpsons S31E11</div>
+			</div>
+		<div class="entry" data-series-id="4302" data-series-source="The Trial of Christine Keeler">
+				<div class="title">The Trial of Christine Keeler S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4289" data-series-source="Work in Progress (TV series)">
+				<div class="title">Work in Progress S01E05</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200106">
+		<div class="date">Mon, 06. Jan</div>
+		<div class="entry" data-series-id="4053" data-series-source="All Rise (TV series)">
+				<div class="title">All Rise  S01E12</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="1175" data-series-source="List of American Experience episodes">
+				<div class="title">American Experience S32E01</div>
+			</div>
+		<div class="entry" data-series-id="803" data-series-source="List of American Greed episodes">
+				<div class="title">American Greed S13E177</div>
+			</div>
+		<div class="entry" data-series-id="2960" data-series-source="List_of_Below_Deck_episodes">
+				<div class="title">Below Deck S07E14</div>
+			</div>
+		<div class="entry" data-series-id="4100" data-series-source="Bob Hearts Abishola">
+				<div class="title">Bob ♡ Abishola S01E12</div>
+			</div>
+		<div class="entry" data-series-id="2937" data-series-source="List of Bull (2016 TV series) episodes">
+				<div class="title">Bull S04E11</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3815" data-series-source="Coroner (TV series)">
+				<div class="title">Coroner S02E01</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3064" data-series-source="Father Brown (2013 TV series)">
+				<div class="title">Father Brown S08E01</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="4311" data-series-source="List of Infinity Train episodes">
+				<div class="title">Infinity Train S02E01</div>
+			</div>
+		<div class="entry" data-series-id="4311" data-series-source="List of Infinity Train episodes">
+				<div class="title">Infinity Train S02E02</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="4275" data-series-source="List_of_Love_&amp;_Hip_Hop:_Miami_episodes">
+				<div class="title">Love &amp; Hip Hop: Miami S03E01</div>
+			</div>
+		<div class="entry" data-series-id="4274" data-series-source="List_of_Love_&amp;_Hip_Hop:_New_York_episodes">
+				<div class="title">Love &amp; Hip Hop: New York S10E05</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3547" data-series-source="Manifest_(TV_series)">
+				<div class="title">Manifest S02E01</div>
+			</div>
+		<div class="entry" data-series-id="747" data-series-source="List of Midsomer Murders episodes">
+				<div class="title">Midsomer Murders S20E05</div>
+			</div>
+		<div class="entry" data-series-id="617" data-series-source="List of Murdoch Mysteries episodes">
+				<div class="title">Murdoch Mysteries S13E10</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4315" data-series-source="Nurses (Canadian TV series)">
+				<div class="title">Nurses S01E01</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="2148" data-series-source="Ridiculousness_(TV_series)">
+				<div class="title">Ridiculousness S16E01</div>
+			</div>
+		<div class="entry" data-series-id="3594" data-series-source="The Neighborhood (TV series)">
+				<div class="title">The Neighborhood S02E12</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200107">
+		<div class="date">Tue, 07. Jan</div>
+		<div class="entry" data-series-id="3574" data-series-source="List_of_Black_Clover_episodes">
+				<div class="title">Black Clover S03E116</div>
+			</div>
+		<div class="entry" data-series-id="2487" data-series-source="List_of_Black-ish_episodes">
+				<div class="title">Blackish S06E11</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="4305" data-series-source="List of Ellen's Game of Games episodes">
+				<div class="title">Ellen's Game of Games S03E01</div>
+			</div>
+		<div class="entry" data-series-id="4305" data-series-source="List of Ellen's Game of Games episodes">
+				<div class="title">Ellen's Game of Games S03E02</div>
+			</div>
+		<div class="entry" data-series-id="4055" data-series-source="Emergence (TV series)">
+				<div class="title">Emergence S01E10</div>
+			</div>
+		<div class="entry" data-series-id="3064" data-series-source="Father Brown (2013 TV series)">
+				<div class="title">Father Brown S08E02</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="3573" data-series-source="FBI_(TV_series)#Episodes">
+				<div class="title">FBI S01E01</div>
+			</div>
+		<div class="entry" data-series-id="3573" data-series-source="FBI_(TV_series)#Episodes">
+				<div class="title">FBI S02E11</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4067" data-series-source="FBI: Most Wanted">
+				<div class="title">FBI: Most Wanted S01E01</div>
+			</div>
+		<div class="entry" data-series-id="3792" data-series-source="Finding Your Roots">
+				<div class="title">Finding Your Roots S06E03</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3521" data-series-source="Gordon_Ramsay's_24_Hours_to_Hell_and_Back">
+				<div class="title">Gordon Ramsays 24 Hours to Hell &amp; Back S03E01</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="2432" data-series-source="List_of_The_Haves_and_the_Have_Nots_(TV_series)_episodes">
+				<div class="title">Haves And The Have Nots S07E01</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="1955" data-series-source="List of Holby City episodes">
+				<div class="title">Holby City S22E01</div>
+			</div>
+		<div class="entry" data-series-id="4311" data-series-source="List of Infinity Train episodes">
+				<div class="title">Infinity Train S02E03</div>
+			</div>
+		<div class="entry" data-series-id="4311" data-series-source="List of Infinity Train episodes">
+				<div class="title">Infinity Train S02E04</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3031" data-series-source="Kim's_Convenience_(TV_series)">
+				<div class="title">Kim's Convenience S04E01</div>
+			</div>
+		<div class="entry" data-series-id="4093" data-series-source="Mixed-ish">
+				<div class="title">Mixed-ish S01E11</div>
+			</div>
+		<div class="entry" data-series-id="993" data-series-source="List of NCIS episodes">
+				<div class="title">NCIS S17E11</div>
+			</div>
+		<div class="entry" data-series-id="2148" data-series-source="Ridiculousness_(TV_series)">
+				<div class="title">Ridiculousness S16E02</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="2597" data-series-source="List of Schitt's Creek episodes">
+				<div class="title">Schitts Creek S06E01</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3282" data-series-source="Siesta_Key_(TV_series)">
+				<div class="title">Siesta Key S03E01</div>
+			</div>
+		<div class="entry" data-series-id="1933" data-series-source="List_of_Silent_Witness_episodes">
+				<div class="title">Silent Witness S23E203</div>
+			</div>
+		<div class="entry" data-series-id="3750" data-series-source="Teen_Mom:_Young_and_Pregnant">
+				<div class="title">Teen Mom Young and Pregnant S02E11</div>
+			</div>
+		<div class="entry" data-series-id="2800" data-series-source="List of The Curse of Oak Island episodes">
+				<div class="title">The Curse of Oak Island S07E08</div>
+			</div>
+		<div class="entry" data-series-id="3360" data-series-source="List of The Resident episodes">
+				<div class="title">The Resident S03E11</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="2302" data-series-source="List of Vanderpump Rules episodes">
+				<div class="title">Vanderpump Rules S08E01</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4150" data-series-source="Zoey's Extraordinary Playlist">
+				<div class="title">Zoey's Extraordinary Playlist S01E01</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200108">
+		<div class="date">Wed, 08. Jan</div>
+		<div class="entry" data-series-id="4054" data-series-source="Almost Family">
+				<div class="title">Almost Family S01E10</div>
+			</div>
+		<div class="entry" data-series-id="3648" data-series-source="Black Ink Crew: Chicago">
+				<div class="title">Black Ink Crew Chicago S06E06</div>
+			</div>
+		<div class="entry" data-series-id="3648" data-series-source="Black Ink Crew: Chicago">
+				<div class="title">Black Ink Crew Chicago S06E06</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3375" data-series-source="Burden_of_Truth_(TV_series)">
+				<div class="title">Burden of Truth S03E01</div>
+			</div>
+		<div class="entry" data-series-id="2131" data-series-source="List_of_Chicago_Fire_episodes">
+				<div class="title">Chicago Fire S08E10</div>
+			</div>
+		<div class="entry" data-series-id="2728" data-series-source="List_of_Chicago_Med_episodes">
+				<div class="title">Chicago Med S05E10</div>
+			</div>
+		<div class="entry" data-series-id="2295" data-series-source="List_of_Chicago_P.D._episodes">
+				<div class="title">Chicago PD S07E10</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="1213" data-series-source="List of Criminal Minds episodes">
+				<div class="title">Criminal Minds S15E01</div>
+			</div>
+		<div class="entry" data-series-id="1213" data-series-source="List of Criminal Minds episodes">
+				<div class="title">Criminal Minds S15E02</div>
+			</div>
+		<div class="entry" data-series-id="3064" data-series-source="Father Brown (2013 TV series)">
+				<div class="title">Father Brown S08E03</div>
+			</div>
+		<div class="entry" data-series-id="3621" data-series-source="Homicide Hunter">
+				<div class="title">Homicide Hunter S09E17</div>
+			</div>
+		<div class="entry" data-series-id="4311" data-series-source="List of Infinity Train episodes">
+				<div class="title">Infinity Train S02E05</div>
+			</div>
+		<div class="entry" data-series-id="4311" data-series-source="List of Infinity Train episodes">
+				<div class="title">Infinity Train S02E06</div>
+			</div>
+		<div class="entry" data-series-id="1886" data-series-source="List of Modern Family episodes">
+				<div class="title">Modern Family S11E10</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4242" data-series-source="Party of Five (2020 TV series)">
+				<div class="title">Party of Five (2020) S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4242" data-series-source="Party of Five (2020 TV series)">
+				<div class="title">Party of Five (2020) S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4202" data-series-source="Radiant (TV series)">
+				<div class="title">Radiant S02E14</div>
+			</div>
+		<div class="entry" data-series-id="2456" data-series-source="List_of_The_Real_Housewives_of_New_Jersey_episodes">
+				<div class="title">Real Housewives Of New Jersey S10E09</div>
+			</div>
+		<div class="entry" data-series-id="2148" data-series-source="Ridiculousness_(TV_series)">
+				<div class="title">Ridiculousness S16E03</div>
+			</div>
+		<div class="entry" data-series-id="1933" data-series-source="List_of_Silent_Witness_episodes">
+				<div class="title">Silent Witness S23E204</div>
+			</div>
+		<div class="entry" data-series-id="3599" data-series-source="Single Parents (TV series)">
+				<div class="title">Single Parents S02E11</div>
+			</div>
+		<div class="entry" data-series-id="4198" data-series-source="Sistas (TV series)">
+				<div class="title">Sistas S01E10</div>
+			</div>
+		<div class="entry" data-series-id="3328" data-series-source="Sisters_(Australian_TV_series)">
+				<div class="title">Sisters AU E10</div>
+			</div>
+		<div class="entry" data-series-id="4081" data-series-source="Stumptown (TV series)">
+				<div class="title">Stumptown S01E10</div>
+			</div>
+		<div class="entry" data-series-id="4281" data-series-source="The Circle (American TV series)">
+				<div class="title">The Circle S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4281" data-series-source="The Circle (American TV series)">
+				<div class="title">The Circle S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4281" data-series-source="The Circle (American TV series)">
+				<div class="title">The Circle S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4281" data-series-source="The Circle (American TV series)">
+				<div class="title">The Circle S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4250" data-series-source="The Gloaming (TV series)">
+				<div class="title">The Gloaming S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4199" data-series-source="The Oval (TV series)">
+				<div class="title">The Oval S01E10</div>
+			</div>
+		<div class="entry" data-series-id="3618" data-series-source="List of The Real Housewives of Dallas episodes">
+				<div class="title">The Real Housewives of Dallas S04E17</div>
+			</div>
+		<div class="entry" data-series-id="3542" data-series-source="List_of_The_Seven_Deadly_Sins_episodes">
+				<div class="title">The Seven Deadly Sins E65</div>
+			</div>
+		<div class="entry" data-series-id="2153" data-series-source="List_of_Vikings_episodes">
+				<div class="title">Vikings S06E06</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200109">
+		<div class="date">Thu, 09. Jan</div>
+		<div class="entry" data-series-id="3862" data-series-source="60 Days In">
+				<div class="title">60 Days In S06E02</div>
+			</div>
+		<div class="entry" data-series-id="4078" data-series-source="Carol's Second Act">
+				<div class="title">Carol's Second Act S01E11</div>
+			</div>
+		<div class="entry" data-series-id="3883" data-series-source="DC Super Hero Girls (TV series)">
+				<div class="title">DC Super Hero Girls E46</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="2808" data-series-source="List_of_Death_in_Paradise_episodes">
+				<div class="title">Death In Paradise S09E01</div>
+			</div>
+		<div class="entry" data-series-id="4252" data-series-source="Deputy (TV series)">
+				<div class="title">Deputy S01E02</div>
+			</div>
+		<div class="entry" data-series-id="3790" data-series-source="Dr. Pimple Popper (TV series)">
+				<div class="title">Dr. Pimple Popper S04E02</div>
+			</div>
+		<div class="entry" data-series-id="4085" data-series-source="Evil (TV series)">
+				<div class="title">Evil  S01E11</div>
+			</div>
+		<div class="entry" data-series-id="4058" data-series-source="Ex on the Beach (American TV series)">
+				<div class="title">Ex on the Beach US E07</div>
+			</div>
+		<div class="entry" data-series-id="3064" data-series-source="Father Brown (2013 TV series)">
+				<div class="title">Father Brown S08E04</div>
+			</div>
+		<div class="entry" data-series-id="3342" data-series-source="MTV_Floribama_Shore">
+				<div class="title">Floribama Shore S03E10</div>
+			</div>
+		<div class="entry" data-series-id="4269" data-series-source="Growing Up Hip Hop">
+				<div class="title">Growing Up Hip Hop S05E06</div>
+			</div>
+		<div class="entry" data-series-id="4321" data-series-source="How the Universe Works ">
+				<div class="title">How the Universe Works  S08E02</div>
+			</div>
+		<div class="entry" data-series-id="4311" data-series-source="List of Infinity Train episodes">
+				<div class="title">Infinity Train S02E07</div>
+			</div>
+		<div class="entry" data-series-id="4311" data-series-source="List of Infinity Train episodes">
+				<div class="title">Infinity Train S02E08</div>
+			</div>
+		<div class="entry" data-series-id="2040" data-series-source="List of Last Man Standing episodes">
+				<div class="title">Last Man Standing S08E03</div>
+			</div>
+		<div class="entry" data-series-id="2040" data-series-source="List of Last Man Standing episodes">
+				<div class="title">Last Man Standing S08E04</div>
+			</div>
+		<div class="entry" data-series-id="268" data-series-source="List of Law &amp; Order: Special Victims Unit episodes">
+				<div class="title">Law &amp; Order SVU S21E10</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="329" data-series-source="List of Mayday episodes">
+				<div class="title">Mayday S20E01</div>
+			</div>
+		<div class="entry" data-series-id="2268" data-series-source="List_of_Mom_episodes">
+				<div class="title">Mom S07E11</div>
+			</div>
+		<div class="entry" data-series-id="4109" data-series-source="Perfect Harmony (TV series)">
+				<div class="title">Perfect Harmony S01E11</div>
+			</div>
+		<div class="entry" data-series-id="2148" data-series-source="Ridiculousness_(TV_series)">
+				<div class="title">Ridiculousness S16E04</div>
+			</div>
+		<div class="entry" data-series-id="4088" data-series-source="Star Trek: Short Treks">
+				<div class="title">Star Trek Short Treks S02E06</div>
+			</div>
+		<div class="entry" data-series-id="4319" data-series-source="Super Dragon Ball Heroes (anime)">
+				<div class="title">Super Dragon Ball Heroes S02E13</div>
+			</div>
+		<div class="entry" data-series-id="2773" data-series-source="List_of_Superstore_episodes">
+				<div class="title">Superstore S05E11</div>
+			</div>
+		<div class="entry" data-series-id="3674" data-series-source="Tell Me a Story (TV series)">
+				<div class="title">Tell Me a Story S02E06</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3691" data-series-source="The Detectives (2018 TV series)">
+				<div class="title">The Detectives S03E01</div>
+			</div>
+		<div class="entry" data-series-id="2957" data-series-source="List_of_The_Good_Place_episodes">
+				<div class="title">The Good Place S04E10</div>
+			</div>
+		<div class="entry" data-series-id="4082" data-series-source="The Unicorn (TV series)">
+				<div class="title">The Unicorn S01E11</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3628" data-series-source="Very Cavallari">
+				<div class="title">Very Cavallari S03E01</div>
+			</div>
+		<div class="entry" data-series-id="2077" data-series-source="List of Will &amp; Grace episodes">
+				<div class="title">Will &amp; Grace S11E06</div>
+			</div>
+		<div class="entry" data-series-id="3181" data-series-source="Young_Sheldon">
+				<div class="title">Young Sheldon S03E11</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200110">
+		<div class="date">Fri, 10. Jan</div>
+		<div class="entry series-premiere" data-series-id="3894" data-series-source="AJ and the Queen">
+				<div class="title">AJ and the Queen S01E01</div>
+			</div>
+		<div class="entry" data-series-id="3894" data-series-source="AJ and the Queen">
+				<div class="title">AJ and the Queen S01E02</div>
+			</div>
+		<div class="entry" data-series-id="3894" data-series-source="AJ and the Queen">
+				<div class="title">AJ and the Queen S01E03</div>
+			</div>
+		<div class="entry" data-series-id="3894" data-series-source="AJ and the Queen">
+				<div class="title">AJ and the Queen S01E04</div>
+			</div>
+		<div class="entry" data-series-id="3894" data-series-source="AJ and the Queen">
+				<div class="title">AJ and the Queen S01E05</div>
+			</div>
+		<div class="entry" data-series-id="3894" data-series-source="AJ and the Queen">
+				<div class="title">AJ and the Queen S01E06</div>
+			</div>
+		<div class="entry" data-series-id="3894" data-series-source="AJ and the Queen">
+				<div class="title">AJ and the Queen S01E07</div>
+			</div>
+		<div class="entry" data-series-id="3894" data-series-source="AJ and the Queen">
+				<div class="title">AJ and the Queen S01E08</div>
+			</div>
+		<div class="entry" data-series-id="3894" data-series-source="AJ and the Queen">
+				<div class="title">AJ and the Queen S01E09</div>
+			</div>
+		<div class="entry" data-series-id="3894" data-series-source="AJ and the Queen">
+				<div class="title">AJ and the Queen S01E10</div>
+			</div>
+		<div class="entry" data-series-id="1839" data-series-source="List of Blue Bloods episodes">
+				<div class="title">Blue Bloods S10E12</div>
+			</div>
+		<div class="entry" data-series-id="2695" data-series-source="Bunk'd">
+				<div class="title">Bunk'd S04E16</div>
+			</div>
+		<div class="entry" data-series-id="3007" data-series-source="Elena_of_Avalor">
+				<div class="title">Elena Of Avalor S03E18</div>
+			</div>
+		<div class="entry" data-series-id="4239" data-series-source="Encore! (TV series)">
+				<div class="title">Encore S01E10</div>
+			</div>
+		<div class="entry" data-series-id="3064" data-series-source="Father Brown (2013 TV series)">
+				<div class="title">Father Brown S08E05</div>
+			</div>
+		<div class="entry" data-series-id="4158" data-series-source="Gabby_Duran_and_the_Unsittables#Episodes">
+				<div class="title">Gabby Duran and The Unsittables S01E10</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="2851" data-series-source="Grantchester_(TV_series)#Episode_list">
+				<div class="title">Grantchester S05E01</div>
+			</div>
+		<div class="entry" data-series-id="4112" data-series-source="Harley Quinn (TV series)">
+				<div class="title">Harley Quinn S01E07</div>
+			</div>
+		<div class="entry" data-series-id="327" data-series-source="List of Hawaii Five-0 (2010 TV series) episodes">
+				<div class="title">Hawaii Five-0 S10E13</div>
+			</div>
+		<div class="entry" data-series-id="4063" data-series-source="High School Musical: The Musical: The Series">
+				<div class="title">High School Musical: The Musical: The Series S01E10</div>
+			</div>
+		<div class="entry" data-series-id="4311" data-series-source="List of Infinity Train episodes">
+				<div class="title">Infinity Train S02E09</div>
+			</div>
+		<div class="entry" data-series-id="4311" data-series-source="List of Infinity Train episodes">
+				<div class="title">Infinity Train S02E10</div>
+			</div>
+		<div class="entry" data-series-id="4272" data-series-source="Joe Pera Talks with You">
+				<div class="title">Joe Pera Talks with You S02E07</div>
+			</div>
+		<div class="entry" data-series-id="4272" data-series-source="Joe Pera Talks with You">
+				<div class="title">Joe Pera Talks with You S02E08</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4245" data-series-source="Lincoln Rhyme: Hunt for the Bone Collector">
+				<div class="title">Lincoln Rhyme: Hunt for the Bone Collector S01E01</div>
+			</div>
+		<div class="entry" data-series-id="3567" data-series-source="Magnum P.I. (2018 TV series)">
+				<div class="title">Magnum P.I. S02E13</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4316" data-series-source="Medical Police">
+				<div class="title">Medical Police S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4316" data-series-source="Medical Police">
+				<div class="title">Medical Police S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4316" data-series-source="Medical Police">
+				<div class="title">Medical Police S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4316" data-series-source="Medical Police">
+				<div class="title">Medical Police S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4316" data-series-source="Medical Police">
+				<div class="title">Medical Police S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4316" data-series-source="Medical Police">
+				<div class="title">Medical Police S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4316" data-series-source="Medical Police">
+				<div class="title">Medical Police S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4316" data-series-source="Medical Police">
+				<div class="title">Medical Police S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4316" data-series-source="Medical Police">
+				<div class="title">Medical Police S01E09</div>
+			</div>
+		<div class="entry" data-series-id="4316" data-series-source="Medical Police">
+				<div class="title">Medical Police S01E10</div>
+			</div>
+		<div class="entry" data-series-id="540" data-series-source="List_of_QI_episodes">
+				<div class="title">QI S17E11</div>
+			</div>
+		<div class="entry" data-series-id="4213" data-series-source="Servant (TV series)">
+				<div class="title">Servant S01E09</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3659" data-series-source="Sick of It (TV series)">
+				<div class="title">Sick of It  S02E01</div>
+			</div>
+		<div class="entry" data-series-id="3659" data-series-source="Sick of It (TV series)">
+				<div class="title">Sick of It  S02E02</div>
+			</div>
+		<div class="entry" data-series-id="89" data-series-source="List of The Graham Norton Show episodes">
+				<div class="title">The Graham Norton Show S26E15</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4249" data-series-source="The New Pope">
+				<div class="title">The New Pope S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4249" data-series-source="The New Pope">
+				<div class="title">The New Pope S01E02</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4264" data-series-source="The Owl House (TV series)">
+				<div class="title">The Owl House S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4222" data-series-source="The World According to Jeff Goldblum">
+				<div class="title">The World According to Jeff Goldblum S01E10</div>
+			</div>
+		<div class="entry" data-series-id="2746" data-series-source="Truth Be Told (2019 TV series)">
+				<div class="title">Truth Be Told S01E08</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200111">
+		<div class="date">Sat, 11. Jan</div>
+		<div class="entry" data-series-id="3335" data-series-source="Big Hero 6: The Series">
+				<div class="title">Big Hero 6: The Series S02E20</div>
+			</div>
+		<div class="entry" data-series-id="3701" data-series-source="List of Case Closed episodes (seasons 16&ndash;current)">
+				<div class="title">Case Closed S27E966</div>
+			</div>
+		<div class="entry" data-series-id="3148" data-series-source="List of Casualty episodes">
+				<div class="title">Casualty S34E19</div>
+			</div>
+		<div class="entry" data-series-id="3256" data-series-source="Henry Danger">
+				<div class="title">Henry Danger S05E29</div>
+			</div>
+		<div class="entry" data-series-id="3465" data-series-source="List_of_My_Hero_Academia_episodes">
+				<div class="title">My Hero Academia S04E13</div>
+			</div>
+		<div class="entry" data-series-id="2612" data-series-source="Thunderbirds_Are_Go_(TV_series)">
+				<div class="title">Thunderbirds Are Go S03E20</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200112">
+		<div class="date">Sun, 12. Jan</div>
+		<div class="entry" data-series-id="4008" data-series-source="Ball_in_the_Family#Episodes">
+				<div class="title">Ball in the Family S05E18</div>
+			</div>
+		<div class="entry" data-series-id="3962" data-series-source="Bless the Harts">
+				<div class="title">Bless the Harts S01E10</div>
+			</div>
+		<div class="entry" data-series-id="1914" data-series-source="List of Bob's Burgers episodes">
+				<div class="title">Bobs Burgers S10E11</div>
+			</div>
+		<div class="entry" data-series-id="3212" data-series-source="List_of_Boruto:_Naruto_Next_Generations_episodes">
+				<div class="title">Boruto: Naruto Next Generations S01E139</div>
+			</div>
+		<div class="entry" data-series-id="2786" data-series-source="List_of_Call_the_Midwife_episodes">
+				<div class="title">Call The Midwife S09E72</div>
+			</div>
+		<div class="entry" data-series-id="4247" data-series-source="Dare Me (TV series)">
+				<div class="title">Dare Me S01E03</div>
+			</div>
+		<div class="entry" data-series-id="2455" data-series-source="List of Doctor Who episodes (2005&ndash;present)">
+				<div class="title">Doctor Who S12E03</div>
+			</div>
+		<div class="entry" data-series-id="1610" data-series-source="List of Gegege no Kitaro episodes">
+				<div class="title">Gegege no Kitaro E88</div>
+			</div>
+		<div class="entry" data-series-id="3593" data-series-source="God Friended Me">
+				<div class="title">God Friended Me S02E12</div>
+			</div>
+		<div class="entry" data-series-id="2558" data-series-source="Mike_Tyson_Mysteries">
+				<div class="title">Mike Tyson Mysteries S04E12</div>
+			</div>
+		<div class="entry" data-series-id="2558" data-series-source="Mike_Tyson_Mysteries">
+				<div class="title">Mike Tyson Mysteries S04E13</div>
+			</div>
+		<div class="entry" data-series-id="2854" data-series-source="Naked_and_Afraid">
+				<div class="title">Naked And Afraid S11E04</div>
+			</div>
+		<div class="entry" data-series-id="2854" data-series-source="Naked_and_Afraid">
+				<div class="title">Naked And Afraid S11E05</div>
+			</div>
+		<div class="entry" data-series-id="1149" data-series-source="List of NCIS: Los Angeles episodes">
+				<div class="title">NCIS: Los Angeles S11E13</div>
+			</div>
+		<div class="entry" data-series-id="3011" data-series-source="List_of_One_Piece_episodes_(seasons_15&ndash;current)">
+				<div class="title">One Piece S20E917</div>
+			</div>
+		<div class="entry" data-series-id="4228" data-series-source="On the Case with Paula Zahn">
+				<div class="title">On the Case with Paula Zahn S19E13</div>
+			</div>
+		<div class="entry" data-series-id="2421" data-series-source="List_of_Power_episodes">
+				<div class="title">Power S06E12</div>
+			</div>
+		<div class="entry" data-series-id="2215" data-series-source="Ray_Donovan_(TV_series)">
+				<div class="title">Ray Donovan S07E09</div>
+			</div>
+		<div class="entry" data-series-id="1245" data-series-source="List of Shameless (U.S. TV series) episodes">
+				<div class="title">Shameless US S10E10</div>
+			</div>
+		<div class="entry" data-series-id="1853" data-series-source="List of Shark Tank (TV series) episodes">
+				<div class="title">Shark Tank S11E11</div>
+			</div>
+		<div class="entry" data-series-id="3653" data-series-source="Star Wars Resistance">
+				<div class="title">Star Wars Resistance S02E15</div>
+			</div>
+		<div class="entry" data-series-id="3653" data-series-source="Star Wars Resistance">
+				<div class="title">Star Wars Resistance S02E16</div>
+			</div>
+		<div class="entry" data-series-id="3122" data-series-source="Tangled: The Series">
+				<div class="title">Tangled: The Series S03E10</div>
+			</div>
+		<div class="entry" data-series-id="4236" data-series-source="The L Word: Generation Q">
+				<div class="title">The L Word: Generation Q S01E06</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4212" data-series-source="The Outsider (miniseries)">
+				<div class="title">The Outsider S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4212" data-series-source="The Outsider (miniseries)">
+				<div class="title">The Outsider S01E02</div>
+			</div>
+		<div class="entry" data-series-id="785" data-series-source="List of The Real Housewives of Atlanta episodes">
+				<div class="title">The Real Housewives of Atlanta S12E11</div>
+			</div>
+		<div class="entry" data-series-id="4302" data-series-source="The Trial of Christine Keeler">
+				<div class="title">The Trial of Christine Keeler S01E04</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3388" data-series-source="Vera (TV series)">
+				<div class="title">Vera S10E01</div>
+			</div>
+		<div class="entry" data-series-id="4289" data-series-source="Work in Progress (TV series)">
+				<div class="title">Work in Progress S01E06</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200113">
+		<div class="date">Mon, 13. Jan</div>
+		<div class="entry" data-series-id="803" data-series-source="List of American Greed episodes">
+				<div class="title">American Greed S13E178</div>
+			</div>
+		<div class="entry" data-series-id="2960" data-series-source="List_of_Below_Deck_episodes">
+				<div class="title">Below Deck S07E15</div>
+			</div>
+		<div class="entry" data-series-id="3815" data-series-source="Coroner (TV series)">
+				<div class="title">Coroner S02E02</div>
+			</div>
+		<div class="entry" data-series-id="3064" data-series-source="Father Brown (2013 TV series)">
+				<div class="title">Father Brown S08E06</div>
+			</div>
+		<div class="entry" data-series-id="348" data-series-source="List of Frontline (PBS) episodes">
+				<div class="title">Frontline (PBS) S38E08</div>
+			</div>
+		<div class="entry" data-series-id="4275" data-series-source="List_of_Love_&amp;_Hip_Hop:_Miami_episodes">
+				<div class="title">Love &amp; Hip Hop: Miami S03E02</div>
+			</div>
+		<div class="entry" data-series-id="4274" data-series-source="List_of_Love_&amp;_Hip_Hop:_New_York_episodes">
+				<div class="title">Love &amp; Hip Hop: New York S10E06</div>
+			</div>
+		<div class="entry" data-series-id="3547" data-series-source="Manifest_(TV_series)">
+				<div class="title">Manifest S02E02</div>
+			</div>
+		<div class="entry" data-series-id="617" data-series-source="List of Murdoch Mysteries episodes">
+				<div class="title">Murdoch Mysteries S13E11</div>
+			</div>
+		<div class="entry" data-series-id="2148" data-series-source="Ridiculousness_(TV_series)">
+				<div class="title">Ridiculousness S16E05</div>
+			</div>
+		<div class="entry" data-series-id="1933" data-series-source="List_of_Silent_Witness_episodes">
+				<div class="title">Silent Witness S23E205</div>
+			</div>
+		<div class="entry" data-series-id="3226" data-series-source="List of The Good Doctor episodes">
+				<div class="title">The Good Doctor S03E11</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4286" data-series-source="The Healing Powers of Dude">
+				<div class="title">The Healing Powers of Dude S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4286" data-series-source="The Healing Powers of Dude">
+				<div class="title">The Healing Powers of Dude S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4286" data-series-source="The Healing Powers of Dude">
+				<div class="title">The Healing Powers of Dude S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4286" data-series-source="The Healing Powers of Dude">
+				<div class="title">The Healing Powers of Dude S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4286" data-series-source="The Healing Powers of Dude">
+				<div class="title">The Healing Powers of Dude S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4286" data-series-source="The Healing Powers of Dude">
+				<div class="title">The Healing Powers of Dude S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4286" data-series-source="The Healing Powers of Dude">
+				<div class="title">The Healing Powers of Dude S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4286" data-series-source="The Healing Powers of Dude">
+				<div class="title">The Healing Powers of Dude S01E08</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200114">
+		<div class="date">Tue, 14. Jan</div>
+		<div class="entry" data-series-id="2115" data-series-source="List_of_Arrow_episodes">
+				<div class="title">Arrow S08E08</div>
+			</div>
+		<div class="entry" data-series-id="3574" data-series-source="List_of_Black_Clover_episodes">
+				<div class="title">Black Clover S03E117</div>
+			</div>
+		<div class="entry" data-series-id="2487" data-series-source="List_of_Black-ish_episodes">
+				<div class="title">Blackish S06E12</div>
+			</div>
+		<div class="entry" data-series-id="4305" data-series-source="List of Ellen's Game of Games episodes">
+				<div class="title">Ellen's Game of Games S03E03</div>
+			</div>
+		<div class="entry" data-series-id="4055" data-series-source="Emergence (TV series)">
+				<div class="title">Emergence S01E11</div>
+			</div>
+		<div class="entry" data-series-id="3064" data-series-source="Father Brown (2013 TV series)">
+				<div class="title">Father Brown S08E07</div>
+			</div>
+		<div class="entry" data-series-id="3573" data-series-source="FBI_(TV_series)#Episodes">
+				<div class="title">FBI S01E02</div>
+			</div>
+		<div class="entry" data-series-id="3573" data-series-source="FBI_(TV_series)#Episodes">
+				<div class="title">FBI S02E12</div>
+			</div>
+		<div class="entry" data-series-id="4067" data-series-source="FBI: Most Wanted">
+				<div class="title">FBI: Most Wanted S01E02</div>
+			</div>
+		<div class="entry" data-series-id="3792" data-series-source="Finding Your Roots">
+				<div class="title">Finding Your Roots S06E04</div>
+			</div>
+		<div class="entry" data-series-id="3521" data-series-source="Gordon_Ramsay's_24_Hours_to_Hell_and_Back">
+				<div class="title">Gordon Ramsays 24 Hours to Hell &amp; Back S03E02</div>
+			</div>
+		<div class="entry" data-series-id="2432" data-series-source="List_of_The_Haves_and_the_Have_Nots_(TV_series)_episodes">
+				<div class="title">Haves And The Have Nots S07E02</div>
+			</div>
+		<div class="entry" data-series-id="3911" data-series-source="Hudson &amp; Rex">
+				<div class="title">Hudson &amp; Rex S02E11</div>
+			</div>
+		<div class="entry" data-series-id="3031" data-series-source="Kim's_Convenience_(TV_series)">
+				<div class="title">Kim's Convenience S04E02</div>
+			</div>
+		<div class="entry" data-series-id="2739" data-series-source="List_of_Legends_of_Tomorrow_episodes">
+				<div class="title">Legends of Tomorrow Crisis on Infinite Earths: Part Five</div>
+			</div>
+		<div class="entry" data-series-id="747" data-series-source="List of Midsomer Murders episodes">
+				<div class="title">Midsomer Murders S20E06</div>
+			</div>
+		<div class="entry" data-series-id="4093" data-series-source="Mixed-ish">
+				<div class="title">Mixed-ish S01E12</div>
+			</div>
+		<div class="entry" data-series-id="993" data-series-source="List of NCIS episodes">
+				<div class="title">NCIS S17E12</div>
+			</div>
+		<div class="entry" data-series-id="3544" data-series-source="New_Amsterdam_(2018_TV_series)">
+				<div class="title">New Amsterdam S02E10</div>
+			</div>
+		<div class="entry" data-series-id="2148" data-series-source="Ridiculousness_(TV_series)">
+				<div class="title">Ridiculousness S16E06</div>
+			</div>
+		<div class="entry" data-series-id="2597" data-series-source="List of Schitt's Creek episodes">
+				<div class="title">Schitts Creek S06E02</div>
+			</div>
+		<div class="entry" data-series-id="3282" data-series-source="Siesta_Key_(TV_series)">
+				<div class="title">Siesta Key S03E02</div>
+			</div>
+		<div class="entry" data-series-id="1933" data-series-source="List_of_Silent_Witness_episodes">
+				<div class="title">Silent Witness S23E206</div>
+			</div>
+		<div class="entry" data-series-id="2800" data-series-source="List of The Curse of Oak Island episodes">
+				<div class="title">The Curse of Oak Island S07E09</div>
+			</div>
+		<div class="entry" data-series-id="3360" data-series-source="List of The Resident episodes">
+				<div class="title">The Resident S03E12</div>
+			</div>
+		<div class="entry" data-series-id="2961" data-series-source="List of This Is Us episodes">
+				<div class="title">This Is Us S04E10</div>
+			</div>
+		<div class="entry" data-series-id="2302" data-series-source="List of Vanderpump Rules episodes">
+				<div class="title">Vanderpump Rules S08E02</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200115">
+		<div class="date">Wed, 15. Jan</div>
+		<div class="entry series-premiere" data-series-id="4295" data-series-source="68 Whiskey">
+				<div class="title">68 Whiskey S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4054" data-series-source="Almost Family">
+				<div class="title">Almost Family S01E11</div>
+			</div>
+		<div class="entry" data-series-id="3648" data-series-source="Black Ink Crew: Chicago">
+				<div class="title">Black Ink Crew Chicago S06E07</div>
+			</div>
+		<div class="entry" data-series-id="3648" data-series-source="Black Ink Crew: Chicago">
+				<div class="title">Black Ink Crew Chicago S06E07</div>
+			</div>
+		<div class="entry" data-series-id="3375" data-series-source="Burden_of_Truth_(TV_series)">
+				<div class="title">Burden of Truth S03E02</div>
+			</div>
+		<div class="entry" data-series-id="2131" data-series-source="List_of_Chicago_Fire_episodes">
+				<div class="title">Chicago Fire S08E11</div>
+			</div>
+		<div class="entry" data-series-id="2728" data-series-source="List_of_Chicago_Med_episodes">
+				<div class="title">Chicago Med S05E11</div>
+			</div>
+		<div class="entry" data-series-id="2295" data-series-source="List_of_Chicago_P.D._episodes">
+				<div class="title">Chicago PD S07E11</div>
+			</div>
+		<div class="entry" data-series-id="1213" data-series-source="List of Criminal Minds episodes">
+				<div class="title">Criminal Minds S15E03</div>
+			</div>
+		<div class="entry" data-series-id="3064" data-series-source="Father Brown (2013 TV series)">
+				<div class="title">Father Brown S08E08</div>
+			</div>
+		<div class="entry" data-series-id="3600" data-series-source="Good Trouble (TV series)">
+				<div class="title">Good Trouble S02E11</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="2881" data-series-source="List of Grace and Frankie episodes">
+				<div class="title">Grace and Frankie S06E01</div>
+			</div>
+		<div class="entry" data-series-id="1955" data-series-source="List of Holby City episodes">
+				<div class="title">Holby City S22E02</div>
+			</div>
+		<div class="entry" data-series-id="1886" data-series-source="List of Modern Family episodes">
+				<div class="title">Modern Family S11E11</div>
+			</div>
+		<div class="entry" data-series-id="4040" data-series-source="Nancy Drew (2019 TV series)">
+				<div class="title">Nancy Drew  S01E10</div>
+			</div>
+		<div class="entry" data-series-id="4242" data-series-source="Party of Five (2020 TV series)">
+				<div class="title">Party of Five (2020) S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4202" data-series-source="Radiant (TV series)">
+				<div class="title">Radiant S02E15</div>
+			</div>
+		<div class="entry" data-series-id="2456" data-series-source="List_of_The_Real_Housewives_of_New_Jersey_episodes">
+				<div class="title">Real Housewives Of New Jersey S10E10</div>
+			</div>
+		<div class="entry" data-series-id="3753" data-series-source="Schooled (TV series)">
+				<div class="title">Schooled S02E11</div>
+			</div>
+		<div class="entry" data-series-id="3599" data-series-source="Single Parents (TV series)">
+				<div class="title">Single Parents S02E12</div>
+			</div>
+		<div class="entry" data-series-id="3328" data-series-source="Sisters_(Australian_TV_series)">
+				<div class="title">Sisters AU E11</div>
+			</div>
+		<div class="entry" data-series-id="4081" data-series-source="Stumptown (TV series)">
+				<div class="title">Stumptown S01E11</div>
+			</div>
+		<div class="entry" data-series-id="3307" data-series-source="S.W.A.T._(2017_TV_series)">
+				<div class="title">S.W.A.T S03E11</div>
+			</div>
+		<div class="entry" data-series-id="4281" data-series-source="The Circle (American TV series)">
+				<div class="title">The Circle S01E09</div>
+			</div>
+		<div class="entry" data-series-id="4281" data-series-source="The Circle (American TV series)">
+				<div class="title">The Circle S01E10</div>
+			</div>
+		<div class="entry" data-series-id="4281" data-series-source="The Circle (American TV series)">
+				<div class="title">The Circle S01E11</div>
+			</div>
+		<div class="entry" data-series-id="4281" data-series-source="The Circle (American TV series)">
+				<div class="title">The Circle S01E12</div>
+			</div>
+		<div class="entry" data-series-id="4250" data-series-source="The Gloaming (TV series)">
+				<div class="title">The Gloaming S01E03</div>
+			</div>
+		<div class="entry" data-series-id="2319" data-series-source="List_of_The_Goldbergs_episodes">
+				<div class="title">The Goldbergs S07E11</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="1723" data-series-source="The_Magicians_(U.S._TV_series)">
+				<div class="title">The Magicians US S05E01</div>
+			</div>
+		<div class="entry" data-series-id="3542" data-series-source="List_of_The_Seven_Deadly_Sins_episodes">
+				<div class="title">The Seven Deadly Sins E66</div>
+			</div>
+		<div class="entry" data-series-id="2153" data-series-source="List_of_Vikings_episodes">
+				<div class="title">Vikings S06E07</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200116">
+		<div class="date">Thu, 16. Jan</div>
+		<div class="entry" data-series-id="3862" data-series-source="60 Days In">
+				<div class="title">60 Days In S06E03</div>
+			</div>
+		<div class="entry" data-series-id="4078" data-series-source="Carol's Second Act">
+				<div class="title">Carol's Second Act S01E12</div>
+			</div>
+		<div class="entry" data-series-id="2808" data-series-source="List_of_Death_in_Paradise_episodes">
+				<div class="title">Death In Paradise S09E02</div>
+			</div>
+		<div class="entry" data-series-id="4252" data-series-source="Deputy (TV series)">
+				<div class="title">Deputy S01E03</div>
+			</div>
+		<div class="entry" data-series-id="3790" data-series-source="Dr. Pimple Popper (TV series)">
+				<div class="title">Dr. Pimple Popper S04E03</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4307" data-series-source="Draft:Everything's Gonna Be Okay (TV series)">
+				<div class="title">Everything's Gonna Be Okay S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4307" data-series-source="Draft:Everything's Gonna Be Okay (TV series)">
+				<div class="title">Everything's Gonna Be Okay S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4085" data-series-source="Evil (TV series)">
+				<div class="title">Evil  S01E12</div>
+			</div>
+		<div class="entry" data-series-id="4058" data-series-source="Ex on the Beach (American TV series)">
+				<div class="title">Ex on the Beach US E08</div>
+			</div>
+		<div class="entry" data-series-id="3064" data-series-source="Father Brown (2013 TV series)">
+				<div class="title">Father Brown S08E09</div>
+			</div>
+		<div class="entry" data-series-id="3342" data-series-source="MTV_Floribama_Shore">
+				<div class="title">Floribama Shore S03E11</div>
+			</div>
+		<div class="entry" data-series-id="4269" data-series-source="Growing Up Hip Hop">
+				<div class="title">Growing Up Hip Hop S05E07</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3345" data-series-source="Grown-ish">
+				<div class="title">Grown-ish S03E01</div>
+			</div>
+		<div class="entry" data-series-id="4321" data-series-source="How the Universe Works ">
+				<div class="title">How the Universe Works  S08E03</div>
+			</div>
+		<div class="entry" data-series-id="2040" data-series-source="List of Last Man Standing episodes">
+				<div class="title">Last Man Standing S08E05</div>
+			</div>
+		<div class="entry" data-series-id="2040" data-series-source="List of Last Man Standing episodes">
+				<div class="title">Last Man Standing S08E06</div>
+			</div>
+		<div class="entry" data-series-id="268" data-series-source="List of Law &amp; Order: Special Victims Unit episodes">
+				<div class="title">Law &amp; Order SVU S21E11</div>
+			</div>
+		<div class="entry" data-series-id="3571" data-series-source="Legacies_(TV_series)">
+				<div class="title">Legacies S02E09</div>
+			</div>
+		<div class="entry" data-series-id="329" data-series-source="List of Mayday episodes">
+				<div class="title">Mayday S20E02</div>
+			</div>
+		<div class="entry" data-series-id="2268" data-series-source="List_of_Mom_episodes">
+				<div class="title">Mom S07E12</div>
+			</div>
+		<div class="entry" data-series-id="4109" data-series-source="Perfect Harmony (TV series)">
+				<div class="title">Perfect Harmony S01E12</div>
+			</div>
+		<div class="entry" data-series-id="564" data-series-source="List of Supernatural episodes">
+				<div class="title">Supernatural S15E09</div>
+			</div>
+		<div class="entry" data-series-id="2773" data-series-source="List_of_Superstore_episodes">
+				<div class="title">Superstore S05E12</div>
+			</div>
+		<div class="entry" data-series-id="3691" data-series-source="The Detectives (2018 TV series)">
+				<div class="title">The Detectives S03E02</div>
+			</div>
+		<div class="entry" data-series-id="2957" data-series-source="List_of_The_Good_Place_episodes">
+				<div class="title">The Good Place S04E11</div>
+			</div>
+		<div class="entry" data-series-id="3628" data-series-source="Very Cavallari">
+				<div class="title">Very Cavallari S03E02</div>
+			</div>
+		<div class="entry" data-series-id="2077" data-series-source="List of Will &amp; Grace episodes">
+				<div class="title">Will &amp; Grace S11E07</div>
+			</div>
+		<div class="entry" data-series-id="3181" data-series-source="Young_Sheldon">
+				<div class="title">Young Sheldon S03E12</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200117">
+		<div class="date">Fri, 17. Jan</div>
+		<div class="entry" data-series-id="2963" data-series-source="List of American Housewife episodes">
+				<div class="title">American Housewife S04E11</div>
+			</div>
+		<div class="entry" data-series-id="871" data-series-source="List of Bubble Guppies episodes">
+				<div class="title">Bubble Guppies S05E06</div>
+			</div>
+		<div class="entry" data-series-id="2695" data-series-source="Bunk'd">
+				<div class="title">Bunk'd S04E17</div>
+			</div>
+		<div class="entry" data-series-id="3511" data-series-source="List of Charmed (2018 TV series) episodes">
+				<div class="title">Charmed (2018) S02E09</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4285" data-series-source="Diary of a Future President">
+				<div class="title">Diary of a Future President S01E01</div>
+			</div>
+		<div class="entry" data-series-id="3189" data-series-source="List of Dynasty (2017 TV series) episodes">
+				<div class="title">Dynasty 2017 S03E09</div>
+			</div>
+		<div class="entry" data-series-id="4239" data-series-source="Encore! (TV series)">
+				<div class="title">Encore S01E11</div>
+			</div>
+		<div class="entry" data-series-id="3064" data-series-source="Father Brown (2013 TV series)">
+				<div class="title">Father Brown S08E10</div>
+			</div>
+		<div class="entry" data-series-id="2561" data-series-source="List of Fresh Off the Boat episodes">
+				<div class="title">Fresh Off The Boat S06E11</div>
+			</div>
+		<div class="entry" data-series-id="4158" data-series-source="Gabby_Duran_and_the_Unsittables#Episodes">
+				<div class="title">Gabby Duran and The Unsittables S01E11</div>
+			</div>
+		<div class="entry" data-series-id="4272" data-series-source="Joe Pera Talks with You">
+				<div class="title">Joe Pera Talks with You S02E09</div>
+			</div>
+		<div class="entry" data-series-id="4272" data-series-source="Joe Pera Talks with You">
+				<div class="title">Joe Pera Talks with You S02E10</div>
+			</div>
+		<div class="entry" data-series-id="4245" data-series-source="Lincoln Rhyme: Hunt for the Bone Collector">
+				<div class="title">Lincoln Rhyme: Hunt for the Bone Collector S01E02</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4313" data-series-source="Little America (TV series)">
+				<div class="title">Little America S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4313" data-series-source="Little America (TV series)">
+				<div class="title">Little America S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4313" data-series-source="Little America (TV series)">
+				<div class="title">Little America S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4313" data-series-source="Little America (TV series)">
+				<div class="title">Little America S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4313" data-series-source="Little America (TV series)">
+				<div class="title">Little America S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4313" data-series-source="Little America (TV series)">
+				<div class="title">Little America S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4313" data-series-source="Little America (TV series)">
+				<div class="title">Little America S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4313" data-series-source="Little America (TV series)">
+				<div class="title">Little America S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4313" data-series-source="Little America (TV series)">
+				<div class="title">Little America S01E09</div>
+			</div>
+		<div class="entry" data-series-id="4313" data-series-source="Little America (TV series)">
+				<div class="title">Little America S01E10</div>
+			</div>
+		<div class="entry" data-series-id="3061" data-series-source="Mickey and the Roadster Racers">
+				<div class="title">Mickey and the Roadster Racers E00</div>
+			</div>
+		<div class="entry" data-series-id="3061" data-series-source="Mickey and the Roadster Racers">
+				<div class="title">Mickey and the Roadster Racers E00</div>
+			</div>
+		<div class="entry" data-series-id="540" data-series-source="List_of_QI_episodes">
+				<div class="title">QI S17E12</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="1505" data-series-source="List of Real Time with Bill Maher episodes">
+				<div class="title">Real Time with Bill Maher S18E01</div>
+			</div>
+		<div class="entry" data-series-id="4213" data-series-source="Servant (TV series)">
+				<div class="title">Servant S01E10</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3774" data-series-source="Sex Education (TV series)">
+				<div class="title">Sex Education S02E01</div>
+			</div>
+		<div class="entry" data-series-id="3774" data-series-source="Sex Education (TV series)">
+				<div class="title">Sex Education S02E02</div>
+			</div>
+		<div class="entry" data-series-id="3774" data-series-source="Sex Education (TV series)">
+				<div class="title">Sex Education S02E03</div>
+			</div>
+		<div class="entry" data-series-id="3774" data-series-source="Sex Education (TV series)">
+				<div class="title">Sex Education S02E04</div>
+			</div>
+		<div class="entry" data-series-id="3774" data-series-source="Sex Education (TV series)">
+				<div class="title">Sex Education S02E05</div>
+			</div>
+		<div class="entry" data-series-id="3774" data-series-source="Sex Education (TV series)">
+				<div class="title">Sex Education S02E06</div>
+			</div>
+		<div class="entry" data-series-id="3774" data-series-source="Sex Education (TV series)">
+				<div class="title">Sex Education S02E07</div>
+			</div>
+		<div class="entry" data-series-id="3774" data-series-source="Sex Education (TV series)">
+				<div class="title">Sex Education S02E08</div>
+			</div>
+		<div class="entry" data-series-id="3659" data-series-source="Sick of It (TV series)">
+				<div class="title">Sick of It  S02E03</div>
+			</div>
+		<div class="entry" data-series-id="3659" data-series-source="Sick of It (TV series)">
+				<div class="title">Sick of It  S02E04</div>
+			</div>
+		<div class="entry" data-series-id="89" data-series-source="List of The Graham Norton Show episodes">
+				<div class="title">The Graham Norton Show S26E16</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="2986" data-series-source="List_of_The_Last_Leg_episodes">
+				<div class="title">The Last Leg S19E01</div>
+			</div>
+		<div class="entry" data-series-id="4249" data-series-source="The New Pope">
+				<div class="title">The New Pope S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4249" data-series-source="The New Pope">
+				<div class="title">The New Pope S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4264" data-series-source="The Owl House (TV series)">
+				<div class="title">The Owl House S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4222" data-series-source="The World According to Jeff Goldblum">
+				<div class="title">The World According to Jeff Goldblum S01E11</div>
+			</div>
+		<div class="entry" data-series-id="2746" data-series-source="Truth Be Told (2019 TV series)">
+				<div class="title">Truth Be Told S01E09</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200118">
+		<div class="date">Sat, 18. Jan</div>
+		<div class="entry" data-series-id="762" data-series-source="List of All That episodes">
+				<div class="title">All That S11E15</div>
+			</div>
+		<div class="entry" data-series-id="3335" data-series-source="Big Hero 6: The Series">
+				<div class="title">Big Hero 6: The Series S02E21</div>
+			</div>
+		<div class="entry" data-series-id="3701" data-series-source="List of Case Closed episodes (seasons 16&ndash;current)">
+				<div class="title">Case Closed S27E967</div>
+			</div>
+		<div class="entry" data-series-id="3256" data-series-source="Henry Danger">
+				<div class="title">Henry Danger S05E30</div>
+			</div>
+		<div class="entry" data-series-id="1883" data-series-source="List of SpongeBob SquarePants episodes">
+				<div class="title">SpongeBob SquarePants S12E25</div>
+			</div>
+			</div>
+	<div class="day past" data-date="20200119">
+		<div class="date">Sun, 19. Jan</div>
+		<div class="entry season-premiere" data-series-id="3315" data-series-source="9-1-1_(TV_series)">
+				<div class="title">9-1-1 E01</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4238" data-series-source="9-1-1: Lone Star ">
+				<div class="title">9-1-1: Lone Star  S01E01</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4299" data-series-source="Avenue 5">
+				<div class="title">Avenue 5 S01E01</div>
+			</div>
+		<div class="entry" data-series-id="3953" data-series-source="Batwoman (TV series)">
+				<div class="title">Batwoman  S01E10</div>
+			</div>
+		<div class="entry" data-series-id="3212" data-series-source="List_of_Boruto:_Naruto_Next_Generations_episodes">
+				<div class="title">Boruto: Naruto Next Generations S01E140</div>
+			</div>
+		<div class="entry" data-series-id="2786" data-series-source="List_of_Call_the_Midwife_episodes">
+				<div class="title">Call The Midwife S09E73</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="2033" data-series-source="List of Curb Your Enthusiasm episodes">
+				<div class="title">Curb Your Enthusiasm S10E01</div>
+			</div>
+		<div class="entry" data-series-id="4247" data-series-source="Dare Me (TV series)">
+				<div class="title">Dare Me S01E04</div>
+			</div>
+		<div class="entry" data-series-id="1610" data-series-source="List of Gegege no Kitaro episodes">
+				<div class="title">Gegege no Kitaro E89</div>
+			</div>
+		<div class="entry" data-series-id="2558" data-series-source="Mike_Tyson_Mysteries">
+				<div class="title">Mike Tyson Mysteries S04E14</div>
+			</div>
+		<div class="entry" data-series-id="2854" data-series-source="Naked_and_Afraid">
+				<div class="title">Naked And Afraid S11E06</div>
+			</div>
+		<div class="entry" data-series-id="2854" data-series-source="Naked_and_Afraid">
+				<div class="title">Naked And Afraid S11E07</div>
+			</div>
+		<div class="entry" data-series-id="3011" data-series-source="List_of_One_Piece_episodes_(seasons_15&ndash;current)">
+				<div class="title">One Piece S20E918</div>
+			</div>
+		<div class="entry" data-series-id="2421" data-series-source="List_of_Power_episodes">
+				<div class="title">Power S06E13</div>
+			</div>
+		<div class="entry" data-series-id="2215" data-series-source="Ray_Donovan_(TV_series)">
+				<div class="title">Ray Donovan S07E10</div>
+			</div>
+		<div class="entry" data-series-id="1245" data-series-source="List of Shameless (U.S. TV series) episodes">
+				<div class="title">Shameless US S10E11</div>
+			</div>
+		<div class="entry" data-series-id="1853" data-series-source="List of Shark Tank (TV series) episodes">
+				<div class="title">Shark Tank S11E12</div>
+			</div>
+		<div class="entry" data-series-id="3653" data-series-source="Star Wars Resistance">
+				<div class="title">Star Wars Resistance S02E17</div>
+			</div>
+		<div class="entry" data-series-id="2974" data-series-source="List_of_Supergirl_episodes">
+				<div class="title">Supergirl S05E10</div>
+			</div>
+		<div class="entry" data-series-id="3122" data-series-source="Tangled: The Series">
+				<div class="title">Tangled: The Series S03E11</div>
+			</div>
+		<div class="entry" data-series-id="4236" data-series-source="The L Word: Generation Q">
+				<div class="title">The L Word: Generation Q S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4212" data-series-source="The Outsider (miniseries)">
+				<div class="title">The Outsider S01E03</div>
+			</div>
+		<div class="entry" data-series-id="785" data-series-source="List of The Real Housewives of Atlanta episodes">
+				<div class="title">The Real Housewives of Atlanta S12E12</div>
+			</div>
+		<div class="entry" data-series-id="4289" data-series-source="Work in Progress (TV series)">
+				<div class="title">Work in Progress S01E07</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200120">
+		<div class="date">Mon, 20. Jan</div>
+		<div class="entry" data-series-id="3315" data-series-source="9-1-1_(TV_series)">
+				<div class="title">9-1-1 E02</div>
+			</div>
+		<div class="entry" data-series-id="4238" data-series-source="9-1-1: Lone Star ">
+				<div class="title">9-1-1: Lone Star  S01E02</div>
+			</div>
+		<div class="entry" data-series-id="3514" data-series-source="All_American_(TV_series)">
+				<div class="title">All American S02E09</div>
+			</div>
+		<div class="entry" data-series-id="4053" data-series-source="All Rise (TV series)">
+				<div class="title">All Rise  S01E13</div>
+			</div>
+		<div class="entry" data-series-id="957" data-series-source="List of Arthur episodes">
+				<div class="title">Arthur E00</div>
+			</div>
+		<div class="entry" data-series-id="3336" data-series-source="Black_Lightning_(TV_series)">
+				<div class="title">Black Lightning S03E10</div>
+			</div>
+		<div class="entry" data-series-id="4100" data-series-source="Bob Hearts Abishola">
+				<div class="title">Bob ♡ Abishola S01E13</div>
+			</div>
+		<div class="entry" data-series-id="2937" data-series-source="List of Bull (2016 TV series) episodes">
+				<div class="title">Bull S04E12</div>
+			</div>
+		<div class="entry" data-series-id="3815" data-series-source="Coroner (TV series)">
+				<div class="title">Coroner S02E03</div>
+			</div>
+		<div class="entry" data-series-id="4275" data-series-source="List_of_Love_&amp;_Hip_Hop:_Miami_episodes">
+				<div class="title">Love &amp; Hip Hop: Miami S03E03</div>
+			</div>
+		<div class="entry" data-series-id="4274" data-series-source="List_of_Love_&amp;_Hip_Hop:_New_York_episodes">
+				<div class="title">Love &amp; Hip Hop: New York S10E07</div>
+			</div>
+		<div class="entry" data-series-id="3547" data-series-source="Manifest_(TV_series)">
+				<div class="title">Manifest S02E03</div>
+			</div>
+		<div class="entry" data-series-id="4052" data-series-source="Prodigal Son (TV series)">
+				<div class="title">Prodigal Son S01E11</div>
+			</div>
+		<div class="entry" data-series-id="3226" data-series-source="List of The Good Doctor episodes">
+				<div class="title">The Good Doctor S03E12</div>
+			</div>
+		<div class="entry" data-series-id="3594" data-series-source="The Neighborhood (TV series)">
+				<div class="title">The Neighborhood S02E13</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200121">
+		<div class="date">Tue, 21. Jan</div>
+		<div class="entry" data-series-id="2115" data-series-source="List_of_Arrow_episodes">
+				<div class="title">Arrow S08E09</div>
+			</div>
+		<div class="entry" data-series-id="3574" data-series-source="List_of_Black_Clover_episodes">
+				<div class="title">Black Clover S03E118</div>
+			</div>
+		<div class="entry" data-series-id="2487" data-series-source="List_of_Black-ish_episodes">
+				<div class="title">Blackish S06E13</div>
+			</div>
+		<div class="entry" data-series-id="3827" data-series-source="Bless This Mess (TV series)">
+				<div class="title">Bless This Mess S02E10</div>
+			</div>
+		<div class="entry" data-series-id="4305" data-series-source="List of Ellen's Game of Games episodes">
+				<div class="title">Ellen's Game of Games S03E04</div>
+			</div>
+		<div class="entry" data-series-id="4055" data-series-source="Emergence (TV series)">
+				<div class="title">Emergence S01E12</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="2585" data-series-source="Ex_on_the_Beach">
+				<div class="title">Ex On The Beach S11E01</div>
+			</div>
+		<div class="entry" data-series-id="3573" data-series-source="FBI_(TV_series)#Episodes">
+				<div class="title">FBI S01E03</div>
+			</div>
+		<div class="entry" data-series-id="3573" data-series-source="FBI_(TV_series)#Episodes">
+				<div class="title">FBI S02E13</div>
+			</div>
+		<div class="entry" data-series-id="4067" data-series-source="FBI: Most Wanted">
+				<div class="title">FBI: Most Wanted S01E03</div>
+			</div>
+		<div class="entry" data-series-id="3792" data-series-source="Finding Your Roots">
+				<div class="title">Finding Your Roots S06E05</div>
+			</div>
+		<div class="entry" data-series-id="3521" data-series-source="Gordon_Ramsay's_24_Hours_to_Hell_and_Back">
+				<div class="title">Gordon Ramsays 24 Hours to Hell &amp; Back S03E03</div>
+			</div>
+		<div class="entry" data-series-id="2432" data-series-source="List_of_The_Haves_and_the_Have_Nots_(TV_series)_episodes">
+				<div class="title">Haves And The Have Nots S07E03</div>
+			</div>
+		<div class="entry" data-series-id="1955" data-series-source="List of Holby City episodes">
+				<div class="title">Holby City S22E03</div>
+			</div>
+		<div class="entry" data-series-id="3031" data-series-source="Kim's_Convenience_(TV_series)">
+				<div class="title">Kim's Convenience S04E03</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="2739" data-series-source="List_of_Legends_of_Tomorrow_episodes">
+				<div class="title">Legends of Tomorrow S05E01</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="747" data-series-source="List of Midsomer Murders episodes">
+				<div class="title">Midsomer Murders S21E01</div>
+			</div>
+		<div class="entry" data-series-id="4093" data-series-source="Mixed-ish">
+				<div class="title">Mixed-ish S01E13</div>
+			</div>
+		<div class="entry" data-series-id="993" data-series-source="List of NCIS episodes">
+				<div class="title">NCIS S17E13</div>
+			</div>
+		<div class="entry" data-series-id="3544" data-series-source="New_Amsterdam_(2018_TV_series)">
+				<div class="title">New Amsterdam S02E11</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3717" data-series-source="Project Blue Book (TV series)">
+				<div class="title">Project Blue Book S02E01</div>
+			</div>
+		<div class="entry" data-series-id="2597" data-series-source="List of Schitt's Creek episodes">
+				<div class="title">Schitts Creek S06E03</div>
+			</div>
+		<div class="entry" data-series-id="3282" data-series-source="Siesta_Key_(TV_series)">
+				<div class="title">Siesta Key S03E03</div>
+			</div>
+		<div class="entry" data-series-id="3656" data-series-source="The Conners">
+				<div class="title">The Conners S02E10</div>
+			</div>
+		<div class="entry" data-series-id="3360" data-series-source="List of The Resident episodes">
+				<div class="title">The Resident S03E13</div>
+			</div>
+		<div class="entry" data-series-id="2961" data-series-source="List of This Is Us episodes">
+				<div class="title">This Is Us S04E11</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200122">
+		<div class="date">Wed, 22. Jan</div>
+		<div class="entry" data-series-id="4295" data-series-source="68 Whiskey">
+				<div class="title">68 Whiskey S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4054" data-series-source="Almost Family">
+				<div class="title">Almost Family S01E12</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4261" data-series-source="Awkwafina Is Nora from Queens">
+				<div class="title">Awkwafina Is Nora from Queens S01E01</div>
+			</div>
+		<div class="entry" data-series-id="3648" data-series-source="Black Ink Crew: Chicago">
+				<div class="title">Black Ink Crew Chicago S06E08</div>
+			</div>
+		<div class="entry" data-series-id="3648" data-series-source="Black Ink Crew: Chicago">
+				<div class="title">Black Ink Crew Chicago S06E08</div>
+			</div>
+		<div class="entry" data-series-id="3375" data-series-source="Burden_of_Truth_(TV_series)">
+				<div class="title">Burden of Truth S03E03</div>
+			</div>
+		<div class="entry" data-series-id="2131" data-series-source="List_of_Chicago_Fire_episodes">
+				<div class="title">Chicago Fire S08E12</div>
+			</div>
+		<div class="entry" data-series-id="2728" data-series-source="List_of_Chicago_Med_episodes">
+				<div class="title">Chicago Med S05E12</div>
+			</div>
+		<div class="entry" data-series-id="2295" data-series-source="List_of_Chicago_P.D._episodes">
+				<div class="title">Chicago PD S07E12</div>
+			</div>
+		<div class="entry" data-series-id="1213" data-series-source="List of Criminal Minds episodes">
+				<div class="title">Criminal Minds S15E04</div>
+			</div>
+		<div class="entry" data-series-id="3600" data-series-source="Good Trouble (TV series)">
+				<div class="title">Good Trouble S02E12</div>
+			</div>
+		<div class="entry" data-series-id="1886" data-series-source="List of Modern Family episodes">
+				<div class="title">Modern Family S11E12</div>
+			</div>
+		<div class="entry" data-series-id="4040" data-series-source="Nancy Drew (2019 TV series)">
+				<div class="title">Nancy Drew  S01E11</div>
+			</div>
+		<div class="entry" data-series-id="4242" data-series-source="Party of Five (2020 TV series)">
+				<div class="title">Party of Five (2020) S01E04</div>
+			</div>
+		<div class="entry" data-series-id="2456" data-series-source="List_of_The_Real_Housewives_of_New_Jersey_episodes">
+				<div class="title">Real Housewives Of New Jersey S10E11</div>
+			</div>
+		<div class="entry" data-series-id="3033" data-series-source="List of Riverdale episodes">
+				<div class="title">Riverdale S04E10</div>
+			</div>
+		<div class="entry" data-series-id="3753" data-series-source="Schooled (TV series)">
+				<div class="title">Schooled S02E12</div>
+			</div>
+		<div class="entry" data-series-id="3599" data-series-source="Single Parents (TV series)">
+				<div class="title">Single Parents S02E13</div>
+			</div>
+		<div class="entry" data-series-id="3328" data-series-source="Sisters_(Australian_TV_series)">
+				<div class="title">Sisters AU E12</div>
+			</div>
+		<div class="entry" data-series-id="4081" data-series-source="Stumptown (TV series)">
+				<div class="title">Stumptown S01E12</div>
+			</div>
+		<div class="entry" data-series-id="3307" data-series-source="S.W.A.T._(2017_TV_series)">
+				<div class="title">S.W.A.T S03E12</div>
+			</div>
+		<div class="entry" data-series-id="4250" data-series-source="The Gloaming (TV series)">
+				<div class="title">The Gloaming S01E04</div>
+			</div>
+		<div class="entry" data-series-id="2319" data-series-source="List_of_The_Goldbergs_episodes">
+				<div class="title">The Goldbergs S07E12</div>
+			</div>
+		<div class="entry" data-series-id="1723" data-series-source="The_Magicians_(U.S._TV_series)">
+				<div class="title">The Magicians US S05E02</div>
+			</div>
+		<div class="entry" data-series-id="2153" data-series-source="List_of_Vikings_episodes">
+				<div class="title">Vikings S06E08</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200123">
+		<div class="date">Thu, 23. Jan</div>
+		<div class="entry" data-series-id="3862" data-series-source="60 Days In">
+				<div class="title">60 Days In S06E04</div>
+			</div>
+		<div class="entry" data-series-id="3535" data-series-source="A Million Little Things">
+				<div class="title">A Million Little Things S02E10</div>
+			</div>
+		<div class="entry" data-series-id="4252" data-series-source="Deputy (TV series)">
+				<div class="title">Deputy S01E04</div>
+			</div>
+		<div class="entry" data-series-id="3790" data-series-source="Dr. Pimple Popper (TV series)">
+				<div class="title">Dr. Pimple Popper S04E04</div>
+			</div>
+		<div class="entry" data-series-id="4307" data-series-source="Draft:Everything's Gonna Be Okay (TV series)">
+				<div class="title">Everything's Gonna Be Okay S01E03</div>
+			</div>
+		<div class="entry" data-series-id="1205" data-series-source="List of Grey's Anatomy episodes">
+				<div class="title">Greys Anatomy S16E10</div>
+			</div>
+		<div class="entry" data-series-id="4269" data-series-source="Growing Up Hip Hop">
+				<div class="title">Growing Up Hip Hop S05E08</div>
+			</div>
+		<div class="entry" data-series-id="3345" data-series-source="Grown-ish">
+				<div class="title">Grown-ish S03E02</div>
+			</div>
+		<div class="entry" data-series-id="4091" data-series-source="Knights of the Zodiac: Saint Seiya (2019 series)">
+				<div class="title">Knights of the Zodiac S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4091" data-series-source="Knights of the Zodiac: Saint Seiya (2019 series)">
+				<div class="title">Knights of the Zodiac S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4091" data-series-source="Knights of the Zodiac: Saint Seiya (2019 series)">
+				<div class="title">Knights of the Zodiac S01E09</div>
+			</div>
+		<div class="entry" data-series-id="4091" data-series-source="Knights of the Zodiac: Saint Seiya (2019 series)">
+				<div class="title">Knights of the Zodiac S01E10</div>
+			</div>
+		<div class="entry" data-series-id="4091" data-series-source="Knights of the Zodiac: Saint Seiya (2019 series)">
+				<div class="title">Knights of the Zodiac S01E11</div>
+			</div>
+		<div class="entry" data-series-id="4091" data-series-source="Knights of the Zodiac: Saint Seiya (2019 series)">
+				<div class="title">Knights of the Zodiac S01E12</div>
+			</div>
+		<div class="entry" data-series-id="2040" data-series-source="List of Last Man Standing episodes">
+				<div class="title">Last Man Standing S08E07</div>
+			</div>
+		<div class="entry" data-series-id="268" data-series-source="List of Law &amp; Order: Special Victims Unit episodes">
+				<div class="title">Law &amp; Order SVU S21E12</div>
+			</div>
+		<div class="entry" data-series-id="3571" data-series-source="Legacies_(TV_series)">
+				<div class="title">Legacies S02E10</div>
+			</div>
+		<div class="entry" data-series-id="329" data-series-source="List of Mayday episodes">
+				<div class="title">Mayday S20E03</div>
+			</div>
+		<div class="entry" data-series-id="4292" data-series-source="October Faction (TV series)">
+				<div class="title">October Faction  E00</div>
+			</div>
+		<div class="entry" data-series-id="4292" data-series-source="October Faction (TV series)">
+				<div class="title">October Faction  E00</div>
+			</div>
+		<div class="entry" data-series-id="4292" data-series-source="October Faction (TV series)">
+				<div class="title">October Faction  E00</div>
+			</div>
+		<div class="entry" data-series-id="4292" data-series-source="October Faction (TV series)">
+				<div class="title">October Faction  E00</div>
+			</div>
+		<div class="entry" data-series-id="4292" data-series-source="October Faction (TV series)">
+				<div class="title">October Faction  E00</div>
+			</div>
+		<div class="entry" data-series-id="4292" data-series-source="October Faction (TV series)">
+				<div class="title">October Faction  E00</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4248" data-series-source="Outmatched">
+				<div class="title">Outmatched S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4109" data-series-source="Perfect Harmony (TV series)">
+				<div class="title">Perfect Harmony S01E13</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4021" data-series-source="Star Trek: Picard">
+				<div class="title">Star Trek Picard S01E01</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3403" data-series-source="Station 19">
+				<div class="title">Station 19 S03E01</div>
+			</div>
+		<div class="entry" data-series-id="564" data-series-source="List of Supernatural episodes">
+				<div class="title">Supernatural S15E10</div>
+			</div>
+		<div class="entry" data-series-id="2773" data-series-source="List_of_Superstore_episodes">
+				<div class="title">Superstore S05E13</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3138" data-series-source="The Bold Type">
+				<div class="title">The Bold Type S04E01</div>
+			</div>
+		<div class="entry" data-series-id="2957" data-series-source="List_of_The_Good_Place_episodes">
+				<div class="title">The Good Place S04E12</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200124">
+		<div class="date">Fri, 24. Jan</div>
+		<div class="entry" data-series-id="2963" data-series-source="List of American Housewife episodes">
+				<div class="title">American Housewife S04E12</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="2152" data-series-source="Ancient_Aliens">
+				<div class="title">Ancient Aliens S15E01</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3898" data-series-source="Babylon Berlin">
+				<div class="title">Babylon Berlin S03E01</div>
+			</div>
+		<div class="entry" data-series-id="3898" data-series-source="Babylon Berlin">
+				<div class="title">Babylon Berlin S03E02</div>
+			</div>
+		<div class="entry" data-series-id="2695" data-series-source="Bunk'd">
+				<div class="title">Bunk'd S04E18</div>
+			</div>
+		<div class="entry" data-series-id="3511" data-series-source="List of Charmed (2018 TV series) episodes">
+				<div class="title">Charmed (2018) S02E10</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3533" data-series-source="Chilling_Adventures_of_Sabrina_(TV_series)">
+				<div class="title">Chilling Adventures of Sabrina S02E01</div>
+			</div>
+		<div class="entry" data-series-id="3533" data-series-source="Chilling_Adventures_of_Sabrina_(TV_series)">
+				<div class="title">Chilling Adventures of Sabrina S02E02</div>
+			</div>
+		<div class="entry" data-series-id="3533" data-series-source="Chilling_Adventures_of_Sabrina_(TV_series)">
+				<div class="title">Chilling Adventures of Sabrina S02E03</div>
+			</div>
+		<div class="entry" data-series-id="3533" data-series-source="Chilling_Adventures_of_Sabrina_(TV_series)">
+				<div class="title">Chilling Adventures of Sabrina S02E04</div>
+			</div>
+		<div class="entry" data-series-id="3533" data-series-source="Chilling_Adventures_of_Sabrina_(TV_series)">
+				<div class="title">Chilling Adventures of Sabrina S02E05</div>
+			</div>
+		<div class="entry" data-series-id="3533" data-series-source="Chilling_Adventures_of_Sabrina_(TV_series)">
+				<div class="title">Chilling Adventures of Sabrina S02E06</div>
+			</div>
+		<div class="entry" data-series-id="3533" data-series-source="Chilling_Adventures_of_Sabrina_(TV_series)">
+				<div class="title">Chilling Adventures of Sabrina S02E07</div>
+			</div>
+		<div class="entry" data-series-id="3533" data-series-source="Chilling_Adventures_of_Sabrina_(TV_series)">
+				<div class="title">Chilling Adventures of Sabrina S02E08</div>
+			</div>
+		<div class="entry" data-series-id="4285" data-series-source="Diary of a Future President">
+				<div class="title">Diary of a Future President S01E02</div>
+			</div>
+		<div class="entry" data-series-id="3189" data-series-source="List of Dynasty (2017 TV series) episodes">
+				<div class="title">Dynasty 2017 S03E10</div>
+			</div>
+		<div class="entry" data-series-id="4239" data-series-source="Encore! (TV series)">
+				<div class="title">Encore S01E12</div>
+			</div>
+		<div class="entry" data-series-id="2561" data-series-source="List of Fresh Off the Boat episodes">
+				<div class="title">Fresh Off The Boat S06E12</div>
+			</div>
+		<div class="entry" data-series-id="4158" data-series-source="Gabby_Duran_and_the_Unsittables#Episodes">
+				<div class="title">Gabby Duran and The Unsittables S01E12</div>
+			</div>
+		<div class="entry" data-series-id="4245" data-series-source="Lincoln Rhyme: Hunt for the Bone Collector">
+				<div class="title">Lincoln Rhyme: Hunt for the Bone Collector S01E03</div>
+			</div>
+		<div class="entry" data-series-id="1505" data-series-source="List of Real Time with Bill Maher episodes">
+				<div class="title">Real Time with Bill Maher S18E02</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3780" data-series-source="Shrill (TV series)">
+				<div class="title">Shrill S02E01</div>
+			</div>
+		<div class="entry" data-series-id="3780" data-series-source="Shrill (TV series)">
+				<div class="title">Shrill S02E02</div>
+			</div>
+		<div class="entry" data-series-id="3780" data-series-source="Shrill (TV series)">
+				<div class="title">Shrill S02E03</div>
+			</div>
+		<div class="entry" data-series-id="3780" data-series-source="Shrill (TV series)">
+				<div class="title">Shrill S02E04</div>
+			</div>
+		<div class="entry" data-series-id="3780" data-series-source="Shrill (TV series)">
+				<div class="title">Shrill S02E05</div>
+			</div>
+		<div class="entry" data-series-id="3780" data-series-source="Shrill (TV series)">
+				<div class="title">Shrill S02E06</div>
+			</div>
+		<div class="entry" data-series-id="3780" data-series-source="Shrill (TV series)">
+				<div class="title">Shrill S02E07</div>
+			</div>
+		<div class="entry" data-series-id="3780" data-series-source="Shrill (TV series)">
+				<div class="title">Shrill S02E08</div>
+			</div>
+		<div class="entry" data-series-id="3659" data-series-source="Sick of It (TV series)">
+				<div class="title">Sick of It  S02E05</div>
+			</div>
+		<div class="entry" data-series-id="3659" data-series-source="Sick of It (TV series)">
+				<div class="title">Sick of It  S02E06</div>
+			</div>
+		<div class="entry" data-series-id="89" data-series-source="List of The Graham Norton Show episodes">
+				<div class="title">The Graham Norton Show S26E17</div>
+			</div>
+		<div class="entry" data-series-id="4249" data-series-source="The New Pope">
+				<div class="title">The New Pope S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4249" data-series-source="The New Pope">
+				<div class="title">The New Pope S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4264" data-series-source="The Owl House (TV series)">
+				<div class="title">The Owl House S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4222" data-series-source="The World According to Jeff Goldblum">
+				<div class="title">The World According to Jeff Goldblum S01E12</div>
+			</div>
+		<div class="entry" data-series-id="2746" data-series-source="Truth Be Told (2019 TV series)">
+				<div class="title">Truth Be Told S01E10</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200125">
+		<div class="date">Sat, 25. Jan</div>
+		<div class="entry" data-series-id="762" data-series-source="List of All That episodes">
+				<div class="title">All That S11E16</div>
+			</div>
+		<div class="entry" data-series-id="3335" data-series-source="Big Hero 6: The Series">
+				<div class="title">Big Hero 6: The Series S02E22</div>
+			</div>
+		<div class="entry" data-series-id="3701" data-series-source="List of Case Closed episodes (seasons 16&ndash;current)">
+				<div class="title">Case Closed S27E968</div>
+			</div>
+		<div class="entry" data-series-id="3256" data-series-source="Henry Danger">
+				<div class="title">Henry Danger S05E31</div>
+			</div>
+		<div class="entry" data-series-id="443" data-series-source="List_of_Saturday_Night_Live_episodes">
+				<div class="title">Saturday Night Live S45E11</div>
+			</div>
+		<div class="entry" data-series-id="3149" data-series-source="List of The Loud House episodes">
+				<div class="title">The Loud House S04E153</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200126">
+		<div class="date">Sun, 26. Jan</div>
+		<div class="entry" data-series-id="4299" data-series-source="Avenue 5">
+				<div class="title">Avenue 5 S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4299" data-series-source="Avenue 5">
+				<div class="title">Avenue 5 S01E05</div>
+			</div>
+		<div class="entry" data-series-id="2033" data-series-source="List of Curb Your Enthusiasm episodes">
+				<div class="title">Curb Your Enthusiasm S10E02</div>
+			</div>
+		<div class="entry" data-series-id="4247" data-series-source="Dare Me (TV series)">
+				<div class="title">Dare Me S01E05</div>
+			</div>
+		<div class="entry" data-series-id="1610" data-series-source="List of Gegege no Kitaro episodes">
+				<div class="title">Gegege no Kitaro E90</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3435" data-series-source="Our_Cartoon_President">
+				<div class="title">Our Cartoon President S03E01</div>
+			</div>
+		<div class="entry" data-series-id="2421" data-series-source="List_of_Power_episodes">
+				<div class="title">Power S06E14</div>
+			</div>
+		<div class="entry" data-series-id="1245" data-series-source="List of Shameless (U.S. TV series) episodes">
+				<div class="title">Shameless US S10E12</div>
+			</div>
+		<div class="entry" data-series-id="3653" data-series-source="Star Wars Resistance">
+				<div class="title">Star Wars Resistance E00</div>
+			</div>
+		<div class="entry" data-series-id="3122" data-series-source="Tangled: The Series">
+				<div class="title">Tangled: The Series S03E12</div>
+			</div>
+		<div class="entry" data-series-id="4236" data-series-source="The L Word: Generation Q">
+				<div class="title">The L Word: Generation Q S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4212" data-series-source="The Outsider (miniseries)">
+				<div class="title">The Outsider S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4289" data-series-source="Work in Progress (TV series)">
+				<div class="title">Work in Progress S01E08</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200127">
+		<div class="date">Mon, 27. Jan</div>
+		<div class="entry" data-series-id="3815" data-series-source="Coroner (TV series)">
+				<div class="title">Coroner S02E04</div>
+			</div>
+		<div class="entry" data-series-id="3547" data-series-source="Manifest_(TV_series)">
+				<div class="title">Manifest S02E04</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200128">
+		<div class="date">Tue, 28. Jan</div>
+		<div class="entry" data-series-id="2115" data-series-source="List_of_Arrow_episodes">
+				<div class="title">Arrow S08E10</div>
+			</div>
+		<div class="entry" data-series-id="3574" data-series-source="List_of_Black_Clover_episodes">
+				<div class="title">Black Clover S03E119</div>
+			</div>
+		<div class="entry" data-series-id="3375" data-series-source="Burden_of_Truth_(TV_series)">
+				<div class="title">Burden of Truth S03E04</div>
+			</div>
+		<div class="entry" data-series-id="4055" data-series-source="Emergence (TV series)">
+				<div class="title">Emergence S01E13</div>
+			</div>
+		<div class="entry" data-series-id="2585" data-series-source="Ex_on_the_Beach">
+				<div class="title">Ex On The Beach S11E02</div>
+			</div>
+		<div class="entry" data-series-id="3573" data-series-source="FBI_(TV_series)#Episodes">
+				<div class="title">FBI S01E04</div>
+			</div>
+		<div class="entry" data-series-id="3573" data-series-source="FBI_(TV_series)#Episodes">
+				<div class="title">FBI S02E14</div>
+			</div>
+		<div class="entry" data-series-id="4067" data-series-source="FBI: Most Wanted">
+				<div class="title">FBI: Most Wanted S01E04</div>
+			</div>
+		<div class="entry" data-series-id="3792" data-series-source="Finding Your Roots">
+				<div class="title">Finding Your Roots S06E06</div>
+			</div>
+		<div class="entry" data-series-id="3521" data-series-source="Gordon_Ramsay's_24_Hours_to_Hell_and_Back">
+				<div class="title">Gordon Ramsays 24 Hours to Hell &amp; Back S03E04</div>
+			</div>
+		<div class="entry" data-series-id="2432" data-series-source="List_of_The_Haves_and_the_Have_Nots_(TV_series)_episodes">
+				<div class="title">Haves And The Have Nots S07E04</div>
+			</div>
+		<div class="entry" data-series-id="3031" data-series-source="Kim's_Convenience_(TV_series)">
+				<div class="title">Kim's Convenience S04E04</div>
+			</div>
+		<div class="entry" data-series-id="993" data-series-source="List of NCIS episodes">
+				<div class="title">NCIS S17E14</div>
+			</div>
+		<div class="entry" data-series-id="3851" data-series-source="List of One-Punch Man episodes">
+				<div class="title">One-Punch Man E04</div>
+			</div>
+		<div class="entry" data-series-id="3717" data-series-source="Project Blue Book (TV series)">
+				<div class="title">Project Blue Book S02E02</div>
+			</div>
+		<div class="entry" data-series-id="2597" data-series-source="List of Schitt's Creek episodes">
+				<div class="title">Schitts Creek S06E04</div>
+			</div>
+		<div class="entry" data-series-id="3360" data-series-source="List of The Resident episodes">
+				<div class="title">The Resident S03E14</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200129">
+		<div class="date">Wed, 29. Jan</div>
+		<div class="entry" data-series-id="4295" data-series-source="68 Whiskey">
+				<div class="title">68 Whiskey S01E03</div>
+			</div>
+		<div class="entry" data-series-id="1213" data-series-source="List of Criminal Minds episodes">
+				<div class="title">Criminal Minds S15E05</div>
+			</div>
+		<div class="entry" data-series-id="3600" data-series-source="Good Trouble (TV series)">
+				<div class="title">Good Trouble S02E13</div>
+			</div>
+		<div class="entry" data-series-id="1886" data-series-source="List of Modern Family episodes">
+				<div class="title">Modern Family S11E13</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4308" data-series-source="Next In Fashion">
+				<div class="title">Next In Fashion S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4308" data-series-source="Next In Fashion">
+				<div class="title">Next In Fashion S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4308" data-series-source="Next In Fashion">
+				<div class="title">Next In Fashion S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4308" data-series-source="Next In Fashion">
+				<div class="title">Next In Fashion S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4308" data-series-source="Next In Fashion">
+				<div class="title">Next In Fashion S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4308" data-series-source="Next In Fashion">
+				<div class="title">Next In Fashion S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4308" data-series-source="Next In Fashion">
+				<div class="title">Next In Fashion S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4308" data-series-source="Next In Fashion">
+				<div class="title">Next In Fashion S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4308" data-series-source="Next In Fashion">
+				<div class="title">Next In Fashion S01E09</div>
+			</div>
+		<div class="entry" data-series-id="4308" data-series-source="Next In Fashion">
+				<div class="title">Next In Fashion S01E10</div>
+			</div>
+		<div class="entry" data-series-id="4242" data-series-source="Party of Five (2020 TV series)">
+				<div class="title">Party of Five (2020) S01E05</div>
+			</div>
+		<div class="entry" data-series-id="3307" data-series-source="S.W.A.T._(2017_TV_series)">
+				<div class="title">S.W.A.T S03E13</div>
+			</div>
+		<div class="entry" data-series-id="4250" data-series-source="The Gloaming (TV series)">
+				<div class="title">The Gloaming S01E05</div>
+			</div>
+		<div class="entry" data-series-id="1723" data-series-source="The_Magicians_(U.S._TV_series)">
+				<div class="title">The Magicians US S05E03</div>
+			</div>
+		<div class="entry" data-series-id="2153" data-series-source="List_of_Vikings_episodes">
+				<div class="title">Vikings S06E09</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200130">
+		<div class="date">Thu, 30. Jan</div>
+		<div class="entry" data-series-id="3862" data-series-source="60 Days In">
+				<div class="title">60 Days In S06E05</div>
+			</div>
+		<div class="entry" data-series-id="4252" data-series-source="Deputy (TV series)">
+				<div class="title">Deputy S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4307" data-series-source="Draft:Everything's Gonna Be Okay (TV series)">
+				<div class="title">Everything's Gonna Be Okay S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4085" data-series-source="Evil (TV series)">
+				<div class="title">Evil  S01E13</div>
+			</div>
+		<div class="entry" data-series-id="1205" data-series-source="List of Grey's Anatomy episodes">
+				<div class="title">Greys Anatomy S16E11</div>
+			</div>
+		<div class="entry" data-series-id="3345" data-series-source="Grown-ish">
+				<div class="title">Grown-ish S03E03</div>
+			</div>
+		<div class="entry" data-series-id="2332" data-series-source="List_of_Impractical_Jokers_episodes">
+				<div class="title">Impractical Jokers S08E21</div>
+			</div>
+		<div class="entry" data-series-id="329" data-series-source="List of Mayday episodes">
+				<div class="title">Mayday S20E04</div>
+			</div>
+		<div class="entry" data-series-id="2268" data-series-source="List_of_Mom_episodes">
+				<div class="title">Mom S07E13</div>
+			</div>
+		<div class="entry" data-series-id="4248" data-series-source="Outmatched">
+				<div class="title">Outmatched S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4021" data-series-source="Star Trek: Picard">
+				<div class="title">Star Trek Picard S01E02</div>
+			</div>
+		<div class="entry" data-series-id="3403" data-series-source="Station 19">
+				<div class="title">Station 19 S03E02</div>
+			</div>
+		<div class="entry" data-series-id="3138" data-series-source="The Bold Type">
+				<div class="title">The Bold Type S04E02</div>
+			</div>
+		<div class="entry" data-series-id="2957" data-series-source="List_of_The_Good_Place_episodes">
+				<div class="title">The Good Place E00</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4297" data-series-source="The Stranger (miniseries)">
+				<div class="title">The Stranger S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4297" data-series-source="The Stranger (miniseries)">
+				<div class="title">The Stranger S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4297" data-series-source="The Stranger (miniseries)">
+				<div class="title">The Stranger S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4297" data-series-source="The Stranger (miniseries)">
+				<div class="title">The Stranger S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4297" data-series-source="The Stranger (miniseries)">
+				<div class="title">The Stranger S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4297" data-series-source="The Stranger (miniseries)">
+				<div class="title">The Stranger S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4297" data-series-source="The Stranger (miniseries)">
+				<div class="title">The Stranger S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4297" data-series-source="The Stranger (miniseries)">
+				<div class="title">The Stranger S01E08</div>
+			</div>
+		<div class="entry" data-series-id="3181" data-series-source="Young_Sheldon">
+				<div class="title">Young Sheldon S03E13</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200131">
+		<div class="date">Fri, 31. Jan</div>
+		<div class="entry" data-series-id="3898" data-series-source="Babylon Berlin">
+				<div class="title">Babylon Berlin S03E03</div>
+			</div>
+		<div class="entry" data-series-id="3898" data-series-source="Babylon Berlin">
+				<div class="title">Babylon Berlin S03E04</div>
+			</div>
+		<div class="entry" data-series-id="327" data-series-source="List of Hawaii Five-0 (2010 TV series) episodes">
+				<div class="title">Hawaii Five-0 S10E14</div>
+			</div>
+		<div class="entry" data-series-id="4245" data-series-source="Lincoln Rhyme: Hunt for the Bone Collector">
+				<div class="title">Lincoln Rhyme: Hunt for the Bone Collector S01E04</div>
+			</div>
+		<div class="entry" data-series-id="3567" data-series-source="Magnum P.I. (2018 TV series)">
+				<div class="title">Magnum P.I. S02E14</div>
+			</div>
+		<div class="entry" data-series-id="1505" data-series-source="List of Real Time with Bill Maher episodes">
+				<div class="title">Real Time with Bill Maher S18E03</div>
+			</div>
+		<div class="entry" data-series-id="4249" data-series-source="The New Pope">
+				<div class="title">The New Pope S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4249" data-series-source="The New Pope">
+				<div class="title">The New Pope S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4264" data-series-source="The Owl House (TV series)">
+				<div class="title">The Owl House S01E04</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200201">
+		<div class="date">Sat, 01. Feb</div>
+		<div class="entry" data-series-id="443" data-series-source="List_of_Saturday_Night_Live_episodes">
+				<div class="title">Saturday Night Live S45E12</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200202">
+		<div class="date">Sun, 02. Feb</div>
+		<div class="entry" data-series-id="4299" data-series-source="Avenue 5">
+				<div class="title">Avenue 5 S01E03</div>
+			</div>
+		<div class="entry" data-series-id="2033" data-series-source="List of Curb Your Enthusiasm episodes">
+				<div class="title">Curb Your Enthusiasm S10E03</div>
+			</div>
+		<div class="entry" data-series-id="1610" data-series-source="List of Gegege no Kitaro episodes">
+				<div class="title">Gegege no Kitaro E91</div>
+			</div>
+		<div class="entry" data-series-id="3122" data-series-source="Tangled: The Series">
+				<div class="title">Tangled: The Series S03E13</div>
+			</div>
+		<div class="entry" data-series-id="4212" data-series-source="The Outsider (miniseries)">
+				<div class="title">The Outsider S01E05</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200203">
+		<div class="date">Mon, 03. Feb</div>
+		<div class="entry" data-series-id="4053" data-series-source="All Rise (TV series)">
+				<div class="title">All Rise  S01E14</div>
+			</div>
+		<div class="entry" data-series-id="3815" data-series-source="Coroner (TV series)">
+				<div class="title">Coroner S02E05</div>
+			</div>
+		<div class="entry" data-series-id="3547" data-series-source="Manifest_(TV_series)">
+				<div class="title">Manifest S02E05</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200204">
+		<div class="date">Tue, 04. Feb</div>
+		<div class="entry" data-series-id="3574" data-series-source="List_of_Black_Clover_episodes">
+				<div class="title">Black Clover S03E120</div>
+			</div>
+		<div class="entry" data-series-id="2585" data-series-source="Ex_on_the_Beach">
+				<div class="title">Ex On The Beach S11E03</div>
+			</div>
+		<div class="entry" data-series-id="3573" data-series-source="FBI_(TV_series)#Episodes">
+				<div class="title">FBI S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4067" data-series-source="FBI: Most Wanted">
+				<div class="title">FBI: Most Wanted S01E05</div>
+			</div>
+		<div class="entry" data-series-id="3792" data-series-source="Finding Your Roots">
+				<div class="title">Finding Your Roots S06E07</div>
+			</div>
+		<div class="entry" data-series-id="3521" data-series-source="Gordon_Ramsay's_24_Hours_to_Hell_and_Back">
+				<div class="title">Gordon Ramsays 24 Hours to Hell &amp; Back S03E05</div>
+			</div>
+		<div class="entry" data-series-id="3031" data-series-source="Kim's_Convenience_(TV_series)">
+				<div class="title">Kim's Convenience S04E05</div>
+			</div>
+		<div class="entry" data-series-id="2597" data-series-source="List of Schitt's Creek episodes">
+				<div class="title">Schitts Creek S06E05</div>
+			</div>
+		<div class="entry" data-series-id="2426" data-series-source="List_of_The_Flash_(2014_TV_series)_episodes">
+				<div class="title">The Flash S06E10</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200205">
+		<div class="date">Wed, 05. Feb</div>
+		<div class="entry" data-series-id="4295" data-series-source="68 Whiskey">
+				<div class="title">68 Whiskey S01E04</div>
+			</div>
+		<div class="entry" data-series-id="3375" data-series-source="Burden_of_Truth_(TV_series)">
+				<div class="title">Burden of Truth S03E05</div>
+			</div>
+		<div class="entry" data-series-id="1213" data-series-source="List of Criminal Minds episodes">
+				<div class="title">Criminal Minds S15E06</div>
+			</div>
+		<div class="entry" data-series-id="1213" data-series-source="List of Criminal Minds episodes">
+				<div class="title">Criminal Minds S15E07</div>
+			</div>
+		<div class="entry" data-series-id="3966" data-series-source="Katy Keene (TV series)">
+				<div class="title">Katy Keene E00</div>
+			</div>
+		<div class="entry" data-series-id="1886" data-series-source="List of Modern Family episodes">
+				<div class="title">Modern Family S11E14</div>
+			</div>
+		<div class="entry" data-series-id="4250" data-series-source="The Gloaming (TV series)">
+				<div class="title">The Gloaming S01E06</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200206">
+		<div class="date">Thu, 06. Feb</div>
+		<div class="entry series-premiere" data-series-id="4298" data-series-source="Briarpatch (TV series)">
+				<div class="title">Briarpatch  S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4252" data-series-source="Deputy (TV series)">
+				<div class="title">Deputy S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4307" data-series-source="Draft:Everything's Gonna Be Okay (TV series)">
+				<div class="title">Everything's Gonna Be Okay S01E05</div>
+			</div>
+		<div class="entry" data-series-id="1205" data-series-source="List of Grey's Anatomy episodes">
+				<div class="title">Greys Anatomy S16E12</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4258" data-series-source="Indebted (TV series)">
+				<div class="title">Indebted  S01E01</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4310" data-series-source="Interrogation (TV series)">
+				<div class="title">Interrogation S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4310" data-series-source="Interrogation (TV series)">
+				<div class="title">Interrogation S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4310" data-series-source="Interrogation (TV series)">
+				<div class="title">Interrogation S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4310" data-series-source="Interrogation (TV series)">
+				<div class="title">Interrogation S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4310" data-series-source="Interrogation (TV series)">
+				<div class="title">Interrogation S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4310" data-series-source="Interrogation (TV series)">
+				<div class="title">Interrogation S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4310" data-series-source="Interrogation (TV series)">
+				<div class="title">Interrogation S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4310" data-series-source="Interrogation (TV series)">
+				<div class="title">Interrogation S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4310" data-series-source="Interrogation (TV series)">
+				<div class="title">Interrogation S01E09</div>
+			</div>
+		<div class="entry" data-series-id="4310" data-series-source="Interrogation (TV series)">
+				<div class="title">Interrogation S01E10</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="3966" data-series-source="Katy Keene (TV series)">
+				<div class="title">Katy Keene S01E01</div>
+			</div>
+		<div class="entry" data-series-id="329" data-series-source="List of Mayday episodes">
+				<div class="title">Mayday S20E05</div>
+			</div>
+		<div class="entry" data-series-id="4248" data-series-source="Outmatched">
+				<div class="title">Outmatched S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4021" data-series-source="Star Trek: Picard">
+				<div class="title">Star Trek Picard S01E03</div>
+			</div>
+		<div class="entry" data-series-id="3403" data-series-source="Station 19">
+				<div class="title">Station 19 S03E03</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3228" data-series-source="The Sinner (TV series)">
+				<div class="title">The Sinner S03E01</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4257" data-series-source="Tommy (TV series)">
+				<div class="title">Tommy  S01E01</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200207">
+		<div class="date">Fri, 07. Feb</div>
+		<div class="entry" data-series-id="3898" data-series-source="Babylon Berlin">
+				<div class="title">Babylon Berlin S03E05</div>
+			</div>
+		<div class="entry" data-series-id="3898" data-series-source="Babylon Berlin">
+				<div class="title">Babylon Berlin S03E06</div>
+			</div>
+		<div class="entry" data-series-id="3587" data-series-source="Into the Dark (TV series)">
+				<div class="title">Into the Dark S02E05</div>
+			</div>
+		<div class="entry" data-series-id="4245" data-series-source="Lincoln Rhyme: Hunt for the Bone Collector">
+				<div class="title">Lincoln Rhyme: Hunt for the Bone Collector S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4263" data-series-source="Locke &amp; Key (TV series)">
+				<div class="title">Locke &amp; Key E00</div>
+			</div>
+		<div class="entry" data-series-id="4263" data-series-source="Locke &amp; Key (TV series)">
+				<div class="title">Locke &amp; Key E00</div>
+			</div>
+		<div class="entry" data-series-id="4263" data-series-source="Locke &amp; Key (TV series)">
+				<div class="title">Locke &amp; Key E00</div>
+			</div>
+		<div class="entry" data-series-id="4263" data-series-source="Locke &amp; Key (TV series)">
+				<div class="title">Locke &amp; Key E00</div>
+			</div>
+		<div class="entry" data-series-id="4263" data-series-source="Locke &amp; Key (TV series)">
+				<div class="title">Locke &amp; Key E00</div>
+			</div>
+		<div class="entry" data-series-id="4263" data-series-source="Locke &amp; Key (TV series)">
+				<div class="title">Locke &amp; Key E00</div>
+			</div>
+		<div class="entry" data-series-id="4263" data-series-source="Locke &amp; Key (TV series)">
+				<div class="title">Locke &amp; Key E00</div>
+			</div>
+		<div class="entry" data-series-id="4263" data-series-source="Locke &amp; Key (TV series)">
+				<div class="title">Locke &amp; Key E00</div>
+			</div>
+		<div class="entry" data-series-id="4263" data-series-source="Locke &amp; Key (TV series)">
+				<div class="title">Locke &amp; Key E00</div>
+			</div>
+		<div class="entry" data-series-id="4263" data-series-source="Locke &amp; Key (TV series)">
+				<div class="title">Locke &amp; Key E00</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="2947" data-series-source="List of MacGyver (2016 TV series) episodes">
+				<div class="title">MacGyver 2016 S04E01</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4314" data-series-source="Mythic Quest: Raven's Banquet">
+				<div class="title">Mythic Quest: Raven's Banquet S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4314" data-series-source="Mythic Quest: Raven's Banquet">
+				<div class="title">Mythic Quest: Raven's Banquet S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4314" data-series-source="Mythic Quest: Raven's Banquet">
+				<div class="title">Mythic Quest: Raven's Banquet S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4314" data-series-source="Mythic Quest: Raven's Banquet">
+				<div class="title">Mythic Quest: Raven's Banquet S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4314" data-series-source="Mythic Quest: Raven's Banquet">
+				<div class="title">Mythic Quest: Raven's Banquet S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4314" data-series-source="Mythic Quest: Raven's Banquet">
+				<div class="title">Mythic Quest: Raven's Banquet S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4314" data-series-source="Mythic Quest: Raven's Banquet">
+				<div class="title">Mythic Quest: Raven's Banquet S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4314" data-series-source="Mythic Quest: Raven's Banquet">
+				<div class="title">Mythic Quest: Raven's Banquet S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4314" data-series-source="Mythic Quest: Raven's Banquet">
+				<div class="title">Mythic Quest: Raven's Banquet S01E09</div>
+			</div>
+		<div class="entry" data-series-id="1505" data-series-source="List of Real Time with Bill Maher episodes">
+				<div class="title">Real Time with Bill Maher S18E04</div>
+			</div>
+		<div class="entry" data-series-id="4264" data-series-source="The Owl House (TV series)">
+				<div class="title">The Owl House S01E05</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200208">
+		<div class="date">Sat, 08. Feb</div>
+		<div class="entry" data-series-id="4249" data-series-source="The New Pope">
+				<div class="title">The New Pope S01E09</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200209">
+		<div class="date">Sun, 09. Feb</div>
+		<div class="entry" data-series-id="4299" data-series-source="Avenue 5">
+				<div class="title">Avenue 5 S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4299" data-series-source="Avenue 5">
+				<div class="title">Avenue 5 S01E06</div>
+			</div>
+		<div class="entry" data-series-id="3335" data-series-source="Big Hero 6: The Series">
+				<div class="title">Big Hero 6: The Series S02E23</div>
+			</div>
+		<div class="entry" data-series-id="2033" data-series-source="List of Curb Your Enthusiasm episodes">
+				<div class="title">Curb Your Enthusiasm S10E04</div>
+			</div>
+		<div class="entry" data-series-id="4247" data-series-source="Dare Me (TV series)">
+				<div class="title">Dare Me S01E06</div>
+			</div>
+		<div class="entry" data-series-id="1610" data-series-source="List of Gegege no Kitaro episodes">
+				<div class="title">Gegege no Kitaro E92</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="1410" data-series-source="List of Homeland episodes">
+				<div class="title">Homeland S08E01</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3531" data-series-source="Kidding">
+				<div class="title">Kidding S02E01</div>
+			</div>
+		<div class="entry" data-series-id="3531" data-series-source="Kidding">
+				<div class="title">Kidding S02E02</div>
+			</div>
+		<div class="entry" data-series-id="2421" data-series-source="List_of_Power_episodes">
+				<div class="title">Power S06E15</div>
+			</div>
+		<div class="entry" data-series-id="3122" data-series-source="Tangled: The Series">
+				<div class="title">Tangled: The Series S03E14</div>
+			</div>
+		<div class="entry" data-series-id="4212" data-series-source="The Outsider (miniseries)">
+				<div class="title">The Outsider S01E06</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200210">
+		<div class="date">Mon, 10. Feb</div>
+		<div class="entry" data-series-id="3626" data-series-source="Agatha Raisin (TV series)">
+				<div class="title">Agatha Raisin S03E03</div>
+			</div>
+		<div class="entry" data-series-id="3547" data-series-source="Manifest_(TV_series)">
+				<div class="title">Manifest S02E06</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200211">
+		<div class="date">Tue, 11. Feb</div>
+		<div class="entry" data-series-id="3574" data-series-source="List_of_Black_Clover_episodes">
+				<div class="title">Black Clover S03E121</div>
+			</div>
+		<div class="entry" data-series-id="2585" data-series-source="Ex_on_the_Beach">
+				<div class="title">Ex On The Beach S11E04</div>
+			</div>
+		<div class="entry" data-series-id="3573" data-series-source="FBI_(TV_series)#Episodes">
+				<div class="title">FBI S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4067" data-series-source="FBI: Most Wanted">
+				<div class="title">FBI: Most Wanted S01E06</div>
+			</div>
+		<div class="entry" data-series-id="3792" data-series-source="Finding Your Roots">
+				<div class="title">Finding Your Roots S06E08</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4259" data-series-source="For Life (TV series)">
+				<div class="title">For Life  S01E01</div>
+			</div>
+		<div class="entry" data-series-id="3521" data-series-source="Gordon_Ramsay's_24_Hours_to_Hell_and_Back">
+				<div class="title">Gordon Ramsays 24 Hours to Hell &amp; Back S03E06</div>
+			</div>
+		<div class="entry" data-series-id="2597" data-series-source="List of Schitt's Creek episodes">
+				<div class="title">Schitts Creek S06E06</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200212">
+		<div class="date">Wed, 12. Feb</div>
+		<div class="entry" data-series-id="4295" data-series-source="68 Whiskey">
+				<div class="title">68 Whiskey S01E05</div>
+			</div>
+		<div class="entry" data-series-id="1886" data-series-source="List of Modern Family episodes">
+				<div class="title">Modern Family S11E15</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3683" data-series-source="List of Survivor (U.S. TV series) episodes">
+				<div class="title">Survivor E583</div>
+			</div>
+		<div class="entry" data-series-id="4250" data-series-source="The Gloaming (TV series)">
+				<div class="title">The Gloaming S01E07</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200213">
+		<div class="date">Thu, 13. Feb</div>
+		<div class="entry" data-series-id="4298" data-series-source="Briarpatch (TV series)">
+				<div class="title">Briarpatch  S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4252" data-series-source="Deputy (TV series)">
+				<div class="title">Deputy S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4307" data-series-source="Draft:Everything's Gonna Be Okay (TV series)">
+				<div class="title">Everything's Gonna Be Okay S01E06</div>
+			</div>
+		<div class="entry" data-series-id="1205" data-series-source="List of Grey's Anatomy episodes">
+				<div class="title">Greys Anatomy S16E13</div>
+			</div>
+		<div class="entry" data-series-id="4258" data-series-source="Indebted (TV series)">
+				<div class="title">Indebted  S01E02</div>
+			</div>
+		<div class="entry" data-series-id="329" data-series-source="List of Mayday episodes">
+				<div class="title">Mayday S20E06</div>
+			</div>
+		<div class="entry" data-series-id="4248" data-series-source="Outmatched">
+				<div class="title">Outmatched S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4021" data-series-source="Star Trek: Picard">
+				<div class="title">Star Trek Picard S01E04</div>
+			</div>
+		<div class="entry" data-series-id="3403" data-series-source="Station 19">
+				<div class="title">Station 19 S03E04</div>
+			</div>
+		<div class="entry" data-series-id="3228" data-series-source="The Sinner (TV series)">
+				<div class="title">The Sinner S03E02</div>
+			</div>
+		<div class="entry" data-series-id="4257" data-series-source="Tommy (TV series)">
+				<div class="title">Tommy  S01E02</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200214">
+		<div class="date">Fri, 14. Feb</div>
+		<div class="entry" data-series-id="3898" data-series-source="Babylon Berlin">
+				<div class="title">Babylon Berlin S03E07</div>
+			</div>
+		<div class="entry" data-series-id="3898" data-series-source="Babylon Berlin">
+				<div class="title">Babylon Berlin S03E08</div>
+			</div>
+		<div class="entry" data-series-id="1868" data-series-source="List of Cyberchase episodes">
+				<div class="title">Cyberchase S12E04</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4301" data-series-source="High Fidelity (TV series)">
+				<div class="title">High Fidelity S01E01</div>
+			</div>
+		<div class="entry" data-series-id="4301" data-series-source="High Fidelity (TV series)">
+				<div class="title">High Fidelity S01E02</div>
+			</div>
+		<div class="entry" data-series-id="4301" data-series-source="High Fidelity (TV series)">
+				<div class="title">High Fidelity S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4301" data-series-source="High Fidelity (TV series)">
+				<div class="title">High Fidelity S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4301" data-series-source="High Fidelity (TV series)">
+				<div class="title">High Fidelity S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4301" data-series-source="High Fidelity (TV series)">
+				<div class="title">High Fidelity S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4301" data-series-source="High Fidelity (TV series)">
+				<div class="title">High Fidelity S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4301" data-series-source="High Fidelity (TV series)">
+				<div class="title">High Fidelity S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4301" data-series-source="High Fidelity (TV series)">
+				<div class="title">High Fidelity S01E09</div>
+			</div>
+		<div class="entry" data-series-id="4301" data-series-source="High Fidelity (TV series)">
+				<div class="title">High Fidelity S01E10</div>
+			</div>
+		<div class="entry" data-series-id="4245" data-series-source="Lincoln Rhyme: Hunt for the Bone Collector">
+				<div class="title">Lincoln Rhyme: Hunt for the Bone Collector S01E06</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200215">
+		<div class="date">Sat, 15. Feb</div>
+			</div>
+	<div class="day" data-date="20200216">
+		<div class="date">Sun, 16. Feb</div>
+		<div class="entry" data-series-id="4299" data-series-source="Avenue 5">
+				<div class="title">Avenue 5 S01E07</div>
+			</div>
+		<div class="entry" data-series-id="3335" data-series-source="Big Hero 6: The Series">
+				<div class="title">Big Hero 6: The Series S02E24</div>
+			</div>
+		<div class="entry" data-series-id="4247" data-series-source="Dare Me (TV series)">
+				<div class="title">Dare Me S01E07</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4260" data-series-source="Duncanville (TV series)">
+				<div class="title">Duncanville S01E01</div>
+			</div>
+		<div class="entry" data-series-id="1610" data-series-source="List of Gegege no Kitaro episodes">
+				<div class="title">Gegege no Kitaro E93</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3344" data-series-source="Good Girls (TV series)">
+				<div class="title">Good Girls S03E01</div>
+			</div>
+		<div class="entry" data-series-id="1410" data-series-source="List of Homeland episodes">
+				<div class="title">Homeland S08E02</div>
+			</div>
+		<div class="entry" data-series-id="3531" data-series-source="Kidding">
+				<div class="title">Kidding S02E03</div>
+			</div>
+		<div class="entry" data-series-id="3531" data-series-source="Kidding">
+				<div class="title">Kidding S02E04</div>
+			</div>
+		<div class="entry" data-series-id="2479" data-series-source="List of NCIS: New Orleans episodes">
+				<div class="title">NCIS New Orleans S06E11</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="2441" data-series-source="List of Outlander episodes">
+				<div class="title">Outlander S05E01</div>
+			</div>
+		<div class="entry" data-series-id="3122" data-series-source="Tangled: The Series">
+				<div class="title">Tangled: The Series S03E15</div>
+			</div>
+		<div class="entry" data-series-id="4212" data-series-source="The Outsider (miniseries)">
+				<div class="title">The Outsider S01E07</div>
+			</div>
+		<div class="entry" data-series-id="1468" data-series-source="List of The Simpsons episodes">
+				<div class="title">The Simpsons S31E12</div>
+			</div>
+		<div class="entry" data-series-id="4150" data-series-source="Zoey's Extraordinary Playlist">
+				<div class="title">Zoey's Extraordinary Playlist S01E02</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200217">
+		<div class="date">Mon, 17. Feb</div>
+		<div class="entry" data-series-id="3626" data-series-source="Agatha Raisin (TV series)">
+				<div class="title">Agatha Raisin S03E05</div>
+			</div>
+		<div class="entry" data-series-id="3547" data-series-source="Manifest_(TV_series)">
+				<div class="title">Manifest S02E07</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200218">
+		<div class="date">Tue, 18. Feb</div>
+		<div class="entry" data-series-id="3574" data-series-source="List_of_Black_Clover_episodes">
+				<div class="title">Black Clover S03E122</div>
+			</div>
+		<div class="entry" data-series-id="2585" data-series-source="Ex_on_the_Beach">
+				<div class="title">Ex On The Beach S11E05</div>
+			</div>
+		<div class="entry" data-series-id="3573" data-series-source="FBI_(TV_series)#Episodes">
+				<div class="title">FBI S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4067" data-series-source="FBI: Most Wanted">
+				<div class="title">FBI: Most Wanted S01E07</div>
+			</div>
+		<div class="entry" data-series-id="3792" data-series-source="Finding Your Roots">
+				<div class="title">Finding Your Roots S06E09</div>
+			</div>
+		<div class="entry" data-series-id="4259" data-series-source="For Life (TV series)">
+				<div class="title">For Life  S01E02</div>
+			</div>
+		<div class="entry" data-series-id="3521" data-series-source="Gordon_Ramsay's_24_Hours_to_Hell_and_Back">
+				<div class="title">Gordon Ramsays 24 Hours to Hell &amp; Back S03E07</div>
+			</div>
+		<div class="entry" data-series-id="2597" data-series-source="List of Schitt's Creek episodes">
+				<div class="title">Schitts Creek S06E07</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200219">
+		<div class="date">Wed, 19. Feb</div>
+		<div class="entry" data-series-id="4295" data-series-source="68 Whiskey">
+				<div class="title">68 Whiskey S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4250" data-series-source="The Gloaming (TV series)">
+				<div class="title">The Gloaming S01E08</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200220">
+		<div class="date">Thu, 20. Feb</div>
+		<div class="entry" data-series-id="4298" data-series-source="Briarpatch (TV series)">
+				<div class="title">Briarpatch  S01E03</div>
+			</div>
+		<div class="entry" data-series-id="4252" data-series-source="Deputy (TV series)">
+				<div class="title">Deputy S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4307" data-series-source="Draft:Everything's Gonna Be Okay (TV series)">
+				<div class="title">Everything's Gonna Be Okay S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4258" data-series-source="Indebted (TV series)">
+				<div class="title">Indebted  S01E03</div>
+			</div>
+		<div class="entry" data-series-id="329" data-series-source="List of Mayday episodes">
+				<div class="title">Mayday S20E07</div>
+			</div>
+		<div class="entry" data-series-id="4248" data-series-source="Outmatched">
+				<div class="title">Outmatched S01E05</div>
+			</div>
+		<div class="entry" data-series-id="3403" data-series-source="Station 19">
+				<div class="title">Station 19 S03E05</div>
+			</div>
+		<div class="entry" data-series-id="4257" data-series-source="Tommy (TV series)">
+				<div class="title">Tommy  S01E03</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200221">
+		<div class="date">Fri, 21. Feb</div>
+		<div class="entry" data-series-id="3898" data-series-source="Babylon Berlin">
+				<div class="title">Babylon Berlin S03E09</div>
+			</div>
+		<div class="entry" data-series-id="3898" data-series-source="Babylon Berlin">
+				<div class="title">Babylon Berlin S03E10</div>
+			</div>
+		<div class="entry" data-series-id="3463" data-series-source="Jersey_Shore_Family_Vacation">
+				<div class="title">Jersey Shore Family Vacation S03E14</div>
+			</div>
+		<div class="entry" data-series-id="4245" data-series-source="Lincoln Rhyme: Hunt for the Bone Collector">
+				<div class="title">Lincoln Rhyme: Hunt for the Bone Collector S01E07</div>
+			</div>
+		<div class="entry" data-series-id="4264" data-series-source="The Owl House (TV series)">
+				<div class="title">The Owl House S01E06</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200222">
+		<div class="date">Sat, 22. Feb</div>
+			</div>
+	<div class="day" data-date="20200223">
+		<div class="date">Sun, 23. Feb</div>
+		<div class="entry season-premiere" data-series-id="3890" data-series-source="90 Day Fianc&eacute;">
+				<div class="title">90 Day Fiance S04E01</div>
+			</div>
+		<div class="entry" data-series-id="4299" data-series-source="Avenue 5">
+				<div class="title">Avenue 5 S01E08</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="2517" data-series-source="List_of_Better_Call_Saul_episodes">
+				<div class="title">Better Call Saul S05E01</div>
+			</div>
+		<div class="entry" data-series-id="4247" data-series-source="Dare Me (TV series)">
+				<div class="title">Dare Me S01E08</div>
+			</div>
+		<div class="entry" data-series-id="1610" data-series-source="List of Gegege no Kitaro episodes">
+				<div class="title">Gegege no Kitaro E94</div>
+			</div>
+		<div class="entry" data-series-id="3344" data-series-source="Good Girls (TV series)">
+				<div class="title">Good Girls S03E02</div>
+			</div>
+		<div class="entry" data-series-id="1410" data-series-source="List of Homeland episodes">
+				<div class="title">Homeland S08E03</div>
+			</div>
+		<div class="entry" data-series-id="3531" data-series-source="Kidding">
+				<div class="title">Kidding S02E05</div>
+			</div>
+		<div class="entry" data-series-id="3531" data-series-source="Kidding">
+				<div class="title">Kidding S02E06</div>
+			</div>
+		<div class="entry" data-series-id="2441" data-series-source="List of Outlander episodes">
+				<div class="title">Outlander S05E02</div>
+			</div>
+		<div class="entry" data-series-id="3122" data-series-source="Tangled: The Series">
+				<div class="title">Tangled: The Series S03E16</div>
+			</div>
+		<div class="entry" data-series-id="4212" data-series-source="The Outsider (miniseries)">
+				<div class="title">The Outsider S01E08</div>
+			</div>
+		<div class="entry" data-series-id="1468" data-series-source="List of The Simpsons episodes">
+				<div class="title">The Simpsons S31E13</div>
+			</div>
+		<div class="entry" data-series-id="754" data-series-source="List of The Walking Dead episodes">
+				<div class="title">The Walking Dead S10E09</div>
+			</div>
+		<div class="entry" data-series-id="4150" data-series-source="Zoey's Extraordinary Playlist">
+				<div class="title">Zoey's Extraordinary Playlist S01E03</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200224">
+		<div class="date">Mon, 24. Feb</div>
+		<div class="entry" data-series-id="3626" data-series-source="Agatha Raisin (TV series)">
+				<div class="title">Agatha Raisin S03E07</div>
+			</div>
+		<div class="entry" data-series-id="2517" data-series-source="List_of_Better_Call_Saul_episodes">
+				<div class="title">Better Call Saul S05E02</div>
+			</div>
+		<div class="entry" data-series-id="3547" data-series-source="Manifest_(TV_series)">
+				<div class="title">Manifest S02E08</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200225">
+		<div class="date">Tue, 25. Feb</div>
+		<div class="entry" data-series-id="3574" data-series-source="List_of_Black_Clover_episodes">
+				<div class="title">Black Clover S03E123</div>
+			</div>
+		<div class="entry" data-series-id="2585" data-series-source="Ex_on_the_Beach">
+				<div class="title">Ex On The Beach S11E06</div>
+			</div>
+		<div class="entry" data-series-id="3573" data-series-source="FBI_(TV_series)#Episodes">
+				<div class="title">FBI S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4067" data-series-source="FBI: Most Wanted">
+				<div class="title">FBI: Most Wanted S01E08</div>
+			</div>
+		<div class="entry" data-series-id="3792" data-series-source="Finding Your Roots">
+				<div class="title">Finding Your Roots S06E10</div>
+			</div>
+		<div class="entry" data-series-id="4259" data-series-source="For Life (TV series)">
+				<div class="title">For Life  S01E03</div>
+			</div>
+		<div class="entry" data-series-id="3521" data-series-source="Gordon_Ramsay's_24_Hours_to_Hell_and_Back">
+				<div class="title">Gordon Ramsays 24 Hours to Hell &amp; Back S03E08</div>
+			</div>
+		<div class="entry" data-series-id="2597" data-series-source="List of Schitt's Creek episodes">
+				<div class="title">Schitts Creek S06E08</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200226">
+		<div class="date">Wed, 26. Feb</div>
+		<div class="entry" data-series-id="4295" data-series-source="68 Whiskey">
+				<div class="title">68 Whiskey S01E07</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200227">
+		<div class="date">Thu, 27. Feb</div>
+		<div class="entry" data-series-id="4298" data-series-source="Briarpatch (TV series)">
+				<div class="title">Briarpatch  S01E04</div>
+			</div>
+		<div class="entry" data-series-id="4252" data-series-source="Deputy (TV series)">
+				<div class="title">Deputy S01E09</div>
+			</div>
+		<div class="entry" data-series-id="4307" data-series-source="Draft:Everything's Gonna Be Okay (TV series)">
+				<div class="title">Everything's Gonna Be Okay S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4258" data-series-source="Indebted (TV series)">
+				<div class="title">Indebted  S01E04</div>
+			</div>
+		<div class="entry" data-series-id="329" data-series-source="List of Mayday episodes">
+				<div class="title">Mayday S20E08</div>
+			</div>
+		<div class="entry" data-series-id="4248" data-series-source="Outmatched">
+				<div class="title">Outmatched S01E06</div>
+			</div>
+		<div class="entry" data-series-id="3403" data-series-source="Station 19">
+				<div class="title">Station 19 S03E06</div>
+			</div>
+		<div class="entry" data-series-id="4257" data-series-source="Tommy (TV series)">
+				<div class="title">Tommy  S01E04</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200228">
+		<div class="date">Fri, 28. Feb</div>
+		<div class="entry" data-series-id="3898" data-series-source="Babylon Berlin">
+				<div class="title">Babylon Berlin S03E11</div>
+			</div>
+		<div class="entry" data-series-id="3898" data-series-source="Babylon Berlin">
+				<div class="title">Babylon Berlin S03E12</div>
+			</div>
+		<div class="entry" data-series-id="4245" data-series-source="Lincoln Rhyme: Hunt for the Bone Collector">
+				<div class="title">Lincoln Rhyme: Hunt for the Bone Collector S01E08</div>
+			</div>
+		<div class="entry" data-series-id="4264" data-series-source="The Owl House (TV series)">
+				<div class="title">The Owl House S01E07</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200229">
+		<div class="date">Sat, 29. Feb</div>
+			</div>
+	<div class="day" data-date="20200301">
+		<div class="date">Sun, 01. Mar</div>
+		<div class="entry" data-series-id="3890" data-series-source="90 Day Fianc&eacute;">
+				<div class="title">90 Day Fiance S04E02</div>
+			</div>
+		<div class="entry" data-series-id="4299" data-series-source="Avenue 5">
+				<div class="title">Avenue 5 S01E09</div>
+			</div>
+		<div class="entry" data-series-id="4247" data-series-source="Dare Me (TV series)">
+				<div class="title">Dare Me S01E09</div>
+			</div>
+		<div class="entry series-premiere" data-series-id="4309" data-series-source="Dispatches from Elsewhere">
+				<div class="title">Dispatches from Elsewhere S01E01</div>
+			</div>
+		<div class="entry" data-series-id="3344" data-series-source="Good Girls (TV series)">
+				<div class="title">Good Girls S03E03</div>
+			</div>
+		<div class="entry" data-series-id="3531" data-series-source="Kidding">
+				<div class="title">Kidding S02E07</div>
+			</div>
+		<div class="entry" data-series-id="3531" data-series-source="Kidding">
+				<div class="title">Kidding S02E08</div>
+			</div>
+		<div class="entry" data-series-id="2441" data-series-source="List of Outlander episodes">
+				<div class="title">Outlander S05E03</div>
+			</div>
+		<div class="entry" data-series-id="3122" data-series-source="Tangled: The Series">
+				<div class="title">Tangled: The Series S03E17</div>
+			</div>
+		<div class="entry" data-series-id="4212" data-series-source="The Outsider (miniseries)">
+				<div class="title">The Outsider S01E09</div>
+			</div>
+		<div class="entry" data-series-id="1468" data-series-source="List of The Simpsons episodes">
+				<div class="title">The Simpsons S31E14</div>
+			</div>
+		<div class="entry" data-series-id="754" data-series-source="List of The Walking Dead episodes">
+				<div class="title">The Walking Dead S10E10</div>
+			</div>
+		<div class="entry" data-series-id="4150" data-series-source="Zoey's Extraordinary Playlist">
+				<div class="title">Zoey's Extraordinary Playlist S01E04</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200302">
+		<div class="date">Mon, 02. Mar</div>
+		<div class="entry" data-series-id="2517" data-series-source="List_of_Better_Call_Saul_episodes">
+				<div class="title">Better Call Saul S05E03</div>
+			</div>
+		<div class="entry" data-series-id="4309" data-series-source="Dispatches from Elsewhere">
+				<div class="title">Dispatches from Elsewhere S01E02</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200303">
+		<div class="date">Tue, 03. Mar</div>
+		<div class="entry" data-series-id="3574" data-series-source="List_of_Black_Clover_episodes">
+				<div class="title">Black Clover S03E124</div>
+			</div>
+		<div class="entry" data-series-id="2585" data-series-source="Ex_on_the_Beach">
+				<div class="title">Ex On The Beach S11E07</div>
+			</div>
+		<div class="entry" data-series-id="3573" data-series-source="FBI_(TV_series)#Episodes">
+				<div class="title">FBI S01E09</div>
+			</div>
+		<div class="entry" data-series-id="4067" data-series-source="FBI: Most Wanted">
+				<div class="title">FBI: Most Wanted S01E09</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200304">
+		<div class="date">Wed, 04. Mar</div>
+			</div>
+	<div class="day" data-date="20200305">
+		<div class="date">Thu, 05. Mar</div>
+		<div class="entry" data-series-id="4298" data-series-source="Briarpatch (TV series)">
+				<div class="title">Briarpatch  S01E05</div>
+			</div>
+		<div class="entry" data-series-id="4257" data-series-source="Tommy (TV series)">
+				<div class="title">Tommy  S01E05</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200306">
+		<div class="date">Fri, 06. Mar</div>
+		<div class="entry" data-series-id="4264" data-series-source="The Owl House (TV series)">
+				<div class="title">The Owl House S01E08</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200307">
+		<div class="date">Sat, 07. Mar</div>
+			</div>
+	<div class="day" data-date="20200308">
+		<div class="date">Sun, 08. Mar</div>
+		<div class="entry" data-series-id="4299" data-series-source="Avenue 5">
+				<div class="title">Avenue 5 S01E10</div>
+			</div>
+		<div class="entry" data-series-id="4247" data-series-source="Dare Me (TV series)">
+				<div class="title">Dare Me S01E10</div>
+			</div>
+		<div class="entry" data-series-id="3344" data-series-source="Good Girls (TV series)">
+				<div class="title">Good Girls S03E04</div>
+			</div>
+		<div class="entry" data-series-id="3531" data-series-source="Kidding">
+				<div class="title">Kidding S02E09</div>
+			</div>
+		<div class="entry" data-series-id="3531" data-series-source="Kidding">
+				<div class="title">Kidding S02E10</div>
+			</div>
+		<div class="entry" data-series-id="2441" data-series-source="List of Outlander episodes">
+				<div class="title">Outlander S05E04</div>
+			</div>
+		<div class="entry" data-series-id="4212" data-series-source="The Outsider (miniseries)">
+				<div class="title">The Outsider S01E10</div>
+			</div>
+		<div class="entry" data-series-id="754" data-series-source="List of The Walking Dead episodes">
+				<div class="title">The Walking Dead S10E11</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200309">
+		<div class="date">Mon, 09. Mar</div>
+		<div class="entry" data-series-id="2517" data-series-source="List_of_Better_Call_Saul_episodes">
+				<div class="title">Better Call Saul S05E04</div>
+			</div>
+		<div class="entry" data-series-id="4309" data-series-source="Dispatches from Elsewhere">
+				<div class="title">Dispatches from Elsewhere S01E03</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200310">
+		<div class="date">Tue, 10. Mar</div>
+		<div class="entry" data-series-id="3574" data-series-source="List_of_Black_Clover_episodes">
+				<div class="title">Black Clover S03E125</div>
+			</div>
+		<div class="entry" data-series-id="2585" data-series-source="Ex_on_the_Beach">
+				<div class="title">Ex On The Beach S11E08</div>
+			</div>
+		<div class="entry" data-series-id="3573" data-series-source="FBI_(TV_series)#Episodes">
+				<div class="title">FBI S01E10</div>
+			</div>
+		<div class="entry" data-series-id="4067" data-series-source="FBI: Most Wanted">
+				<div class="title">FBI: Most Wanted S01E10</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200311">
+		<div class="date">Wed, 11. Mar</div>
+			</div>
+	<div class="day" data-date="20200312">
+		<div class="date">Thu, 12. Mar</div>
+		<div class="entry" data-series-id="4298" data-series-source="Briarpatch (TV series)">
+				<div class="title">Briarpatch  S01E06</div>
+			</div>
+		<div class="entry" data-series-id="4257" data-series-source="Tommy (TV series)">
+				<div class="title">Tommy  S01E06</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200313">
+		<div class="date">Fri, 13. Mar</div>
+		<div class="entry" data-series-id="4264" data-series-source="The Owl House (TV series)">
+				<div class="title">The Owl House S01E09</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200314">
+		<div class="date">Sat, 14. Mar</div>
+			</div>
+	<div class="day" data-date="20200315">
+		<div class="date">Sun, 15. Mar</div>
+		<div class="entry" data-series-id="3344" data-series-source="Good Girls (TV series)">
+				<div class="title">Good Girls S03E05</div>
+			</div>
+		<div class="entry" data-series-id="2441" data-series-source="List of Outlander episodes">
+				<div class="title">Outlander S05E05</div>
+			</div>
+		<div class="entry" data-series-id="754" data-series-source="List of The Walking Dead episodes">
+				<div class="title">The Walking Dead S10E12</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200316">
+		<div class="date">Mon, 16. Mar</div>
+		<div class="entry" data-series-id="2517" data-series-source="List_of_Better_Call_Saul_episodes">
+				<div class="title">Better Call Saul S05E05</div>
+			</div>
+		<div class="entry" data-series-id="4309" data-series-source="Dispatches from Elsewhere">
+				<div class="title">Dispatches from Elsewhere S01E04</div>
+			</div>
+		<div class="entry season-premiere" data-series-id="3539" data-series-source="Roswell,_New_Mexico_(TV_series)">
+				<div class="title">Roswell New Mexico S02E01</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200317">
+		<div class="date">Tue, 17. Mar</div>
+		<div class="entry" data-series-id="3574" data-series-source="List_of_Black_Clover_episodes">
+				<div class="title">Black Clover S03E126</div>
+			</div>
+		<div class="entry" data-series-id="2585" data-series-source="Ex_on_the_Beach">
+				<div class="title">Ex On The Beach S11E09</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200318">
+		<div class="date">Wed, 18. Mar</div>
+			</div>
+	<div class="day" data-date="20200319">
+		<div class="date">Thu, 19. Mar</div>
+		<div class="entry" data-series-id="4298" data-series-source="Briarpatch (TV series)">
+				<div class="title">Briarpatch  S01E07</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200320">
+		<div class="date">Fri, 20. Mar</div>
+		<div class="entry" data-series-id="4264" data-series-source="The Owl House (TV series)">
+				<div class="title">The Owl House S01E10</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200321">
+		<div class="date">Sat, 21. Mar</div>
+			</div>
+	<div class="day" data-date="20200322">
+		<div class="date">Sun, 22. Mar</div>
+		<div class="entry" data-series-id="2441" data-series-source="List of Outlander episodes">
+				<div class="title">Outlander S05E06</div>
+			</div>
+		<div class="entry" data-series-id="754" data-series-source="List of The Walking Dead episodes">
+				<div class="title">The Walking Dead S10E13</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200323">
+		<div class="date">Mon, 23. Mar</div>
+		<div class="entry" data-series-id="2517" data-series-source="List_of_Better_Call_Saul_episodes">
+				<div class="title">Better Call Saul S05E06</div>
+			</div>
+		<div class="entry" data-series-id="4309" data-series-source="Dispatches from Elsewhere">
+				<div class="title">Dispatches from Elsewhere S01E05</div>
+			</div>
+		<div class="entry" data-series-id="3539" data-series-source="Roswell,_New_Mexico_(TV_series)">
+				<div class="title">Roswell New Mexico S02E02</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200324">
+		<div class="date">Tue, 24. Mar</div>
+		<div class="entry" data-series-id="3574" data-series-source="List_of_Black_Clover_episodes">
+				<div class="title">Black Clover S03E127</div>
+			</div>
+		<div class="entry" data-series-id="2585" data-series-source="Ex_on_the_Beach">
+				<div class="title">Ex On The Beach S11E10</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200325">
+		<div class="date">Wed, 25. Mar</div>
+			</div>
+	<div class="day" data-date="20200326">
+		<div class="date">Thu, 26. Mar</div>
+		<div class="entry" data-series-id="4298" data-series-source="Briarpatch (TV series)">
+				<div class="title">Briarpatch  S01E08</div>
+			</div>
+			</div>
+	<div class="day" data-date="20200327">
+		<div class="date">Fri, 27. Mar</div>
+			</div>
+	<div class="day" data-date="20200328">
+		<div class="date">Sat, 28. Mar</div>
+			</div>
+	<div class="day" data-date="20200329">
+		<div class="date">Sun, 29. Mar</div>
+		<div class="entry" data-series-id="2441" data-series-source="List of Outlander episodes">
+				<div class="title">Outlander S05E07</div>
+			</div>
+		<div class="entry" data-series-id="754" data-series-source="List of The Walking Dead episodes">
+				<div class="title">The Walking Dead S10E14</div>
+			</div>
+			</div>
+</div>
+</div>
+
+
+
+<div class="separator"></div>
+
+<h1 id="forum">Forum</h1>
+<h2>Report Problems/Missing Shows, Discuss, Whatnot</h2>
+
+<div id="searchFirst">
+	<form id="searchFirstForm">
+		<b>Missing a show? </b><br>
+		Please use the search in the top right before making a request in the forum. 
+		<br>
+		<br>
+		If you request a new show, please add a wikipedia link containing episode information to your request.
+		<br> 
+		<input type="button" value="Understood" id="searchFirstButton">
+	</form>
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'airdates';
+	var disqus_url = "https://www.airdates.tv/";
+	var disqus_title = "Original Air Dates Of TV Shows";  
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<p style="font-style:italic;margin: 0 4.2%">
+	Please note: Shows that do not have a "List of ... episodes" site on wikipedia will never be added. 
+</p>
+<p style="margin: 0 4.2%"><a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+<div class="footer">
+	All tv show dates taken from wikipedia, see 
+	<a href="https://en.wikipedia.org/wiki/Category:Lists_of_television_series_episodes">Lists of television series episodes</a>
+	<br>
+	
+	<a href="#" class="exportColors">Export your color selection</a> | <a href="#" class="importColors">Import your color selection</a> | <a href="#" class="clearColors">Clear colors</a>
+	<br>
+	
+	Disclaimer: This site may contain links to sites that may contain links to sites that may contain content that is illegal in your country. 
+	Very much like google, or any other site. 
+	<br>
+</div>
+
+<img id="arrow" src="/public/images/arrow.png">
+	</body>
+</html>
