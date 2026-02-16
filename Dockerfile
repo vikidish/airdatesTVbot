@@ -1,14 +1,23 @@
+# Build stage - install dependencies
+FROM python:3.11-slim-bookworm AS builder
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+# Runtime stage - minimal image
 FROM python:3.11-slim-bookworm
 
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
+ENV DOCKER_CONTAINER=1
 
 WORKDIR /app
 
-# Install dependencies first (better layer caching)
-COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# Copy installed packages from builder
+COPY --from=builder /install /usr/local
 
 # Copy application code
 COPY . .
@@ -22,6 +31,10 @@ USER appuser
 
 # Data directory (mount point for persistence)
 VOLUME ["/data"]
+
+# Healthcheck
+HEALTHCHECK --interval=60s --timeout=10s --start-period=30s --retries=3 \
+    CMD python3 healthcheck.py || exit 1
 
 # Entrypoint handles DB setup at runtime
 COPY --chown=appuser:appuser entrypoint.sh /entrypoint.sh
