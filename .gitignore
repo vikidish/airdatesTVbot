@@ -12,6 +12,7 @@ env/
 .coverage
 .pytest_cache/
 htmlcov/
+tests/data/cache/
 
 # IDE
 .idea/
