@@ -1,0 +1,25 @@
+services:
+  bot:
+    build: .
+    container_name: airdatestvbot
+    env_file: .env
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Daily digest sender - run via cron on host or use a scheduler
+  # Example: docker compose run --rm daily-task
+  daily-task:
+    build: .
+    container_name: airdatestvbot-daily
+    env_file: .env
+    volumes:
+      - ./data:/data
+    command: ["python3", "dailysendtask.py"]
+    profiles:
+      - tasks

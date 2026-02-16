@@ -1,44 +1,31 @@
+"""TV show data fetching and formatting from airdates.tv."""
+
+from __future__ import annotations
+
 import json
-import re
-from datetime import date, timedelta, datetime
-from copy import deepcopy
-
 import logging
-from diskcache import Cache
+import re
+from copy import deepcopy
+from datetime import date, timedelta, datetime
+from typing import Any
 
-import demjson
 import requests
 from bs4 import BeautifulSoup
-
-# from config import *
-
-
-import os
-import sys
-# csfp = os.path.abspath(os.path.dirname(__file__))
-# if csfp not in sys.path:
-#     sys.path.insert(0, csfp)
+from diskcache import Cache
 
 from src.BotUser import BotUser
+
+logger = logging.getLogger(__name__)
 
 AIRDATES_URL = "https://www.airdates.tv"
 AIRDATES_USER_URL = "https://www.airdates.tv/_u/listSeries/"
 AIRDATES_UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:72.0) Gecko/20100101 Firefox/72.0"
 
-# EMOJIS = {'green_check': '&#x2705;',
-#           'back': '&#x1F519;',
-#           'fire': '&#x1f525;',
-#           'eyes': '&#x1F440;',
-#           'red_circle': '&#x1F534;',
-#           'red_triangle_down': "&#x1F53B;",
-#           'collision': "&#x1F4A5;",
-#           'stop_sign': "&#x1F6D1;",
-#           'orange_diamond': '&#x1F536;'}
-
-EMOJIS = {'user_show': '&#x2705;',
-          'new_show': "&#x1F6D1;",
-          'return_show': '&#x1F536;'}
-
+EMOJIS = {
+    'user_show': '&#x2705;',
+    'new_show': "&#x1F6D1;",
+    'return_show': '&#x1F536;'
+}
 
 CACHE_KEY_PREFIX_USER = '_user_data'
 CACHE_KEY_AIRDATES = 'shows_data'
@@ -46,13 +33,15 @@ CACHE_KEY_ENGINES = 'engines_data'
 
 
 class TVShows:
+    """Main interface for TV show data."""
 
-    def __init__(self, airdates_hlp: 'AirdatesHelper'):
+    def __init__(self, airdates_hlp: AirdatesHelper) -> None:
         self.airdates_hlp = airdates_hlp
         self.airdates_data, self._engines_data = self.airdates_hlp.get_airdates_data()
 
-    def refresh_user_data(self, bot_user: BotUser):
-        print('is admin', bot_user.is_admin)
+    def refresh_user_data(self, bot_user: BotUser) -> None:
+        """Refresh cached data for a user."""
+        logger.info(f'Refreshing data for user, is_admin={bot_user.is_admin}')
         if bot_user.is_admin:
             self.airdates_hlp.clear_airdates_data()
             self.airdates_data, self._engines_data = self.airdates_hlp.get_airdates_data()
@@ -60,19 +49,14 @@ class TVShows:
             self.airdates_hlp.clear_user_data(bot_user.airdates_user)
 
     @property
-    def engines_data(self):
+    def engines_data(self) -> list[dict[str, str]]:
         return self._engines_data
 
-    def get_shows_day(self, day_str, bot_user: BotUser):
-        """
-        Get all shows of the specific date
+    def get_shows_day(self, day_str: str, bot_user: BotUser) -> dict[str, Any]:
+        """Get all shows for a specific date."""
+        day_shows: dict[str, Any] = {"date": day_str, "episodes": []}
 
-        :param bot_user:
-        :param day_str:
-        """
-        day_shows = {"date": day_str, "episodes": []}
-
-        day = self.airdates_data.get(day_str, None)
+        day = self.airdates_data.get(day_str)
         if day:
             episodes = deepcopy(day['episodes'])
             episodes = [{**ep, 'episode_date': day_str} for ep in episodes]
@@ -80,26 +64,32 @@ class TVShows:
 
             if bot_user.airdates_user:
                 airdates_user_data = self.airdates_hlp.get_airdates_user_data(bot_user.airdates_user)
-                if day_shows['episodes']:
+                if airdates_user_data and day_shows['episodes']:
                     for ep in day_shows['episodes']:
                         if ep['show_id'] in airdates_user_data:
                             ep['is_user_show'] = 1
 
         return day_shows
 
-    def get_user_shows_day(self, day_str, bot_user: BotUser):
+    def get_user_shows_day(self, day_str: str, bot_user: BotUser) -> dict[str, Any]:
+        """Get only the user's shows for a specific date."""
         shows_day = self.get_shows_day(day_str, bot_user)
 
         if bot_user.airdates_user:
-            episodes = [ep for ep in shows_day['episodes'] if ep.get('is_user_show', None)]
+            episodes = [ep for ep in shows_day['episodes'] if ep.get('is_user_show')]
         else:
-            episodes = [ep for ep in shows_day['episodes']]
+            episodes = shows_day['episodes']
 
         shows_day['episodes'] = episodes
-
         return shows_day
 
-    def get_shows(self, day, bot_user: BotUser, user_only=True):
+    def get_shows(
+        self,
+        day: str,
+        bot_user: BotUser,
+        user_only: bool = True
+    ) -> dict[str, Any]:
+        """Get shows for a day (today/yday/tmrw or date string)."""
         day_str = day
         if day == 'today':
             day_str = date.today().strftime("%Y%m%d")
@@ -109,45 +99,47 @@ class TVShows:
         elif day == 'tmrw':
             tomorrow = date.today() + timedelta(days=1)
             day_str = tomorrow.strftime("%Y%m%d")
-        else:
-            pass
 
         if user_only:
-            shows = self.get_user_shows_day(day_str, bot_user)
-        else:
-            shows = self.get_shows_day(day_str, bot_user)
+            return self.get_user_shows_day(day_str, bot_user)
+        return self.get_shows_day(day_str, bot_user)
 
-        return shows
-
-    def get_new_shows(self, interval='week', new_type='series', bot_user: BotUser = None):
-
+    def get_new_shows(
+        self,
+        interval: str = 'week',
+        new_type: str = 'series',
+        bot_user: BotUser | None = None
+    ) -> list[dict[str, Any]]:
+        """Get new/returning shows for a week interval."""
         show_days = []
         today = datetime.now().date()
         start_day = today - timedelta(days=today.weekday())
 
         if interval == 'prev':
-            start_day = today - timedelta(days= (today.weekday() + 7) )
+            start_day = today - timedelta(days=(today.weekday() + 7))
         elif interval == 'next':
-            start_day = today - timedelta(days= (today.weekday() - 7) )
+            start_day = today - timedelta(days=(today.weekday() - 7))
 
         for i in range(7):
             show_day = start_day + timedelta(days=i)
             show_days.append(show_day.strftime("%Y%m%d"))
 
-        show_filter = 'series_prem'
-        if new_type == 'season':
-            show_filter = 'season_prem'
+        show_filter = 'series_prem' if new_type != 'season' else 'season_prem'
 
         shows = []
         for show_day in show_days:
-            show_data = self.airdates_data.get(show_day, None)
+            show_data = self.airdates_data.get(show_day)
             episodes = []
             if show_data:
-                episodes = [{**ep, 'episode_date': show_day} for ep in show_data['episodes'] if ep.get(show_filter, 0) == 1]
+                episodes = [
+                    {**ep, 'episode_date': show_day}
+                    for ep in show_data['episodes']
+                    if ep.get(show_filter) == 1
+                ]
 
-            if bot_user.airdates_user:
+            if bot_user and bot_user.airdates_user:
                 airdates_user_data = self.airdates_hlp.get_airdates_user_data(bot_user.airdates_user)
-                if episodes:
+                if airdates_user_data and episodes:
                     for ep in episodes:
                         if ep['show_id'] in airdates_user_data:
                             ep['is_user_show'] = 1
@@ -156,57 +148,73 @@ class TVShows:
 
         return shows
 
-
-    def find_episode_by_episode_id(self, episode_id):
+    def find_episode_by_episode_id(self, episode_id: str) -> dict[str, Any] | None:
+        """Find an episode by its ID."""
         show_id = episode_id.split('_', 1)[0]
 
         for day_key, day in self.airdates_data.items():
-            found_episode = next((x for x in day['episodes'] if x['episode_id'] == episode_id), None)
+            found_episode = next(
+                (x for x in day['episodes'] if x['episode_id'] == episode_id),
+                None
+            )
             if found_episode:
                 return {**found_episode, 'episode_date': day_key}
 
         return None
 
-    def find_episodes_by_text(self, text):
+    def find_episodes_by_text(self, text: str) -> list[dict[str, Any]]:
+        """Search for episodes by text in show name."""
         shows = []
+        search_text = text.lower().strip()
         for day_key, day in self.airdates_data.items():
-            shows += [{**ep, 'episode_date': day_key} for ep in day['episodes'] if text.lower() in ep['episode_name'].lower()]
-
-        # print(shows)
+            shows += [
+                {**ep, 'episode_date': day_key}
+                for ep in day['episodes']
+                if search_text in ep['episode_name'].lower()
+            ]
         return shows
 
 
 
-def _manage_cache(func):
-    def wrapper(self, *args, **kwargs):
-
-        ret = func(self, *args, **kwargs)
-        self.cache.close()
-        return ret
-
-    return wrapper
-
 
 class AirdatesHelper:
+    """Helper for fetching and caching airdates.tv data."""
 
-    def __init__(self, data_path, cache_path, from_cache=True, local_data=False, download_if_notfound=False):
+    def __init__(
+        self,
+        data_path: str,
+        cache_path: str,
+        from_cache: bool = True,
+        local_data: bool = False,
+        download_if_notfound: bool = False,
+        shows_ttl: int = 21600,
+        user_ttl: int = 86400,
+        engines_ttl: int = 2592000
+    ) -> None:
         self.data_path = data_path
         self.cache_path = cache_path
         self.from_cache = from_cache
         self.local_data = local_data
         self.download_if_notfound = download_if_notfound
-        self._cache = None
-
+        self.shows_ttl = shows_ttl
+        self.user_ttl = user_ttl
+        self.engines_ttl = engines_ttl
+        self._cache: Cache | None = None
 
     @property
-    def cache(self):
+    def cache(self) -> Cache:
         if not self._cache:
             self._cache = Cache(self.cache_path)
-
         return self._cache
 
-    @_manage_cache
-    def get_airdates_data(self):
+    def close(self) -> None:
+        """Close the cache connection."""
+        if self._cache:
+            self._cache.close()
+            self._cache = None
+
+    def get_airdates_data(self) -> tuple[dict[str, Any], list[dict[str, str]]]:
+        """Get airdates data, from cache or fresh download."""
         shows_data = None
         engines_data = None
 
@@ -216,19 +224,18 @@ class AirdatesHelper:
 
         if not shows_data or not self.from_cache or not engines_data:
             shows_data_html = self._download_airdates_data()
-            shows_data, engines_data = self._parse_airdates_data(shows_data_html)
-
-            self.cache.set(CACHE_KEY_AIRDATES, shows_data, expire=60 * 60 * 6)
-            self.cache.set(CACHE_KEY_ENGINES, engines_data, expire=60 * 60 * 24 * 30)
+            if shows_data_html:
+                shows_data, engines_data = self._parse_airdates_data(shows_data_html)
+                self.cache.set(CACHE_KEY_AIRDATES, shows_data, expire=self.shows_ttl)
+                self.cache.set(CACHE_KEY_ENGINES, engines_data, expire=self.engines_ttl)
+            else:
+                shows_data = {}
+                engines_data = []
 
         return shows_data, engines_data
 
-    @_manage_cache
-    def get_airdates_user_data(self, airdates_user):
-        """
-        same as function above
-        :return:
-        """
+    def get_airdates_user_data(self, airdates_user: str) -> dict[str, Any] | None:
+        """Get user's followed shows from airdates.tv."""
         if not airdates_user:
             return None
 
@@ -240,117 +247,109 @@ class AirdatesHelper:
 
         if not user_data or not self.from_cache:
             user_data_json = self._download_user_data(airdates_user)
-            user_data = json.loads(user_data_json)
-
-            # convert from list of objects to dict, 'id' will be the key (leaves id as attribute as well)
-            user_data = {str(x['id']): x for x in user_data}
-
-            self.cache.set(cache_key, user_data, expire=60 * 60 * 24)
+            if user_data_json:
+                user_data = json.loads(user_data_json)
+                # Convert from list to dict with 'id' as key
+                user_data = {str(x['id']): x for x in user_data}
+                self.cache.set(cache_key, user_data, expire=self.user_ttl)
 
         return user_data
 
-    @_manage_cache
-    def clear_user_data(self, airdates_user):
+    def clear_user_data(self, airdates_user: str) -> None:
+        """Clear cached user data."""
         if not airdates_user:
-            return None
-
+            return
         cache_key = f"{CACHE_KEY_PREFIX_USER}{airdates_user}"
         self.cache.delete(cache_key)
 
-    @_manage_cache
-    def clear_airdates_data(self):
-
+    def clear_airdates_data(self) -> None:
+        """Clear cached airdates data."""
         self.cache.delete(CACHE_KEY_AIRDATES)
         self.cache.delete(CACHE_KEY_ENGINES)
 
-    def _download_airdates_data(self):
-        filename = self.data_path + '/airdates.html'
-
-        download_and_save = True
-
-        if self.local_data:
-            try:
-                with open(filename, 'rt') as f:
-                    return f.read()
-
-            except Exception:
-                print('file not found')
-                download_and_save = self.download_if_notfound
-
-        if download_and_save:
-            url = AIRDATES_URL
-            headers = {'accept': '*/*', 'user-agent': AIRDATES_UA}
-
-            response = requests.get(url, headers=headers)
-
-            logging.getLogger('ext_requests').info('Fetching Airdates main page\n' +
-                                                   'Headers: ' + str(response.request.headers) + '\n' +
-                                                   'URL: ' + str(response.request.url) + '\n')
-
-            if response.status_code == 200:
-                save_to_file(filename, response.content)
-                return response.text
-            else:
-                logging.error("Connection Error Code: " + response.status_code)
-                return None
-
-        return None
-
-    def _download_user_data(self, airdates_user):
-        filename = self.data_path + "/" + airdates_user + '_airdates.txt'
-
-        download_and_save = True
+    def _download_airdates_data(self) -> str | None:
+        """Download main page from airdates.tv."""
+        filename = f'{self.data_path}/airdates.html'
 
         if self.local_data:
             try:
                 with open(filename, 'rt') as f:
                     return f.read()
+            except FileNotFoundError:
+                logger.warning('Local airdates file not found')
+                if not self.download_if_notfound:
+                    return None
 
-            except Exception:
-                print('file not found')
-                download_and_save = self.download_if_notfound
+        url = AIRDATES_URL
+        headers = {'accept': '*/*', 'user-agent': AIRDATES_UA}
 
-        if download_and_save:
-            url = AIRDATES_USER_URL + airdates_user
-            headers = {'Accept': '*/*', 'User-Agent': AIRDATES_UA}
-
-            response = requests.get(url, headers=headers)
-
-            logging.getLogger('ext_requests').info(f'Fetching Airdates user data for {airdates_user}\n' +
-                                                   'Headers: ' + str(response.request.headers) + '\n' +
-                                                   'URL: ' + str(response.request.url) + '\n')
+        try:
+            response = requests.get(url, headers=headers, timeout=30)
+            logging.getLogger('ext_requests').info(
+                f'Fetching Airdates main page - Status: {response.status_code}'
+            )
 
             if response.status_code == 200:
-                save_to_file(filename, response.content)
+                _save_to_file(filename, response.content)
                 return response.text
-
             else:
-                logging.error("Connection Error Code: " + response.status_code)
+                logger.error(f"Connection Error Code: {response.status_code}")
                 return None
+        except requests.RequestException as e:
+            logger.error(f"Request failed: {e}")
+            return None
 
-        return None
+    def _download_user_data(self, airdates_user: str) -> str | None:
+        """Download user's show list from airdates.tv."""
+        filename = f'{self.data_path}/{airdates_user}_airdates.txt'
 
-    def _parse_airdates_data(self, html_data):
-        '''
-        parse data into the array of dates, each item is date dictionary with the episodes of that date
+        if self.local_data:
+            try:
+                with open(filename, 'rt') as f:
+                    return f.read()
+            except FileNotFoundError:
+                logger.warning(f'Local user file not found for {airdates_user}')
+                if not self.download_if_notfound:
+                    return None
 
-        :param str html_data: main page html
-        :return:
-        '''
+        url = AIRDATES_USER_URL + airdates_user
+        headers = {'Accept': '*/*', 'User-Agent': AIRDATES_UA}
 
+        try:
+            response = requests.get(url, headers=headers, timeout=30)
+            logging.getLogger('ext_requests').info(
+                f'Fetching Airdates user data for {airdates_user} - Status: {response.status_code}'
+            )
+
+            if response.status_code == 200:
+                _save_to_file(filename, response.content)
+                return response.text
+            else:
+                logger.error(f"Connection Error Code: {response.status_code}")
+                return None
+        except requests.RequestException as e:
+            logger.error(f"Request failed: {e}")
+            return None
+
+    def _parse_airdates_data(
+        self,
+        html_data: str
+    ) -> tuple[dict[str, Any], list[dict[str, str]]]:
+        """Parse HTML data into structured show data."""
         soup = BeautifulSoup(html_data, 'html.parser')
         days_div = soup.select("div.day")
 
-        days = {}
+        days: dict[str, Any] = {}
         for div in days_div:
-
             day_entries = div.find_all('div', {'class': 'entry'})
             episodes = []
             for x in day_entries:
-                ep = {'show_id': str(x['data-series-id']),
-                      'show_source': str(x['data-series-source']),
-                      'episode_id': get_episode_id(str(x['data-series-id']), str(x.div.contents[0])),
-                      'episode_name': str(x.div.contents[0])}
+                ep = {
+                    'show_id': str(x['data-series-id']),
+                    'show_source': str(x['data-series-source']),
+                    'episode_id': _get_episode_id(str(x['data-series-id']), str(x.div.contents[0])),
+                    'episode_name': str(x.div.contents[0])
+                }
 
                 if 'series-premiere' in x["class"]:
                     ep['series_prem'] = 1
@@ -360,24 +359,52 @@ class AirdatesHelper:
                 episodes.append(ep)
 
             shows_date = str(div['data-date'])
-            day = {'episodes': episodes}
-            days[shows_date] = day
+            days[shows_date] = {'episodes': episodes}
 
-        engines = soup.find('script', text=re.compile("engines"))
-        engines = re.findall(r'\{ .*?\ }', engines.text)
-        engines = [demjson.decode(i) for i in engines]
+        # Parse watch engines
+        engines_script = soup.find('script', text=re.compile("engines"))
+        engines: list[dict[str, str]] = []
+        if engines_script:
+            engines_raw = re.findall(r'\{ .*?\ }', engines_script.text)
+            engines = [_parse_js_object(i) for i in engines_raw]
 
         return days, engines
 
 
-def get_episode_id(show_id, episode_name):
+def _parse_js_object(js_str: str) -> dict[str, str]:
+    """Parse JavaScript-style object to dict. Handles unquoted keys."""
+    # Convert JS object syntax to valid JSON:
+    # { name: "value" } -> { "name": "value" }
+    # Only match keys after { or , (not colons inside URLs)
+    js_str = re.sub(r'([{,])\s*(\w+)\s*:', r'\1 "\2":', js_str)
+    js_str = js_str.replace("'", '"')
+    return json.loads(js_str)
+
+
+def _get_episode_id(show_id: str, episode_name: str) -> str:
+    """Generate episode ID from show ID and episode name."""
     episode_num = episode_name.split()[-1]
     return f"{show_id}_{episode_num}"
 
 
-def format_episode_details(episode, engines):
+def _save_to_file(filename: str, data_binary: bytes) -> None:
+    """Save binary data to file."""
+    try:
+        with open(filename, 'wb') as f:
+            f.write(data_binary)
+    except IOError as e:
+        logger.error(f'Failed to save file {filename}: {e}')
+
+
+# Formatting functions
+
+def format_episode_details(
+    episode: dict[str, Any],
+    engines: list[dict[str, str]]
+) -> str:
+    """Format episode details with watch links."""
     show_text = f'<b>{episode["episode_name"]}</b> (' + format_date(episode["episode_date"]) + ')'
-    if episode.get('is_user_show', None):
+    if episode.get('is_user_show'):
         show_text = f"{EMOJIS['user_show']}&#160;{show_text}"
     show_text += '\n\n'
 
@@ -391,52 +418,46 @@ def format_episode_details(episode, engines):
     return show_text
 
 
-def format_show_text_header(day_param, airdates_user, date, all=False):
-
+def format_show_text_header(
+    day_param: str,
+    airdates_user: str | None,
+    date_str: str,
+    show_all: bool = False
+) -> str:
+    """Format the header text for show listings."""
     user_text = f'{airdates_user} ' if airdates_user else ''
-    all_text = ' ALL' if all else ''
-
+    all_text = ' ALL' if show_all else ''
     day_text = get_day_text_by_type(day_param)
 
-    header_text = '{}{}\'s ({}){} TV Shows:\n\n'.format(user_text, day_text, format_date(date), all_text)
-    return header_text
+    return f'{user_text}{day_text}\'s ({format_date(date_str)}){all_text} TV Shows:\n\n'
 
 
-def get_day_text_by_type(type):
-    day_text = ''
-    if type == 'today':
-        day_text = 'Today'
-
-    elif type == 'yday':
-        day_text = 'Yesterday'
-
-    elif type == 'tmrw':
-        day_text = 'Tomorrow'
-
-    return day_text
+def get_day_text_by_type(day_type: str) -> str:
+    """Get display text for day type."""
+    day_texts = {
+        'today': 'Today',
+        'yday': 'Yesterday',
+        'tmrw': 'Tomorrow'
+    }
+    return day_texts.get(day_type, '')
 
 
-def format_show_text_main(show, show_date=False):
+def format_show_text_main(show: dict[str, Any], show_date: bool = False) -> str:
+    """Format a single show with its episodes."""
     show_text = '<b>' + show['name'] + '</b>'
-    if show.get('series_prem', None):
-        # show_text = f"{EMOJIS['new_show']}&#160;{show_text}&#160;{EMOJIS['new_show']}"
+
+    if show.get('series_prem'):
         show_text = f"{EMOJIS['new_show']}&#160;{show_text}"
-
-    if show.get('season_prem', None):
-        # show_text = f"{EMOJIS['return_show']}&#160;{show_text}&#160;{EMOJIS['return_show']}"
+    if show.get('season_prem'):
         show_text = f"{EMOJIS['return_show']}&#160;{show_text}"
-
-    if show.get('is_user_show', None):
-        # show_text = f"{EMOJIS['user_show']}&#160;{show_text}"
+    if show.get('is_user_show'):
         show_text = f"{show_text}&#160;{EMOJIS['user_show']}&#160;"
 
     show_text += '\n'
 
     for episode in show['episodes']:
-        ep_id = get_episode_id(show['id'], episode['name'])
-        # show_text += f"<i>{episode['name']}</i> - /details_{ep_id}"
+        ep_id = _get_episode_id(show['id'], episode['name'])
         show_text += f"{episode['name']} - /details_{ep_id}"
-
         if show_date:
             show_text += ' (' + format_date(episode['date']) + ')'
         show_text += '\n'
@@ -444,73 +465,63 @@ def format_show_text_main(show, show_date=False):
     return show_text
 
 
-def format_shows_text(episodes, show_date=False):
-    shows_episodes = group_episodes_by_show(episodes)
+def format_shows_text(episodes: list[dict[str, Any]], show_date: bool = False) -> str:
+    """Format a list of episodes grouped by show."""
+    shows_episodes = _group_episodes_by_show(episodes)
     shows_text = [format_show_text_main(i, show_date) for i in shows_episodes]
-
     return "\n".join(shows_text) + '\n'
 
-def format_shows_days_text(show_days):
+
+def format_shows_days_text(show_days: list[dict[str, Any]]) -> str:
+    """Format shows grouped by day."""
     shows_days_text = ''
 
     for show_day in show_days:
-
         if show_day['episodes']:
             shows_days_text += f'<i>--------  {format_date(show_day["date"])}  --------</i>\n\n'
-            shows_episodes = group_episodes_by_show(show_day['episodes'])
+            shows_episodes = _group_episodes_by_show(show_day['episodes'])
             shows_text = [format_show_text_main(i) for i in shows_episodes]
-
-            shows_days_text += "\n".join(shows_text)
-            shows_days_text += '\n'
+            shows_days_text += "\n".join(shows_text) + '\n'
 
     return shows_days_text
 
 
-def format_date(day_str):
+def format_date(day_str: str) -> str:
+    """Format date string for display."""
     date_obj = datetime.strptime(day_str, '%Y%m%d')
     return date_obj.strftime("%-d %b %Y")
 
 
-def save_to_file(filename, data_binary):
-    try:
-        with open(filename, 'wb') as f:
-            f.write(data_binary)
-            f.close()
-
-    except Exception:
-        print('not found')
-
-
-def format_footer(username=None):
+def format_footer(username: str | None = None) -> str:
+    """Format the footer with airdates.tv link."""
     if username:
         return f"--------------------------------\nVisit {AIRDATES_URL}/u/{username} for more shows"
-    else:
-        return f"--------------------------------\nVisit {AIRDATES_URL} for more shows"
+    return f"--------------------------------\nVisit {AIRDATES_URL} for more shows"
 
 
-def group_episodes_by_show(episodes):
-    shows = {}
+def _group_episodes_by_show(episodes: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Group episodes by their show."""
+    shows: dict[str, dict[str, Any]] = {}
+
     for ep in episodes:
         show_id = ep['show_id']
         show_name = " ".join(ep['episode_name'].split()[:-1])
-        if not (show_id in shows):
+
+        if show_id not in shows:
             shows[show_id] = {'name': show_name, 'episodes': []}
 
-        if ep.get('series_prem', None):
+        if ep.get('series_prem'):
             shows[show_id]['series_prem'] = 1
-
-        if ep.get('season_prem', None):
+        if ep.get('season_prem'):
             shows[show_id]['season_prem'] = 1
-
-        if ep.get('is_user_show', None):
+        if ep.get('is_user_show'):
             shows[show_id]['is_user_show'] = 1
 
-        shows[show_id]['episodes'].append({'id': ep['episode_id'], 'name': ep['episode_name'], 'date': ep['episode_date']})
+        shows[show_id]['episodes'].append({
+            'id': ep['episode_id'],
+            'name': ep['episode_name'],
+            'date': ep['episode_date']
+        })
 
-    shows_list = []
-    for show_key, show_val in shows.items():
-        # reorder the keys so id will be the first
-        new_obj = {k: v for k, v in ([('id', show_key)] + list(show_val.items()))}
-        shows_list.append(new_obj)
-
-    return shows_list
+    # Convert to list with id as first key
+    return [{'id': k, **v} for k, v in shows.items()]
