@@ -79,10 +79,18 @@ class Config:
         self.log_path = f"{self.data_dir_path}/{MAIN_LOG_FILENAME}"
 
         # Log directory
+        # - Docker: uses data_dir_path/log (/data/log)
+        # - macOS: uses data_dir_path/log (local dev)
+        # - Linux: try LOG_DIR (/var/log/...), fallback to data_dir_path/log
         if is_docker() or sys.platform == "darwin":
             self.log_dir_path = f"{self.data_dir_path}/log"
         else:
-            self.log_dir_path = LOG_DIR
+            # Linux - try production path, fallback to local if not writable
+            try:
+                os.makedirs(LOG_DIR, exist_ok=True)
+                self.log_dir_path = LOG_DIR
+            except PermissionError:
+                self.log_dir_path = f"{self.data_dir_path}/log"
 
         self._setup_loggers(self.log_dir_path, name="airdatesTVbot")
         self.logger = logging.getLogger()

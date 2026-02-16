@@ -600,7 +600,7 @@ def main():
 
     # Start polling with recommended settings for pyTelegramBotAPI 4.x
     config.logger.info("Starting bot polling...")
-    bot.infinity_polling(timeout=60, long_polling_timeout=30)
+    bot.infinity_polling(timeout=20, long_polling_timeout=20)
 
 
 if __name__ == "__main__":

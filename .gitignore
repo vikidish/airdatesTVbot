@@ -27,3 +27,4 @@ tests/data/cache/
 
 # Project specific
 *.db
+data/
