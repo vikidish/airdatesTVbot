@@ -191,3 +191,9 @@ CACHE_KEY_PREFIX_USER = '_user_data'     # + username for user's shows
    ```
 3. For callbacks: `@bot.callback_query_handler(func=lambda call: call.data.startswith('prefix-'))`
 
+### Docker Rebuild Required
+After changes to `Dockerfile`, `entrypoint.sh`, or `requirements.txt`:
+```bash
+docker compose build && docker compose up -d
+```
+
