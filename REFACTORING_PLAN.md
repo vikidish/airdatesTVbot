@@ -194,3 +194,19 @@ docker compose stop bot
 | 3 | ✅ Complete | Code Structure & Quality |
 | 4 | ✅ Complete | Database & Caching |
 | 5 | ✅ Complete | Production Hardening |
+
+---
+
+## TODO
+
+- [ ] Restore standalone image deployment (pre-refactoring behavior):
+  ```bash
+  # Build once
+  docker build -t airdatestvbot:1 .
+
+  # Run bot (no project files needed, just image + env + data volume)
+  docker run -d -it --name airdatestvbot --env-file .env -v /path/to/your/data:/data airdatestvbot:1
+
+  # Run daily task
+  docker run -d --rm -it --name airdatestvbot_dailysend --env-file .env -v /path/to/your/data:/data airdatestvbot:1 python3 dailysendtask.py
+  ```
