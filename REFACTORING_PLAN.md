@@ -199,7 +199,7 @@ docker compose stop bot
 
 ## TODO
 
-- [ ] Restore standalone image deployment (pre-refactoring behavior):
+- [x] Restore standalone image deployment (pre-refactoring behavior):
   ```bash
   # Build once
   docker build -t airdatestvbot:1 .
