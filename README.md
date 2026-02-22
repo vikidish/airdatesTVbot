@@ -74,6 +74,21 @@ For production servers where you don't need the source code, deploy using just t
 docker build -t airdatestvbot:1 .
 ```
 
+**Cross-platform build (e.g., building for amd64 server from ARM Mac/Linux):**
+
+First, install QEMU for emulation:
+```bash
+# On Debian/Ubuntu:
+sudo apt-get install -y qemu-user-static binfmt-support
+
+# On macOS: Docker Desktop includes QEMU by default
+```
+
+Then build with platform flag:
+```bash
+docker build --platform linux/amd64 -t airdatestvbot:1 .
+```
+
 #### 2. Transfer to server
 
 **Option A - Export/Import (rsync, scp, etc.):**
@@ -111,6 +126,11 @@ chown 1000:1000 /path/to/your/data
 ```
 
 The container runs as UID 1000. The data directory stores the SQLite database, cache, and logs.
+
+**Rootless Docker:** UID mapping works differently - container UID 1000 maps to a subordinate UID on the host. Check your mapping with `grep $USER /etc/subuid`. If it shows `youruser:100000:65536`, container UID 1000 maps to host UID 100999. Either:
+- `chown -R 100999:100999 /path/to/your/data`, or
+- Pre-create subdirectories with open permissions: `mkdir -p /path/to/your/data/{log,cache} && chmod 777 /path/to/your/data/{log,cache}`, or
+- Run with `--user root` (safe in rootless Docker since root inside = your user outside)
 
 #### 5. Run the bot
 
