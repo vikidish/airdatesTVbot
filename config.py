@@ -111,7 +111,7 @@ class Config:
     def get_db_schema_version(self):
         check_stmt = 'PRAGMA user_version;'
         conn = sqlite3.connect(self.db_path, isolation_level=None,
-                               detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+                               detect_types=sqlite3.PARSE_DECLTYPES)
         cur = conn.cursor()
         cur.execute(check_stmt)
         res = cur.fetchall()

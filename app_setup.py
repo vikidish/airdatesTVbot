@@ -61,7 +61,7 @@ def create_db(delete_exist=False):
         ''' + create_stmt
 
     conn = sqlite3.connect(config.db_path, isolation_level=None,
-                                           detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+                                           detect_types=sqlite3.PARSE_DECLTYPES)
     conn.set_trace_callback(print)
     cur = conn.cursor()
     cur.executescript(create_stmt)
@@ -76,7 +76,7 @@ def migrate_db(to_version=DB_SCHEMA_VERSION):
 
     else:
         conn = sqlite3.connect(config.db_path, isolation_level=None,
-                                           detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+                                           detect_types=sqlite3.PARSE_DECLTYPES)
         conn.set_trace_callback(print)
         cur = conn.cursor()
 

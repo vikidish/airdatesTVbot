@@ -275,8 +275,8 @@ class TestBotUserStorageHelper(unittest.TestCase):
         """get_daily_send_by_hour should return users for that hour"""
         conn = sqlite3.connect(self.db_path)
         conn.execute(
-            "INSERT INTO Users (tg_user_id, airdates_user, daily_enabled, daily_hour, daily_types) VALUES (?, ?, ?, ?, ?)",
-            ('111', 'user1', 1, 9, '[]')
+            "INSERT INTO Users (tg_user_id, airdates_user, daily_enabled, daily_hour, daily_types, last_sent) VALUES (?, ?, ?, ?, ?, ?)",
+            ('111', 'user1', 1, 9, '["today"]', '2024-01-15 10:00:00.000000')
         )
         conn.execute(
             "INSERT INTO Users (tg_user_id, airdates_user, daily_enabled, daily_hour, daily_types) VALUES (?, ?, ?, ?, ?)",
@@ -299,6 +299,13 @@ class TestBotUserStorageHelper(unittest.TestCase):
         user_ids = [u['tg_user_id'] for u in users]
         self.assertIn('111', user_ids)
         self.assertIn('222', user_ids)
+
+        # Verify all expected keys are present (catches column alias bugs)
+        for user in users:
+            self.assertIn('tg_user_id', user)
+            self.assertIn('airdates_user', user)
+            self.assertIn('last_sent', user)
+            self.assertIn('daily_types', user)
 
     def test_update_last_sent(self):
         """update_last_sent should update the timestamp"""

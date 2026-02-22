@@ -120,7 +120,8 @@ class BotUser:
 def _manage_connection(func):
     """Decorator to manage SQLite connection lifecycle."""
     def wrapper(self, *args, **kwargs):
-        conn = sqlite3.connect(self.db_path, isolation_level=None)
+        conn = sqlite3.connect(self.db_path, isolation_level=None,
+                               detect_types=sqlite3.PARSE_DECLTYPES)
         conn.row_factory = sqlite3.Row
         try:
             return func(self, conn, *args, **kwargs)
@@ -251,7 +252,7 @@ class BotUserStorageHelper:
     ) -> list[dict[str, Any]]:
         cur = conn.cursor()
         stmt = '''
-        SELECT tg_user_id, airdates_user, last_sent as "last_sent [timestamp]", daily_types
+        SELECT tg_user_id, airdates_user, last_sent, daily_types
         FROM Users
         WHERE daily_enabled = ? and daily_hour = ?
         '''
