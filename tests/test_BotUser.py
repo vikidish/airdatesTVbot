@@ -7,6 +7,7 @@ import json
 import sqlite3
 import tempfile
 import unittest
+from datetime import datetime
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 sys.path.insert(0, ROOT)
@@ -320,6 +321,41 @@ class TestBotUserStorageHelper(unittest.TestCase):
         conn.close()
 
         self.assertEqual(row['last_sent'], '2024-01-15 10:00:00')
+
+    def test_update_last_sent_with_datetime_object(self):
+        """update_last_sent with datetime object should be retrievable via get_daily_send_by_hour"""
+        # This tests the actual usage pattern in dailysendtask.py:
+        # botdbsql.update_last_sent(tg_user_id, datetime.utcnow())
+        now = datetime.utcnow()
+
+        conn = sqlite3.connect(self.db_path)
+        conn.execute(
+            "INSERT INTO Users (tg_user_id, airdates_user, daily_enabled, daily_hour, daily_types) VALUES (?, ?, ?, ?, ?)",
+            ('12345', 'testuser', 1, 9, '["today"]')
+        )
+        conn.commit()
+        conn.close()
+
+        # Update with datetime object (like dailysendtask.py does)
+        self.storage.update_last_sent('12345', now)
+
+        # Retrieve via get_daily_send_by_hour (like dailysendtask.py does)
+        users = self.storage.get_daily_send_by_hour(9)
+        self.assertEqual(len(users), 1)
+
+        last_sent = users[0]['last_sent']
+
+        # The value should be usable as datetime - either already a datetime or parseable
+        if isinstance(last_sent, datetime):
+            last_sent_dt = last_sent
+        else:
+            last_sent_dt = datetime.strptime(last_sent, '%Y-%m-%d %H:%M:%S.%f')
+
+        # Verify the datetime is close to what we stored
+        self.assertEqual(last_sent_dt.year, now.year)
+        self.assertEqual(last_sent_dt.month, now.month)
+        self.assertEqual(last_sent_dt.day, now.day)
+        self.assertEqual(last_sent_dt.hour, now.hour)
 
 
 class TestBotUserMethods(unittest.TestCase):

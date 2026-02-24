@@ -40,9 +40,12 @@ def send_daily_shows():
         daily_types = json.loads(user['daily_types'])
 
         if last_sent:
-            last_sent_dt = datetime.strptime(last_sent, '%Y-%m-%d %H:%M:%S.%f')
+            if isinstance(last_sent, datetime):
+                last_sent_dt = last_sent
+            else:
+                last_sent_dt = datetime.strptime(last_sent, '%Y-%m-%d %H:%M:%S.%f')
         else:
-            last_sent_dt = datetime.strptime('1979-01-01 00:00:00.00', '%Y-%m-%d %H:%M:%S.%f')
+            last_sent_dt = datetime(1979, 1, 1)
 
         user_only = True if airdates_user else False
 
