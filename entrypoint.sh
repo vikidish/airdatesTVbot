@@ -7,8 +7,8 @@ python3 app_setup.py
 
 # Secure cache directory (mitigate CVE-2025-69872)
 if [ -d /data/cache ]; then
-    chmod 700 /data/cache
-    chmod 600 /data/cache/* 2>/dev/null || true
+    find /data/cache -type d -exec chmod 700 {} \;
+    find /data/cache -type f -exec chmod 600 {} \;
 fi
 
 # Execute the main command
